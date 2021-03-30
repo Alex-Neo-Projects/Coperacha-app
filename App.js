@@ -8,11 +8,11 @@ import {
   requestAccountAddress,
   waitForAccountAuth,
   FeeCurrency
-} from '@celo/dappkit'
-import { toTxResult } from "@celo/connect"
-import * as Linking from 'expo-linking'
-import HelloWorldContract from './contracts/HelloWorld.json'
-
+} from '@celo/dappkit';
+import { toTxResult } from "@celo/connect";
+import * as Linking from 'expo-linking';
+import CeloCrowdfundContract from './contracts/CeloCrowdfund.json'
+import ProjectInstanceContract from './contracts/ProjectInstance.json'
 
 YellowBox.ignoreWarnings(['Warning: The provided value \'moz', 'Warning: The provided value \'ms-stream'])
 
@@ -23,7 +23,7 @@ export default class App extends React.Component {
     address: 'Not logged in',
     phoneNumber: 'Not logged in',
     cUSDBalance: 'Not logged in',
-    helloWorldContract: {},
+    celoCrowdfundContract: {},
     contractName: '',
     textInput: ''
   }
@@ -33,18 +33,20 @@ export default class App extends React.Component {
     
     // Check the Celo network ID
     const networkId = await web3.eth.net.getId();
-    
-    // Get the deployed HelloWorld contract info for the appropriate network ID
-    const deployedNetwork = HelloWorldContract.networks[networkId];
+    console.log("NETWORK ID: ", networkId);
 
-    // Create a new contract instance with the HelloWorld contract info
-    const instance = new web3.eth.Contract(
-      HelloWorldContract.abi,
+    // Get the deployed celo crowdfund contract info for the appropriate network ID
+    const deployedNetwork = CeloCrowdfundContract.networks[networkId];
+    console.log("Deployed network: ", deployedNetwork);
+
+    // Create a new contract instance with the Project contract info
+    const celoCrowdFundinstance = new web3.eth.Contract(
+      CeloCrowdfundContract.abi,
       deployedNetwork && deployedNetwork.address
     );
-
+    // CeloCrowdfundContract.options.address = '0x7cAD46456Bd119D28124dfaFA2477bf65f114eEF';
     // Save the contract instance
-    this.setState({ helloWorldContract: instance })
+    this.setState({ celoCrowdfundContract: celoCrowdFundinstance })
   }
 
   login = async () => {
@@ -71,7 +73,7 @@ export default class App extends React.Component {
     // Set the default account to the account returned from the wallet
     kit.defaultAccount = dappkitResponse.address
 
-    // Get the stabel token contract
+    // Get the stable token contract
     const stableToken = await kit.contracts.getStableToken()
 
     // Get the user account balance (cUSD)
@@ -88,21 +90,53 @@ export default class App extends React.Component {
   }
 
   read = async () => {
-    
-    // Read the name stored in the HelloWorld contract
-    let name = await this.state.helloWorldContract.methods.getName().call()
-    
+    var projectData = []; 
+
+    await this.state.celoCrowdfundContract.methods.returnProjects().call().then((projects) => {
+      projects.forEach((projectAddress) => {
+        // const projectInst = crowdfundProject(projectAddress);
+
+        // projectInst.methods.getDetails().call().then((projectData) => {
+        //   const projectInfo = projectData;
+        //   projectInfo.isLoading = false;
+        //   projectInfo.contract = projectInst;
+        //   this.projectData.push(projectInfo);
+        // });
+        projectData.push(projectAddress);
+      });
+    });
+
+    console.log("Projects: ", projectData);
+
+    var arrLen = "Number of projects created: " + projectData.length;
+
     // Update state
-    this.setState({ contractName: name })
+    this.setState({ contractName: arrLen})
   }
 
   write = async () => {
-    const requestId = 'update_name'
-    const dappName = 'Hello Celo'
+    const requestId = 'update_projects'
+    const dappName = 'Celo Crowdfunding'
     const callback = Linking.makeUrl('/my/path')
 
-    // Create a transaction object to update the contract with the 'textInput'
-    const txObject = await this.state.helloWorldContract.methods.setName(this.state.textInput)
+    // Create a transaction object to update the contract
+
+    /* 
+      function startProject(
+        string calldata title,
+        string calldata description,
+        string calldata imageLink, 
+        uint durationInDays, 
+        uint amountToRaise
+      )
+    */
+
+    const txObject = await this.state.celoCrowdfundContract.methods.startProject('test title', 'hello, this is the first ever project', 'https://images.pexels.com/photos/708392/pexels-photo-708392.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', 5, 3);
+    
+    console.log(txObject);
+
+    const networkId = await web3.eth.net.getId();
+    console.log("Project address: ", CeloCrowdfundContract.networks[networkId].address);
 
     // Send a request to the Celo wallet to send an update transaction to the HelloWorld contract
     requestTxSig(
@@ -110,7 +144,7 @@ export default class App extends React.Component {
       [
         {
           from: this.state.address,
-          to: this.state.helloWorldContract.options.address,
+          to: '0xF39eF069687c160700D5B2aCa336FE2C3711A48b',
           tx: txObject,
           feeCurrency: FeeCurrency.cUSD
         }
@@ -133,34 +167,28 @@ export default class App extends React.Component {
   }
 
   render(){
+
     return (
       <View style={styles.container}>
-        <Image resizeMode='contain' source={require("./assets/white-wallet-rings.png")}></Image>
-        <Text>Open up client/App.js to start working on your app!</Text>
-        
-        <Text style={styles.title}>Login first</Text>
-        <Button title="login()" 
+        <Text style={styles.title}>Login</Text>
+        <Button title="Login" 
           onPress={()=> this.login()} />
-                <Text style={styles.title}>Account Info:</Text>
+
+        <Text style={styles.title}>Account Info:</Text>
+
         <Text>Current Account Address:</Text>
         <Text>{this.state.address}</Text>
         <Text>Phone number: {this.state.phoneNumber}</Text>
         <Text>cUSD Balance: {this.state.cUSDBalance}</Text>
 
-        <Text style={styles.title}>Read HelloWorld</Text>
-        <Button title="Read Contract Name" 
+
+        <Text style={styles.title}>Read Project List</Text>
+        <Button title="Read" 
           onPress={()=> this.read()} />
-        <Text>Contract Name: {this.state.contractName}</Text>
+        <Text>{this.state.contractName}</Text>
         
-        <Text style={styles.title}>Write to HelloWorld</Text>
-        <Text>New contract name:</Text>
-        <TextInput
-          style={{  borderColor: 'black', borderWidth: 1, backgroundColor: 'white' }}
-          placeholder="input new name here"
-          onChangeText={text => this.onChangeText(text)}
-          value={this.state.textInput}
-          />
-        <Button style={{padding: 30}} title="update contract name" 
+        <Text style={styles.title}>Create new Project</Text>
+        <Button style={{padding: 30}} title="Create Project" 
           onPress={()=> this.write()} />
       </View>
     );
