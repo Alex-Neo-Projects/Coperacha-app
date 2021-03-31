@@ -1,16 +1,15 @@
 {
   "expo": {
-    "name": "Celo Crowdfunding",
-    "slug": "celo-crowdfunding",
+    "name": "Coperacha",
+    "slug": "coperacha",
     "privacy": "public",
     "platforms": [
       "ios",
-      "android",
-      "web"
+      "android"
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/white-wallet-rings.png",
+    "icon": "./assets/icon.png",
     "scheme": "celodappkit",
     "splash": {
       "image": "./assets/splash.png",
@@ -24,7 +23,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "xyz.coperacha.client"
     },
     "description": "Crowdfunding for you and your community, on Celo",
     "githubUrl": "https://github.com/Alex-Neo-Projects/celo-crowdfunding"

@@ -47,6 +47,8 @@ class Home extends React.Component {
     // Save the contract instance
     this.setState({ celoCrowdfundContract: celoCrowdFundinstance })
     this.setState({ deployedNetwork: deployedNetwork })
+
+    // this.read();  
   }
 
   login = async () => {
@@ -95,26 +97,21 @@ class Home extends React.Component {
     // Return results inside each individual project
     await this.state.celoCrowdfundContract.methods.returnProjects().call().then((projects) => {
       projects.forEach(async (projectAddress) => {    
-        console.log("Project address: ", projectAddress);
-
         const projectInstanceContract = new web3.eth.Contract(
           ProjectInstanceContract.abi,
           this.state.deployedNetwork && projectAddress
         );
         
-        var test = await projectInstanceContract.methods.getDetails().call();
-        console.log('Project: ', test);
-
-        projectData.push(projectAddress);
+        var project = await projectInstanceContract.methods.getDetails().call();
+        projectData.push(project);
+        console.log(projectData);
       });
     });
     
-    console.log("Projects: ", projectData);
-
     // var arrLen = "Number of projects created: " + projectData.length;
 
     // // Update state
-    // this.setState({ contractName: arrLen})
+    this.setState({ projectData: projectData})
   }
 
   write = async () => {
