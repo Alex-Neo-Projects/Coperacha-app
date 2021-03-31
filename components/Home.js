@@ -13,9 +13,6 @@ import { toTxResult } from "@celo/connect";
 import * as Linking from 'expo-linking';
 import CeloCrowdfundContract from '../contracts/CeloCrowdfund.json';
 import ProjectInstanceContract from '../contracts/ProjectInstance.json';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-
 class Home extends React.Component {
 
   // Set the defaults for the state
@@ -128,6 +125,8 @@ class Home extends React.Component {
     // Create a transaction object to update the contract
 
     /* 
+    Solidity function: 
+
       function startProject(
         string calldata title,
         string calldata description,
@@ -192,8 +191,9 @@ class Home extends React.Component {
         <Button style={{padding: 30}} title="Create Project" 
           onPress={()=> this.write()} />
 
+        <Text style={styles.title}>React navigation test</Text>
         <Button
-          title="Go to fundraiser listing"
+          title="Go to fundraiser listing page"
           onPress={() => this.props.navigation.navigate('Fundraiser')}
         />
 
@@ -205,7 +205,6 @@ class Home extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#35d07f',
     alignItems: 'center',
     justifyContent: 'center',
   },
