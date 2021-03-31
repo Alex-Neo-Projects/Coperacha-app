@@ -24,6 +24,8 @@ export default class App extends React.Component {
     phoneNumber: 'Not logged in',
     cUSDBalance: 'Not logged in',
     celoCrowdfundContract: {},
+    projectInstanceContract: {}, 
+    deployedNetwork: '',
     contractName: '',
     textInput: ''
   }
@@ -44,9 +46,10 @@ export default class App extends React.Component {
       CeloCrowdfundContract.abi,
       deployedNetwork && deployedNetwork.address
     );
-    // CeloCrowdfundContract.options.address = '0x7cAD46456Bd119D28124dfaFA2477bf65f114eEF';
+
     // Save the contract instance
     this.setState({ celoCrowdfundContract: celoCrowdFundinstance })
+    this.setState({ deployedNetwork: deployedNetwork })
   }
 
   login = async () => {
@@ -91,27 +94,30 @@ export default class App extends React.Component {
 
   read = async () => {
     var projectData = []; 
-
+ 
+    // Return results inside each individual project
     await this.state.celoCrowdfundContract.methods.returnProjects().call().then((projects) => {
-      projects.forEach((projectAddress) => {
-        // const projectInst = crowdfundProject(projectAddress);
+      projects.forEach(async (projectAddress) => {    
+        console.log("Project address: ", projectAddress);
 
-        // projectInst.methods.getDetails().call().then((projectData) => {
-        //   const projectInfo = projectData;
-        //   projectInfo.isLoading = false;
-        //   projectInfo.contract = projectInst;
-        //   this.projectData.push(projectInfo);
-        // });
+        const projectInstanceContract = new web3.eth.Contract(
+          ProjectInstanceContract.abi,
+          this.state.deployedNetwork && projectAddress
+        );
+        
+        var test = await projectInstanceContract.methods.getDetails().call();
+        console.log('Project: ', test);
+
         projectData.push(projectAddress);
       });
     });
-
+    
     console.log("Projects: ", projectData);
 
-    var arrLen = "Number of projects created: " + projectData.length;
+    // var arrLen = "Number of projects created: " + projectData.length;
 
-    // Update state
-    this.setState({ contractName: arrLen})
+    // // Update state
+    // this.setState({ contractName: arrLen})
   }
 
   write = async () => {
@@ -132,19 +138,14 @@ export default class App extends React.Component {
     */
 
     const txObject = await this.state.celoCrowdfundContract.methods.startProject('test title', 'hello, this is the first ever project', 'https://images.pexels.com/photos/708392/pexels-photo-708392.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', 5, 3);
-    
-    console.log(txObject);
-
-    const networkId = await web3.eth.net.getId();
-    console.log("Project address: ", CeloCrowdfundContract.networks[networkId].address);
-
+   
     // Send a request to the Celo wallet to send an update transaction to the HelloWorld contract
     requestTxSig(
       kit,
       [
         {
           from: this.state.address,
-          to: '0xF39eF069687c160700D5B2aCa336FE2C3711A48b',
+          to: this.state.celoCrowdfundContract._address, // interact w/ address of CeloCrowdfund contract
           tx: txObject,
           feeCurrency: FeeCurrency.cUSD
         }
@@ -159,7 +160,7 @@ export default class App extends React.Component {
     // Get the transaction result, once it has been included in the Celo blockchain
     let result = await toTxResult(kit.web3.eth.sendSignedTransaction(tx)).waitReceipt()
 
-    console.log(`Hello World contract update transaction receipt: `, result)  
+    console.log(`Project created contract update transaction receipt: `, result)  
   }
 
   onChangeText = async (text) => {
