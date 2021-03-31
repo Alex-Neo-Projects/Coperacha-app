@@ -11,6 +11,8 @@
     "@celo/connect": "^1.0.1",
     "@celo/contractkit": "^1.0.0",
     "@celo/dappkit": "^1.0.0",
+    "@react-navigation/native": "^5.9.3",
+    "@react-navigation/stack": "^5.14.3",
     "crypto-browserify": "^3.12.0",
     "expo": "^40.0.1",
     "expo-file-system": "^10.0.0",
@@ -27,7 +29,12 @@
     "stream-http": "^3.1.1",
     "url": "^0.11.0",
     "vm-browserify": "^1.1.2",
-    "web3": "^1.3.0"
+    "web3": "^1.3.0",
+    "react-native-reanimated": "~1.13.0",
+    "react-native-gesture-handler": "~1.8.0",
+    "react-native-screens": "~2.15.2",
+    "react-native-safe-area-context": "3.1.9",
+    "@react-native-community/masked-view": "0.1.10"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
