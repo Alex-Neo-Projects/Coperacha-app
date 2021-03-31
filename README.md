@@ -1,6 +1,8 @@
 # Coperacha App   
+<img src="https://user-images.githubusercontent.com/7016669/113189335-18a96080-9229-11eb-99a8-db58f03a6f94.png" width="250" height="250">
 
-A react native app for Coperacha, a crowdfunding app for you and your community built on Celo. 
+
+A react native app for Coperacha, a crowdfunding app for you and your community, built on Celo. 
 
 Smart contracts: [here](https://github.com/Alex-Neo-Projects/Coperacha-contracts)
 
