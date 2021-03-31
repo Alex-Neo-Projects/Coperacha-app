@@ -7,3 +7,5 @@ A react native app for Coperacha, a crowdfunding app for you and your community,
 Smart contracts: [here](https://github.com/Alex-Neo-Projects/Coperacha-contracts)
 
 Whimsical (mockups + design): [here](https://whimsical.com/coperacha-ExoT2t7gobgXMG3Vpv5RxD)
+
+Icon design Figma: [here](https://www.figma.com/file/tbGJBHQ2sXIGS71g7Rv4If/Coperacha-Icons?node-id=18%3A152)
