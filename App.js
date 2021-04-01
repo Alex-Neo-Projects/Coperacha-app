@@ -82,7 +82,7 @@ class App extends React.Component {
           <Tab.Screen name="Home"
             children={()=><HomeStackScreen projectData={this.state.projectData} />}
           />
-          <Tab.Screen name="Create" 
+          <Tab.Screen name="CreateListing" 
             children={()=><CreateListing celoCrowdfundContract={this.state.celoCrowdfundContract} />}
           />
           <Tab.Screen name="Manage" component={Manage} />

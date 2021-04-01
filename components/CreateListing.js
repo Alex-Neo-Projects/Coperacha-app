@@ -126,7 +126,6 @@ class CreateListing extends React.Component {
       <View style={styles.container}>
         {this.state.loggedIn ? ( 
           <View>
-            <Text style={styles.title}>You're logged in! {"\n\n\n"}</Text>
             <Text style={styles.title}>Create new Project</Text>
             <Button style={{padding: 30}} title="Create Project" 
               onPress={()=> this.write()} />
