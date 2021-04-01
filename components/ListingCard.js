@@ -2,14 +2,10 @@ import React from 'react';
 import { View, Button, Text, StyleSheet, Dimensions } from 'react-native';
 import { Card } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
-import { ListItem } from 'react-native-elements/dist/list/ListItem';
 import ProgressBar from 'react-native-progress/Bar';
 
 function ListingCard(props) {
   const navigation = useNavigation();
-
-  // console.log('PROP Data: ');
-  // console.log(props.projectData);
 
   var data = props.projectData; 
 
@@ -35,12 +31,8 @@ function ListingCard(props) {
           <Text>{projectDescription}</Text>
           <Text>${currentAmount} raised of ${projectGoalAmount}</Text>
           <ProgressBar progress={currentProgress} color='#35D07F' style={styles.progress}/>
+          <Button title={`Go to fundraiser`} style={styles.button} onPress={() => navigation.navigate('FundraiserListing', {projectData: data})}/>
         </View>
-
-        <View style={styles.button}> 
-          {/* Push to new page with args */}
-          <Button title={`Go to fundraiser`} onPress={() => navigation.navigate('Fundraiser')}/>
-        </View> 
       </Card>
   );
 }
@@ -51,10 +43,10 @@ const styles = StyleSheet.create({
     alignItems:'flex-start'
   },  
   card: {
-    height: 300,
+    height: 350,
     width: Dimensions.get('window').width - 20,
     borderWidth: 0,
-    borderRadius: 20
+    borderRadius: 20,
   }, 
   cardImage: {
     width : '100%',
@@ -67,6 +59,9 @@ const styles = StyleSheet.create({
   }, 
   progress: {
     width: 300, 
+  },
+  button: {
+    paddingBottom:50
   }
 });
 

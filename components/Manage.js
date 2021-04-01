@@ -5,6 +5,7 @@ import {
   requestAccountAddress,
   waitForAccountAuth,
 } from '@celo/dappkit';
+
 import * as Linking from 'expo-linking';
 
 class Manage extends React.Component {
@@ -68,7 +69,6 @@ class Manage extends React.Component {
         <Text>{this.state.address}</Text>
         <Text>Phone number: {this.state.phoneNumber}</Text>
         <Text>cUSD Balance: {this.state.cUSDBalance}</Text>
-
       </View>
     );
   }

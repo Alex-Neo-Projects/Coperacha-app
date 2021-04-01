@@ -11,6 +11,7 @@
     "@celo/connect": "^1.0.1",
     "@celo/contractkit": "^1.0.0",
     "@celo/dappkit": "^1.0.0",
+    "@celo/identity": "^1.1.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.11.8",
     "@react-navigation/native": "^5.9.3",
