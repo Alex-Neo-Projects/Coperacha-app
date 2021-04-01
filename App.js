@@ -22,8 +22,7 @@ function HomeStackScreen(props) {
       <HomeStack.Screen name="Home" 
         children={()=><Home projectData={props.projectData}/>}
       />
-      <HomeStack.Screen name="Fundraiser" 
-        children={()=><FundraiserListing projectData={props.projectData}/>}
+      <HomeStack.Screen name="FundraiserListing"  component={FundraiserListing}
       />
     </HomeStack.Navigator>
   );
@@ -31,6 +30,7 @@ function HomeStackScreen(props) {
 class App extends React.Component {
   state = {
     projectData: [],
+    celoCrowdfundContract: '', 
   }
 
   componentDidMount = async () => {
@@ -44,7 +44,7 @@ class App extends React.Component {
     console.log("Deployed network: ", deployedNetwork);
 
     // Create a new contract instance with the Project contract info
-    const celoCrowdFundinstance = new web3.eth.Contract(
+    const celoCrowdfundContract = new web3.eth.Contract(
       CeloCrowdfundContract.abi,
       deployedNetwork && deployedNetwork.address
     );
@@ -52,7 +52,7 @@ class App extends React.Component {
     var projectData = []; 
  
     // Return results inside each individual project
-    var result = await celoCrowdFundinstance.methods.returnProjects().call();
+    var result = await celoCrowdfundContract.methods.returnProjects().call();
   
     /* Note: For some reason using forEach is asynchronous, but for...of  
        maintains the synchronous results of using await. 
@@ -69,6 +69,7 @@ class App extends React.Component {
     }
 
     this.setState({ projectData: projectData })
+    this.setState({ celoCrowdfundContract: celoCrowdfundContract })
   }
 
   render() {
@@ -78,7 +79,9 @@ class App extends React.Component {
           <Tab.Screen name="Home"
             children={()=><HomeStackScreen projectData={this.state.projectData} />}
           />
-          <Tab.Screen name="Create" component={CreateListing}/>
+          <Tab.Screen name="Create" 
+            children={()=><CreateListing celoCrowdfundContract={this.state.celoCrowdfundContract} />}
+          />
           <Tab.Screen name="Manage" component={Manage} />
         </Tab.Navigator>
       </NavigationContainer>

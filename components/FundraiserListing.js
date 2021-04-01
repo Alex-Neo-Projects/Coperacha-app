@@ -4,12 +4,16 @@ import ProgressBar from 'react-native-progress/Bar';
 
 function FundraiserListing(props) {
   
-  var title = props.projectData[0]['projectTitle'];
-  var image = props.projectData[0]['projectImageLink'];
-  var goal = props.projectData[0]['projectGoalAmount'];
-  var description = props.projectData[0]['projectDescription'];
-  var currentAmount = props.projectData[0]['currentAmount'];
-  var fundRaisingDeadline = props.projectData[0]['fundRaisingDeadline'];
+  // Param for project data passed by ListingCard line: 
+  // navigation.navigate('FundraiserListing', {projectData: data})}
+  var data = props.route.params.projectData;
+
+  var title = data['projectTitle'];
+  var image = data['projectImageLink'];
+  var goal = data['projectGoalAmount'];
+  var description = data['projectDescription'];
+  var currentAmount = data['currentAmount'];
+  var fundRaisingDeadline = data['fundRaisingDeadline'];
   
   var progress = currentAmount / goal;
   let imageURL ={ uri: image};

@@ -1,7 +1,6 @@
 import React from 'react'
 import '../global'
 import { StyleSheet, View, Button } from 'react-native';
-import FundraiserListing from './FundraiserListing';
 import ListingCard from './ListingCard';
 import { ScrollView, RefreshControl } from 'react-native-gesture-handler';
 
@@ -15,10 +14,6 @@ function Home(props) {
         {projectData.map((project, i) => {
           return <ListingCard key={i} projectData={project}/>
         })}
-        {/* <Button
-          title={`Go to fundraiser page`}
-          onPress={() => navigation.navigate('Fundraiser')}
-        /> */}
       </View>
     </ScrollView>
   );

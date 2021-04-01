@@ -5,15 +5,15 @@ import {
   requestAccountAddress,
   waitForAccountAuth,
 } from '@celo/dappkit';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Linking from 'expo-linking';
 
 class Manage extends React.Component {
   // Set the defaults for the state
   state = {
     address: 'Not logged in',
-    phoneNumber: 'Not logged in',
-    cUSDBalance: 'Not logged in',
-    contractName: '',
+    balance: 'Not logged in',
+    loggedIn: false,
   }
 
   login = async () => {
@@ -48,27 +48,55 @@ class Manage extends React.Component {
     // Convert from a big number to a string
     let cUSDBalance = cUSDBalanceBig.toString();
     
-    // Update state
-    this.setState({ cUSDBalance, 
-                    isLoadingBalance: false,
-                    address: dappkitResponse.address, 
-                    phoneNumber: dappkitResponse.phoneNumber })
+    const storeData = async (value) => {
+      try {
+        await AsyncStorage.setItem('@userAddress', dappkitResponse.address);
+        await AsyncStorage.setItem('@userBalance', cUSDBalance);
+        console.log("Saved address");
+      } catch (e) {
+        // saving error
+      }
+    }
+
+    storeData();
   }
 
   render(){
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('@userAddress')
+        const userBalance = await AsyncStorage.getItem('@userBalance')
+        if(value !== null) {
+          this.setState({address: value, balance: userBalance, loggedIn: true}); 
+        }
+        else {
+          console.log('User not logged in');
+        }
+      } catch(e) {
+        // error reading value
+        console.log("Error: ", e);
+      }
+    }
+    getData()
+
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Login</Text>
-        <Button title="Login" 
-          onPress={()=> this.login()} />
 
-        <Text style={styles.title}>Account Info:</Text>
+        {this.state.loggedIn ? ( 
+          <View>
+            <Text style={styles.title}>Account Info:</Text>
 
-        <Text>Current Account Address:</Text>
-        <Text>{this.state.address}</Text>
-        <Text>Phone number: {this.state.phoneNumber}</Text>
-        <Text>cUSD Balance: {this.state.cUSDBalance}</Text>
-
+            <Text>Current Account Address:</Text>
+            <Text>{this.state.address}</Text>
+            <Text>cUSD Balance: {this.state.balance}</Text>
+          </View>
+        ) : (
+          <View>
+            <Text style={styles.title}>Login</Text>
+            <Button title="Login" 
+              onPress={()=> this.login()} />
+          </View>
+        )}
       </View>
     );
   }
