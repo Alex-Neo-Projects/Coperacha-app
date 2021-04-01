@@ -23,8 +23,11 @@ function HomeStackScreen(props) {
     <HomeStack.Navigator>
       <HomeStack.Screen name="Home" 
         children={()=><Home projectData={props.projectData}/>}
+        options={{ headerShown: false }}
       />
-      <HomeStack.Screen name="FundraiserListing"  component={FundraiserListing}
+      <HomeStack.Screen name="FundraiserListing"  
+        component={FundraiserListing}
+        options={{ headerShown: false }}
       />
     </HomeStack.Navigator>
   );
@@ -70,7 +73,8 @@ class App extends React.Component {
       });
     }
 
-    this.setState({ projectData: projectData })
+    // Current sort: Most recently created first
+    this.setState({ projectData: projectData.reverse() })
     this.setState({ celoCrowdfundContract: celoCrowdfundContract })
   }
 

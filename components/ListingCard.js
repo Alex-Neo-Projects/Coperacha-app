@@ -32,9 +32,11 @@ function ListingCard(props) {
 
         <View style={styles.view}>
           <Card.Title style={styles.title}>{projectTitle}</Card.Title>
-          <Text>By {projectCreator} {"\n"}</Text>
+          
+          <Text>By: {projectCreator} {"\n"}</Text>
           <Text>{projectDescription} {"\n"}</Text>
-          <Text>${currentAmount} raised of ${projectGoalAmount}</Text>
+
+          <Text style={styles.boldText}>${currentAmount} raised of ${projectGoalAmount}</Text>
           <ProgressBar progress={currentProgress} color='#35D07F' style={styles.progress}/>
         </View>
       </Card>
@@ -61,12 +63,17 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30, 
+    fontWeight: 'bold',
+    color: "black"
   }, 
   progress: {
-    width: 300, 
+    width: '100%', 
+    marginBottom: 10,
   },
-  button: {
-    paddingBottom:50
+  boldText: {
+    fontWeight: 'bold',
+    paddingBottom: 5,
+    color: "black"
   }
 });
 
