@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet, Button } from 'react-native';
-import { web3, kit } from '../root'
+import { kit } from '../root'
 import {   
   requestTxSig,
   waitForSignedTxs,
@@ -10,14 +10,15 @@ import {
 } from '@celo/dappkit';
 import { toTxResult } from "@celo/connect";
 import * as Linking from 'expo-linking';
-import Manage from './Manage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 class CreateListing extends React.Component {
 
   state = {
     address: 'Not logged in',
-    phoneNumber: 'Not logged in',
-    cUSDBalance: 'Not logged in',
+    balance: 'Not logged in',
     contractName: '',
+    loggedIn: false
   }
 
   login = async () => {
@@ -55,8 +56,7 @@ class CreateListing extends React.Component {
     // Update state
     this.setState({ cUSDBalance, 
                     isLoadingBalance: false,
-                    address: dappkitResponse.address, 
-                    phoneNumber: dappkitResponse.phoneNumber })
+                    address: dappkitResponse.address})
   }
   write = async () => {
     const requestId = 'update_projects'
@@ -104,25 +104,40 @@ class CreateListing extends React.Component {
   }
 
   render() {
-    
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('@userAddress')
+        const userBalance = await AsyncStorage.getItem('@userBalance');
+
+        if(value !== null) {
+          this.setState({address: value, balance: userBalance, loggedIn: true}); 
+        }
+        else {
+          console.log('User not logged in');
+        }
+      } catch(e) {
+        // error reading value
+        console.log("Error: ", e);
+      }
+    }
+    getData()
+
     return (
       <View style={styles.container}>
-
-        <Text style={styles.title}>Login</Text>
-        <Button title="Login" 
-          onPress={()=> this.login()} />
-
-        <Text style={styles.title}>Account Info:</Text>
-
-        <Text>Current Account Address:</Text>
-        <Text>{this.state.address}</Text>
-        <Text>Phone number: {this.state.phoneNumber}</Text>
-        <Text>cUSD Balance: {this.state.cUSDBalance}</Text>
-
-        <Text style={styles.title}>Create new Project</Text>
-          <Button style={{padding: 30}} title="Create Project" 
-            onPress={()=> this.write()} />
-        
+        {this.state.loggedIn ? ( 
+          <View>
+            <Text style={styles.title}>You're logged in! {"\n\n\n"}</Text>
+            <Text style={styles.title}>Create new Project</Text>
+            <Button style={{padding: 30}} title="Create Project" 
+              onPress={()=> this.write()} />
+          </View>
+        ) : (
+          <View>
+            <Text style={styles.title}>Login</Text>
+            <Button title="Login" 
+              onPress={()=> this.login()} />
+          </View>
+        )}
       </View>
     );
   }
