@@ -2,6 +2,7 @@ import React from 'react'
 import Home from './components/Home';
 import { web3 } from './root'
 import 'react-native-gesture-handler';
+import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -75,6 +76,8 @@ class App extends React.Component {
   render() {
     return (
       <NavigationContainer>
+        <StatusBar  barStyle="dark-content" />
+
         <Tab.Navigator>
           <Tab.Screen name="Home"
             children={()=><HomeStackScreen projectData={this.state.projectData} />}

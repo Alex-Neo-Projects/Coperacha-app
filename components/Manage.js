@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, Image } from 'react-native';
 import { kit } from '../root'
 import {   
   requestAccountAddress,
@@ -84,11 +84,14 @@ class Manage extends React.Component {
 
         {this.state.loggedIn ? ( 
           <View>
-            <Text style={styles.title}>Account Info:</Text>
+            <Text style={styles.bigText}>My Fundraisers{"\n"}</Text>
 
-            <Text>Current Account Address:</Text>
-            <Text>{this.state.address}</Text>
-            <Text>cUSD Balance: {this.state.balance}</Text>
+            <Text style={styles.title}>You have no fundraisers yet</Text>
+            <Text>Create a fundraiser below or browse existing fundraisers</Text>
+            
+            <Image style={styles.Image} source={require("../assets/nurture.png")}></Image>
+
+            <Button title="New Fundraiser"></Button>
           </View>
         ) : (
           <View>
@@ -109,10 +112,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    marginVertical: 8, 
+    marginVertical: 30, 
     fontSize: 20, 
     fontWeight: 'bold'
-  }
+  },
+  bigText: { 
+    paddingTop: 40,
+    fontSize: 35, 
+    fontWeight: 'bold'
+  },
+  Image: {
+    flex: 1,
+    width: 250,
+    height: 250,
+    marginLeft: 50,
+    resizeMode: 'contain'
+  },
 });
 
 export default Manage;
