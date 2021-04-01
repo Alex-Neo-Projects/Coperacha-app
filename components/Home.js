@@ -12,8 +12,8 @@ function Home(props) {
   return (
     <ScrollView> 
       <View style={styles.container}>
-        {projectData.map((project) => {
-          return <ListingCard projectData={project}/>
+        {projectData.map((project, i) => {
+          return <ListingCard key={i} projectData={project}/>
         })}
         {/* <Button
           title={`Go to fundraiser page`}
