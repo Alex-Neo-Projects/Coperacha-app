@@ -11,6 +11,7 @@ import CreateListing from './components/CreateListing';
 import Manage from './components/Manage'; 
 import CeloCrowdfundContract from './contracts/CeloCrowdfund.json';
 import ProjectInstanceContract from './contracts/ProjectInstance.json';
+import { Ionicons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
@@ -78,11 +79,42 @@ class App extends React.Component {
       <NavigationContainer>
         <StatusBar  barStyle="dark-content" />
 
-        <Tab.Navigator>
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+  
+              if (route.name === 'Home') {
+                iconName = focused
+                  ? 'home'
+                  : 'home-outline';
+              } else if (route.name === 'Create') {
+                iconName = focused 
+                  ? 'add-circle'
+                  : 'add-circle-outline';
+              }
+              else if (route.name === 'Manage') {
+                iconName = focused 
+                  ? 'cog-outline'
+                  : 'cog-outline';
+              }
+              // } else if (route.name === 'Settings') {
+              //   iconName = focused ? 'ios-list-box' : 'ios-list';
+              // }
+  
+              // You can return any component that you like here!
+              return <Ionicons name={iconName} size={size} color={color} />;
+            },
+          })}
+          tabBarOptions={{
+            activeTintColor: '#35D07F',
+            inactiveTintColor: 'gray',
+          }}
+        > 
           <Tab.Screen name="Home"
             children={()=><HomeStackScreen projectData={this.state.projectData} />}
           />
-          <Tab.Screen name="CreateListing" 
+          <Tab.Screen name="Create" 
             children={()=><CreateListing celoCrowdfundContract={this.state.celoCrowdfundContract} />}
           />
           <Tab.Screen name="Manage" component={Manage} />

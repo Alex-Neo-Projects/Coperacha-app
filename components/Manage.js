@@ -93,11 +93,11 @@ function Manage() {
           
           <Image style={styles.Image} source={require("../assets/nurture.png")}></Image>
 
-          <Button title="New Fundraiser" onPress={() => navigation.navigate('CreateListing')}></Button>
+          <Button title="New Fundraiser" onPress={() => navigation.navigate('Create')}></Button>
         </View>
       ) : (
         <View>
-          <Text style={styles.title}>Login</Text>
+          <Text style={styles.title}>Login to view your fundraisers</Text>
           <Button title="Login" 
             onPress={()=> login()} />
         </View>

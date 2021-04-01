@@ -132,7 +132,7 @@ class CreateListing extends React.Component {
           </View>
         ) : (
           <View>
-            <Text style={styles.title}>Login</Text>
+            <Text style={styles.title}>Login to create a fundraiser</Text>
             <Button title="Login" 
               onPress={()=> this.login()} />
           </View>
