@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Button, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Button, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { Card } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import ProgressBar from 'react-native-progress/Bar';
@@ -19,21 +19,27 @@ function ListingCard(props) {
   var projectImageLink = data.projectImageLink;
   var projectTitle = data.projectTitle; 
 
-  var currentProgress = currentAmount/projectGoalAmount; 
+  var currentProgress = currentAmount / projectGoalAmount; 
 
   return (
+    <TouchableOpacity 
+      onPress={() => navigation.navigate('FundraiserListing', {projectData: data})}
+      activeOpacity={0.8}
+      // Tweak so cards don't get opaque on scroll
+      delayPressIn={50}>         
       <Card containerStyle={styles.card}>
         <Card.Image source ={{uri: projectImageLink}} style={styles.cardImage}/> 
 
         <View style={styles.view}>
           <Card.Title style={styles.title}>{projectTitle}</Card.Title>
-          <Text>Created by {projectCreator}</Text>
-          <Text>{projectDescription}</Text>
+          <Text>By {projectCreator} {"\n"}</Text>
+          <Text>{projectDescription} {"\n"}</Text>
           <Text>${currentAmount} raised of ${projectGoalAmount}</Text>
           <ProgressBar progress={currentProgress} color='#35D07F' style={styles.progress}/>
-          <Button title={`Go to fundraiser`} style={styles.button} onPress={() => navigation.navigate('FundraiserListing', {projectData: data})}/>
         </View>
       </Card>
+    </TouchableOpacity>
+
   );
 }
 
@@ -46,16 +52,15 @@ const styles = StyleSheet.create({
     height: 350,
     width: Dimensions.get('window').width - 20,
     borderWidth: 0,
-    borderRadius: 20,
+    borderRadius: 10,
   }, 
   cardImage: {
     width : '100%',
-    borderTopLeftRadius: 20, 
-    borderTopRightRadius: 20
+    borderTopLeftRadius: 10, 
+    borderTopRightRadius: 10
   },
   title: {
     fontSize: 30, 
-    marginBottom: 10
   }, 
   progress: {
     width: 300, 
