@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { View, Text, Button, StyleSheet } from 'react-native';
 
-function LogOut() {
-  const [address, setAddress] = useState('not logged in');
-
-  const logOut = async () => {
-
+function LogOut(props) {
+  
+  // Passed from App.js since it needs to modify the loggedIn state in App.js 
+  logOut = () => {
+    props.handleLogOut()
   }
+
   return(
     <View>
       <Text style={styles.title}>Log out</Text>

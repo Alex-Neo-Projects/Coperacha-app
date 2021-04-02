@@ -7,7 +7,7 @@ import LogOut from '../components/LogOut';
 function Manage(props) {
   // Set the defaults for the state
   const navigation = useNavigation();
-  
+  // console.log(props);
   return (
     <View style={styles.container}>
       {props.loggedIn ? ( 
@@ -22,11 +22,11 @@ function Manage(props) {
           <Button title="New Fundraiser" onPress={() => navigation.navigate('Create')}></Button>
           
           <Text>{"\n"}</Text>
-          <LogOut />
+          <LogOut handleLogOut={props.handleLogOut}/>
         </View>
       ) : (
         <View>
-          <LogIn reason={"to view your fundraisers"}/>
+          <LogIn reason={"to view your fundraisers"} handleLogIn={props.handleLogIn}/>
         </View>
       )}
     </View>

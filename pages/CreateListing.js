@@ -10,7 +10,6 @@ import {
 import { toTxResult } from "@celo/connect";
 import * as Linking from 'expo-linking';
 import LogIn from '../components/LogIn';
-import LogOut from '../components/LogOut';
 
 function CreateListing(props) {
   const navigation = useNavigation();
@@ -56,6 +55,7 @@ function CreateListing(props) {
     console.log(`Project created contract update transaction receipt: `, result)  
   }
 
+  console.log(props.handleLogIn);
   return (
     <View style={styles.container}>
       {props.loggedIn ? ( 
@@ -65,13 +65,10 @@ function CreateListing(props) {
             onPress={()=> write()} />
 
           <Button title = "Submit" onPress={()=> navigation.navigate('CreateReceipt')} />
-
-          <Text>{"\n"}</Text>
-          <LogOut />
         </View>
       ) : (
         <View>
-          <LogIn reason={"to create a fundraiser"} />
+          <LogIn reason={"to create a fundraiser"} handleLogIn={props.handleLogIn}/>
         </View>
       )}
     </View>
