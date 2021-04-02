@@ -30,9 +30,6 @@ function FundraiserListing(props) {
         <ProgressBar progress={progress} width={400} color={'#35D07F'} style={{marginBottom:10}}/>
         
         <Text style={styles.regularText}>{description}{"\n"}</Text>
-
-        <Text style={styles.title}>Donations</Text>
-        <Text style={styles.regularText}>TODO{"\n"}</Text>
         
         <Button title={"Donate"}
           onPress={() => navigation.navigate('DonationForm')}></Button>

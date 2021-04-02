@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, Button } from 'react-native';
-import { kit } from '../root'
+import { kit } from '../root';
+import { useNavigation } from '@react-navigation/native';
 import {   
   requestTxSig,
   waitForSignedTxs,
@@ -12,16 +13,15 @@ import { toTxResult } from "@celo/connect";
 import * as Linking from 'expo-linking';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-class CreateListing extends React.Component {
+function CreateListing(props) {
+  const navigation = useNavigation();
 
-  state = {
-    address: 'Not logged in',
-    balance: 'Not logged in',
-    contractName: '',
-    loggedIn: false
-  }
+  const [address, setAddress] = useState('Not logged in');
+  const [balance, setBalance] = useState('Not logged in');
+  const [loggedIn, setLoggedIn] = useState(false);
 
-  login = async () => {
+
+  const login = async () => {
     // A string you can pass to DAppKit, that you can use to listen to the response for that request
     const requestId = 'login';
     
@@ -53,12 +53,10 @@ class CreateListing extends React.Component {
     // Convert from a big number to a string
     let cUSDBalance = cUSDBalanceBig.toString();
     
-    // Update state
-    this.setState({ cUSDBalance, 
-                    isLoadingBalance: false,
-                    address: dappkitResponse.address})
+    setAddress(dappkitResponse.address);
+
   }
-  write = async () => {
+  const write = async () => {
     const requestId = 'update_projects'
     const dappName = 'Coperacha'
     const callback = Linking.makeUrl('/my/path')
@@ -77,15 +75,15 @@ class CreateListing extends React.Component {
       )
     */
 
-    const txObject = await this.props.celoCrowdfundContract.methods.startProject('Building a new road', 'We need a new road to connect the two sides of town. We are asking for $900 cUSD in order to build this road. ', 'https://i.imgur.com/elTnbFf.png', 5, 900);
+    const txObject = await props.celoCrowdfundContract.methods.startProject('Building a new road', 'We need a new road to connect the two sides of town. We are asking for $900 cUSD in order to build this road. ', 'https://i.imgur.com/elTnbFf.png', 5, 900);
     
     // Send a request to the Celo wallet to send an update transaction to the HelloWorld contract
     requestTxSig(
       kit,
       [
         {
-          from: this.state.address,
-          to: this.props.celoCrowdfundContract._address, // interact w/ address of CeloCrowdfund contract
+          from: address,
+          to: props.celoCrowdfundContract._address, // interact w/ address of CeloCrowdfund contract
           tx: txObject,
           feeCurrency: FeeCurrency.cUSD
         }
@@ -103,43 +101,45 @@ class CreateListing extends React.Component {
     console.log(`Project created contract update transaction receipt: `, result)  
   }
 
-  render() {
-    const getData = async () => {
-      try {
-        const value = await AsyncStorage.getItem('@userAddress')
-        const userBalance = await AsyncStorage.getItem('@userBalance');
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@userAddress')
+      const userBalance = await AsyncStorage.getItem('@userBalance');
 
-        if(value !== null) {
-          this.setState({address: value, balance: userBalance, loggedIn: true}); 
-        }
-        else {
-          console.log('User not logged in');
-        }
-      } catch(e) {
-        // error reading value
-        console.log("Error: ", e);
+      if(value !== null) {
+        setAddress(value);
+        setBalance(userBalance);
+        setLoggedIn(true);
       }
+      else {
+        console.log('User not logged in');
+      }
+    } catch(e) {
+      // error reading value
+      console.log("Error: ", e);
     }
-    getData()
-
-    return (
-      <View style={styles.container}>
-        {this.state.loggedIn ? ( 
-          <View>
-            <Text style={styles.title}>Create new Project</Text>
-            <Button style={{padding: 30}} title="Create Project" 
-              onPress={()=> this.write()} />
-          </View>
-        ) : (
-          <View>
-            <Text style={styles.title}>Login to create a fundraiser</Text>
-            <Button title="Login" 
-              onPress={()=> this.login()} />
-          </View>
-        )}
-      </View>
-    );
   }
+  getData()
+
+  return (
+    <View style={styles.container}>
+      {loggedIn ? ( 
+        <View>
+          <Text style={styles.title}>Create new Project</Text>
+          <Button style={{padding: 30}} title="Create Project" 
+            onPress={()=> write()} />
+
+          <Button title = "Submit" onPress={()=> navigation.navigate('CreateReceipt')} />
+        </View>
+      ) : (
+        <View>
+          <Text style={styles.title}>Login to create a fundraiser</Text>
+          <Button title="Login" 
+            onPress={()=> login()} />
+        </View>
+      )}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

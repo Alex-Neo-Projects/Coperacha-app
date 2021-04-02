@@ -1,24 +1,24 @@
 import React from 'react'
-import Home from './components/Home';
+import Home from './pages/Home';
 import { web3 } from './root'
 import 'react-native-gesture-handler';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import FundraiserListing from './components/FundraiserListing';
-import CreateListing from './components/CreateListing'; 
-import Manage from './components/Manage'; 
+import FundraiserListing from './pages/FundraiserListing';
+import CreateListing from './pages/CreateListing'; 
+import Manage from './pages/Manage'; 
 import CeloCrowdfundContract from './contracts/CeloCrowdfund.json';
 import ProjectInstanceContract from './contracts/ProjectInstance.json';
 import { Ionicons } from '@expo/vector-icons';
-import DonationReceipt from './components/DonationReceipt';
-import DonationForm from './components/DonationForm'; 
+import DonationReceipt from './pages/DonationReceipt';
+import DonationForm from './pages/DonationForm'; 
+import CreateReceipt from './pages/CreateReceipt';
 
 const Tab = createBottomTabNavigator();
 
 const HomeStack = createStackNavigator();
-
 
 function HomeStackScreen(props) {
   return (
@@ -35,8 +35,24 @@ function HomeStackScreen(props) {
         component={DonationReceipt}
         options={{ headerShown: false }}
       />
-       <HomeStack.Screen name="DonationForm"  
+      <HomeStack.Screen name="DonationForm"  
         component={DonationForm}
+        options={{ headerShown: false }}
+      />
+  
+    </HomeStack.Navigator>
+  );
+}
+
+function CreateStackScreen(props) {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen name="Create" 
+        children={()=><CreateListing projectData={props.projectData}/>}
+        options={{ headerShown: false }}
+      />
+      <HomeStack.Screen name="CreateReceipt"  
+        component={CreateReceipt}
         options={{ headerShown: false }}
       />
     </HomeStack.Navigator>
@@ -129,7 +145,7 @@ class App extends React.Component {
             children={()=><HomeStackScreen projectData={this.state.projectData} />}
           />
           <Tab.Screen name="Create" 
-            children={()=><CreateListing celoCrowdfundContract={this.state.celoCrowdfundContract} />}
+            children={()=><CreateStackScreen projectData={this.state.projectData} />}
           />
           <Tab.Screen name="Manage" component={Manage} />
         </Tab.Navigator>
