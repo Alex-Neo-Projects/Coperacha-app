@@ -15,6 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import DonationReceipt from './pages/DonationReceipt';
 import DonationForm from './pages/DonationForm'; 
 import CreateReceipt from './pages/CreateReceipt';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 
@@ -47,9 +48,13 @@ function HomeStackScreen(props) {
 function CreateStackScreen(props) {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="Create" 
-        children={()=><CreateListing projectData={props.projectData}/>}
-        options={{ headerShown: false }}
+      <HomeStack.Screen name="Create"
+        children={()=>
+          <CreateListing 
+            loggedIn={props.loggedIn}
+            address={props.address}
+            celoCrowdfundContract={props.celoCrowdfundContract}
+            options={{ headerShown: false }}/>}
       />
       <HomeStack.Screen name="CreateReceipt"  
         component={CreateReceipt}
@@ -62,10 +67,12 @@ class App extends React.Component {
   state = {
     projectData: [],
     celoCrowdfundContract: '', 
+    address: 'Not logged in', 
+    balance: 'Not logged in', 
+    loggedIn: false
   }
 
   componentDidMount = async () => {
-    
     // Check the Celo network ID
     const networkId = await web3.eth.net.getId();
     console.log("NETWORK ID: ", networkId);
@@ -102,6 +109,25 @@ class App extends React.Component {
     // Current sort: Most recently created first
     this.setState({ projectData: projectData.reverse() })
     this.setState({ celoCrowdfundContract: celoCrowdfundContract })
+
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('@userAddress')
+        const userBalance = await AsyncStorage.getItem('@userBalance');
+  
+        if(value !== null) {
+          this.setState({ address: value, balance: userBalance, loggedIn: true })
+          console.log("user logged in");
+        }
+        else {
+          console.log('User not logged in');
+        }
+      } catch(e) {
+        // error reading value
+        console.log("Error: ", e);
+      }
+    }
+    getData()
   }
 
   render() {
@@ -128,9 +154,6 @@ class App extends React.Component {
                   ? 'cog-outline'
                   : 'cog-outline';
               }
-              // } else if (route.name === 'Settings') {
-              //   iconName = focused ? 'ios-list-box' : 'ios-list';
-              // }
   
               // You can return any component that you like here!
               return <Ionicons name={iconName} size={size} color={color} />;
@@ -142,12 +165,22 @@ class App extends React.Component {
           }}
         > 
           <Tab.Screen name="Home"
-            children={()=><HomeStackScreen projectData={this.state.projectData} />}
+            children={()=><HomeStackScreen 
+              projectData={this.state.projectData} 
+              loggedIn={this.state.loggedIn}/>}
           />
           <Tab.Screen name="Create" 
-            children={()=><CreateStackScreen projectData={this.state.projectData} />}
+            children={()=><CreateStackScreen 
+              loggedIn={this.state.loggedIn}
+              address={this.state.address}
+              celoCrowdfundContract={this.state.celoCrowdfundContract}
+            />}
           />
-          <Tab.Screen name="Manage" component={Manage} />
+          <Tab.Screen name="Manage"
+            children={()=><Manage  
+              projectData={this.state.projectData} 
+              loggedIn={this.state.loggedIn}/>}
+          />
         </Tab.Navigator>
       </NavigationContainer>
     );
