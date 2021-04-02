@@ -1,7 +1,9 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, Button } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 function DonationReceipt() {
+  const navigation = useNavigation();
   return (
     <View>
       <Text style={styles.bigText}>Thank you for donating! {"\n\n"}</Text>
@@ -9,6 +11,9 @@ function DonationReceipt() {
       <Text style={styles.title}>"Building a new road"</Text>
           
       <Image style={styles.Image} source={require("../assets/give.png")}></Image>
+
+      <Button title={"Home"}
+          onPress={() => navigation.navigate('Home')}></Button>
     </View>
   );
 }
@@ -23,6 +28,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20, 
     textAlign: 'center', 
+  },
+  Image: {
+    // flex: 1,
+    width: 250,
+    height: 250,
+    marginLeft: 50,
+    resizeMode: 'contain'
   }
 });
 
