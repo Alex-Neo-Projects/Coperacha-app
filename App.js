@@ -1,28 +1,59 @@
 import React from 'react'
-import Home from './components/Home';
+import Home from './pages/Home';
 import { web3 } from './root'
 import 'react-native-gesture-handler';
+import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import FundraiserListing from './components/FundraiserListing';
-import CreateListing from './components/CreateListing'; 
-import Manage from './components/Manage'; 
+import FundraiserListing from './pages/FundraiserListing';
+import CreateListing from './pages/CreateListing'; 
+import Manage from './pages/Manage'; 
 import CeloCrowdfundContract from './contracts/CeloCrowdfund.json';
 import ProjectInstanceContract from './contracts/ProjectInstance.json';
+import { Ionicons } from '@expo/vector-icons';
+import DonationReceipt from './pages/DonationReceipt';
+import DonationForm from './pages/DonationForm'; 
+import CreateReceipt from './pages/CreateReceipt';
 
 const Tab = createBottomTabNavigator();
 
 const HomeStack = createStackNavigator();
-
 
 function HomeStackScreen(props) {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen name="Home" 
         children={()=><Home projectData={props.projectData}/>}
+        options={{ headerShown: false }}
       />
-      <HomeStack.Screen name="FundraiserListing"  component={FundraiserListing}
+      <HomeStack.Screen name="FundraiserListing"  
+        component={FundraiserListing}
+        options={{ headerShown: false }}
+      />
+      <HomeStack.Screen name="DonationReceipt"  
+        component={DonationReceipt}
+        options={{ headerShown: false }}
+      />
+      <HomeStack.Screen name="DonationForm"  
+        component={DonationForm}
+        options={{ headerShown: false }}
+      />
+  
+    </HomeStack.Navigator>
+  );
+}
+
+function CreateStackScreen(props) {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen name="Create" 
+        children={()=><CreateListing projectData={props.projectData}/>}
+        options={{ headerShown: false }}
+      />
+      <HomeStack.Screen name="CreateReceipt"  
+        component={CreateReceipt}
+        options={{ headerShown: false }}
       />
     </HomeStack.Navigator>
   );
@@ -68,19 +99,53 @@ class App extends React.Component {
       });
     }
 
-    this.setState({ projectData: projectData })
+    // Current sort: Most recently created first
+    this.setState({ projectData: projectData.reverse() })
     this.setState({ celoCrowdfundContract: celoCrowdfundContract })
   }
 
   render() {
     return (
       <NavigationContainer>
-        <Tab.Navigator>
+        <StatusBar  barStyle="dark-content" />
+
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+  
+              if (route.name === 'Home') {
+                iconName = focused
+                  ? 'home'
+                  : 'home-outline';
+              } else if (route.name === 'Create') {
+                iconName = focused 
+                  ? 'add-circle'
+                  : 'add-circle-outline';
+              }
+              else if (route.name === 'Manage') {
+                iconName = focused 
+                  ? 'cog-outline'
+                  : 'cog-outline';
+              }
+              // } else if (route.name === 'Settings') {
+              //   iconName = focused ? 'ios-list-box' : 'ios-list';
+              // }
+  
+              // You can return any component that you like here!
+              return <Ionicons name={iconName} size={size} color={color} />;
+            },
+          })}
+          tabBarOptions={{
+            activeTintColor: '#35D07F',
+            inactiveTintColor: 'gray',
+          }}
+        > 
           <Tab.Screen name="Home"
             children={()=><HomeStackScreen projectData={this.state.projectData} />}
           />
           <Tab.Screen name="Create" 
-            children={()=><CreateListing celoCrowdfundContract={this.state.celoCrowdfundContract} />}
+            children={()=><CreateStackScreen projectData={this.state.projectData} />}
           />
           <Tab.Screen name="Manage" component={Manage} />
         </Tab.Navigator>

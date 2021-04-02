@@ -40,7 +40,8 @@
     "stream-http": "^3.1.1",
     "url": "^0.11.0",
     "vm-browserify": "^1.1.2",
-    "web3": "^1.3.0"
+    "web3": "^1.3.0",
+    "undefined": "@expo/vector-icons/Ionicons"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

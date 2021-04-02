@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, Text, StyleSheet, Button } from 'react-native';
+import React, {useState} from 'react'
+import { View, Text, StyleSheet, Button, Image } from 'react-native';
 import { kit } from '../root'
 import {   
   requestAccountAddress,
@@ -7,16 +7,17 @@ import {
 } from '@celo/dappkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Linking from 'expo-linking';
+import { useNavigation } from '@react-navigation/native';
 
-class Manage extends React.Component {
+function Manage() {
   // Set the defaults for the state
-  state = {
-    address: 'Not logged in',
-    balance: 'Not logged in',
-    loggedIn: false,
-  }
+  const [address, setAddress] = useState('Not logged in');
+  const [balance, setBalance] = useState('Not logged in');
+  const [loggedIn, setLoggedIn] = useState(false);
 
-  login = async () => {
+  const navigation = useNavigation();
+
+  const login = async () => {
     // A string you can pass to DAppKit, that you can use to listen to the response for that request
     const requestId = 'login';
     
@@ -61,45 +62,48 @@ class Manage extends React.Component {
     storeData();
   }
 
-  render(){
-    const getData = async () => {
-      try {
-        const value = await AsyncStorage.getItem('@userAddress')
-        const userBalance = await AsyncStorage.getItem('@userBalance')
-        if(value !== null) {
-          this.setState({address: value, balance: userBalance, loggedIn: true}); 
-        }
-        else {
-          console.log('User not logged in');
-        }
-      } catch(e) {
-        // error reading value
-        console.log("Error: ", e);
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@userAddress')
+      const userBalance = await AsyncStorage.getItem('@userBalance')
+      if(value !== null) {
+        setLoggedIn(true);
+        setAddress(value);
+        setBalance(userBalance);
       }
+      else {
+        console.log('User not logged in');
+      }
+    } catch(e) {
+      // error reading value
+      console.log("Error: ", e);
     }
-    getData()
-
-    return (
-      <View style={styles.container}>
-
-        {this.state.loggedIn ? ( 
-          <View>
-            <Text style={styles.title}>Account Info:</Text>
-
-            <Text>Current Account Address:</Text>
-            <Text>{this.state.address}</Text>
-            <Text>cUSD Balance: {this.state.balance}</Text>
-          </View>
-        ) : (
-          <View>
-            <Text style={styles.title}>Login</Text>
-            <Button title="Login" 
-              onPress={()=> this.login()} />
-          </View>
-        )}
-      </View>
-    );
   }
+  getData()
+
+
+  return (
+    <View style={styles.container}>
+      {loggedIn ? ( 
+        <View>
+          <Text style={styles.bigText}>My Fundraisers{"\n"}</Text>
+
+          <Text style={styles.title}>You have no active fundraisers</Text>
+          <Text>Create a fundraiser below or browse existing fundraisers</Text>
+          
+          <Image style={styles.Image} source={require("../assets/nurture.png")}></Image>
+
+          <Button title="New Fundraiser" onPress={() => navigation.navigate('Create')}></Button>
+        </View>
+      ) : (
+        <View>
+          <Text style={styles.title}>Login to view your fundraisers</Text>
+          <Button title="Login" 
+            onPress={()=> login()} />
+        </View>
+      )}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -109,10 +113,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    marginVertical: 8, 
+    marginVertical: 30, 
     fontSize: 20, 
     fontWeight: 'bold'
-  }
+  },
+  bigText: { 
+    paddingTop: 40,
+    fontSize: 35, 
+    fontWeight: 'bold'
+  },
+  Image: {
+    flex: 1,
+    width: 250,
+    height: 250,
+    marginLeft: 50,
+    resizeMode: 'contain'
+  },
 });
 
 export default Manage;
