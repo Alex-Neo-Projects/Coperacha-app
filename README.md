@@ -10,6 +10,8 @@ This app uses cUSD exclusively, and **requires a [Celo test wallet](https://celo
 
 Check out the latest [Expo build here](https://expo.io/@alex243/projects/coperacha) (requires the Expo Go app). Currently Coperacha has only been tested on iOS.
 
+**Note: Coperacha is in active development and is in an unfinished state. It only accepts test cUSD and runs on the Celo test network. Many things will not work or will not look great. Expect bugs!**
+
 # Name
 
 "Hacer coperacha" is a phrase used in Central Mexico for putting money together towards a shared goal. The Coperacha app makes this easy.
