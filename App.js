@@ -59,9 +59,9 @@ function CreateStackScreen(props) {
             loggedIn={props.loggedIn}
             address={props.address}
             celoCrowdfundContract={props.celoCrowdfundContract}
-            options={{ headerShown: false }}
-          />
-        }
+            />
+          }
+        options={{ headerShown: false }}
       />
       <HomeStack.Screen name="CreateReceipt"  
         component={CreateReceipt}
