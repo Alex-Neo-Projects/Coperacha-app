@@ -6,6 +6,7 @@ function LogIn(props) {
   console.log(props);
   // Passed from App.js since it needs to modify the loggedIn state in App.js    
   logInToCelo = () => {
+    console.log("clicked")
     props.handleLogIn()
   }
 
