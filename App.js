@@ -1,6 +1,6 @@
 import React from 'react'
 import Home from './pages/Home';
-import { web3 } from './root'
+import { web3, kit } from './root'
 import 'react-native-gesture-handler';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -15,6 +15,12 @@ import { Ionicons } from '@expo/vector-icons';
 import DonationReceipt from './pages/DonationReceipt';
 import DonationForm from './pages/DonationForm'; 
 import CreateReceipt from './pages/CreateReceipt';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {   
+  requestAccountAddress,
+  waitForAccountAuth,
+} from '@celo/dappkit';
+import * as Linking from 'expo-linking';
 
 const Tab = createBottomTabNavigator();
 
@@ -47,9 +53,15 @@ function HomeStackScreen(props) {
 function CreateStackScreen(props) {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="Create" 
-        children={()=><CreateListing projectData={props.projectData}/>}
-        options={{ headerShown: false }}
+      <HomeStack.Screen name="Create"
+        children={()=>
+          <CreateListing 
+            loggedIn={props.loggedIn}
+            address={props.address}
+            celoCrowdfundContract={props.celoCrowdfundContract}
+            options={{ headerShown: false }}
+          />
+        }
       />
       <HomeStack.Screen name="CreateReceipt"  
         component={CreateReceipt}
@@ -59,13 +71,86 @@ function CreateStackScreen(props) {
   );
 }
 class App extends React.Component {
+  constructor() {
+    super(); 
+    this.logOut = this.logOut.bind(this);
+    this.logIn = this.logIn.bind(this);
+  }
+
   state = {
     projectData: [],
     celoCrowdfundContract: '', 
+    address: 'Not logged in', 
+    balance: 'Not logged in', 
+    loggedIn: false
   }
 
-  componentDidMount = async () => {
+  logOut() {
+    this.setState({loggedIn: false});
+    console.log("logging out");
+
+    const removeLogInData = async () => {
+      try {
+        await AsyncStorage.removeItem('@userAddress');
+        await AsyncStorage.removeItem('@userBalance');
+
+        console.log("Removed user's login data from local storage");
+      } catch (e) {
+        // saving error
+        console.log("Error removing user's login data from local storage in App.js: ", e);
+      }
+    }
+    removeLogInData(); 
+  }
+
+  async logIn() {
+    // A string you can pass to DAppKit, that you can use to listen to the response for that request
+    const requestId = 'login';
     
+    // A string that will be displayed to the user, indicating the DApp requesting access/signature
+    const dappName = 'Coperacha';
+    
+    // The deeplink that the Celo Wallet will use to redirect the user back to the DApp with the appropriate payload.
+    const callback = Linking.makeUrl('/my/path');
+  
+    // Ask the Celo Alfajores Wallet for user info
+    requestAccountAddress({
+      requestId,
+      dappName,
+      callback,
+    });
+  
+    // Wait for the Celo Wallet response
+    const dappkitResponse = await waitForAccountAuth(requestId);
+
+    // Set the default account to the account returned from the wallet
+    kit.defaultAccount = dappkitResponse.address;
+
+    // Get the stable token contract
+    const stableToken = await kit.contracts.getStableToken();
+
+    // Get the user account balance (cUSD)
+    const cUSDBalanceBig = await stableToken.balanceOf(kit.defaultAccount);
+    
+    // Convert from a big number to a string
+    let cUSDBalance = cUSDBalanceBig.toString();
+    
+    const storeData = async () => {
+      try {
+        await AsyncStorage.setItem('@userAddress', dappkitResponse.address)
+        await AsyncStorage.setItem('@userBalance', cUSDBalance)
+        
+        this.setState({loggedIn: true})
+        console.log("Saved login data to local storage");
+      } catch (e) {
+        // saving error
+        console.log("Error saving login data to local storage in LogIn.js: ", e);
+      }
+    }
+    storeData();
+  }
+   
+  componentDidMount = async () => {
     // Check the Celo network ID
     const networkId = await web3.eth.net.getId();
     console.log("NETWORK ID: ", networkId);
@@ -102,6 +187,25 @@ class App extends React.Component {
     // Current sort: Most recently created first
     this.setState({ projectData: projectData.reverse() })
     this.setState({ celoCrowdfundContract: celoCrowdfundContract })
+
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('@userAddress')
+        const userBalance = await AsyncStorage.getItem('@userBalance');
+  
+        if(value !== null) {
+          this.setState({ address: value, balance: userBalance, loggedIn: true })
+          console.log("user logged in");
+        }
+        else {
+          console.log('User not logged in');
+        }
+      } catch(e) {
+        // error reading value
+        console.log("Error: ", e);
+      }
+    }
+    getData()
   }
 
   render() {
@@ -128,9 +232,6 @@ class App extends React.Component {
                   ? 'cog-outline'
                   : 'cog-outline';
               }
-              // } else if (route.name === 'Settings') {
-              //   iconName = focused ? 'ios-list-box' : 'ios-list';
-              // }
   
               // You can return any component that you like here!
               return <Ionicons name={iconName} size={size} color={color} />;
@@ -142,12 +243,29 @@ class App extends React.Component {
           }}
         > 
           <Tab.Screen name="Home"
-            children={()=><HomeStackScreen projectData={this.state.projectData} />}
+            children={()=><HomeStackScreen 
+              projectData={this.state.projectData} 
+              loggedIn={this.state.loggedIn}
+              />
+            }
           />
           <Tab.Screen name="Create" 
-            children={()=><CreateStackScreen projectData={this.state.projectData} />}
+            children={()=><CreateStackScreen 
+              loggedIn={this.state.loggedIn}
+              address={this.state.address}
+              celoCrowdfundContract={this.state.celoCrowdfundContract}
+              handleLogIn={this.logIn}
+              />
+            }
           />
-          <Tab.Screen name="Manage" component={Manage} />
+          <Tab.Screen name="Manage"
+            children={()=><Manage  
+              loggedIn={this.state.loggedIn}
+              handleLogOut={this.logOut}
+              handleLogIn={this.logIn}
+              />
+            }
+          />
         </Tab.Navigator>
       </NavigationContainer>
     );

@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet, Image, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-function DonationReceipt() {
+function CreateReceipt() {
   const navigation = useNavigation();
   return (
     <View>
@@ -12,7 +12,7 @@ function DonationReceipt() {
       <Text style={styles.title}>Your fundraiser is now live on Coperacha {"\n\n"}</Text>
 
       <Button title={"View Fundraiser"}
-          onPress={() => navigation.navigate('Home')}></Button>
+          onPress={() => navigation.navigate('Home')} />
     </View>
   );
 }
@@ -38,4 +38,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default DonationReceipt; 
+export default CreateReceipt; 
