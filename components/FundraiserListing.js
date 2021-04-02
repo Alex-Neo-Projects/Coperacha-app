@@ -1,9 +1,10 @@
 import React from 'react'
 import { View, Text, ScrollView, Image, StyleSheet, Button } from 'react-native';
 import ProgressBar from 'react-native-progress/Bar';
+import { useNavigation } from '@react-navigation/native';
 
 function FundraiserListing(props) {
-  
+  const navigation = useNavigation();
   // Param for project data passed by ListingCard line: 
   // navigation.navigate('FundraiserListing', {projectData: data})}
   var data = props.route.params.projectData;
@@ -33,7 +34,8 @@ function FundraiserListing(props) {
         <Text style={styles.title}>Donations</Text>
         <Text style={styles.regularText}>TODO{"\n"}</Text>
         
-        <Button title={"Donate"}></Button>
+        <Button title={"Donate"}
+          onPress={() => navigation.navigate('Donation')}></Button>
       </View>
     </ScrollView>
   );

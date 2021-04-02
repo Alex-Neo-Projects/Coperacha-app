@@ -12,6 +12,7 @@ import Manage from './components/Manage';
 import CeloCrowdfundContract from './contracts/CeloCrowdfund.json';
 import ProjectInstanceContract from './contracts/ProjectInstance.json';
 import { Ionicons } from '@expo/vector-icons';
+import Donation from './components/Donation';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,6 +28,10 @@ function HomeStackScreen(props) {
       />
       <HomeStack.Screen name="FundraiserListing"  
         component={FundraiserListing}
+        options={{ headerShown: false }}
+      />
+      <HomeStack.Screen name="Donation"  
+        component={Donation}
         options={{ headerShown: false }}
       />
     </HomeStack.Navigator>
