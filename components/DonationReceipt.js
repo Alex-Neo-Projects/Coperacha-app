@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native';
 
-function Donation() {
+function DonationReceipt() {
   return (
     <View>
       <Text style={styles.bigText}>Thank you for donating! {"\n\n"}</Text>
@@ -26,4 +26,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Donation; 
+export default DonationReceipt; 

@@ -35,7 +35,7 @@ function FundraiserListing(props) {
         <Text style={styles.regularText}>TODO{"\n"}</Text>
         
         <Button title={"Donate"}
-          onPress={() => navigation.navigate('Donation')}></Button>
+          onPress={() => navigation.navigate('DonationForm')}></Button>
       </View>
     </ScrollView>
   );
