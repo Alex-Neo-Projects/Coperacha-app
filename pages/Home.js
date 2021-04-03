@@ -2,7 +2,7 @@ import React from 'react'
 import '../global'
 import { StyleSheet, View, Text } from 'react-native';
 import ListingCard from './ListingCard';
-import { ScrollView, RefreshControl } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 
 function Home(props) {
 

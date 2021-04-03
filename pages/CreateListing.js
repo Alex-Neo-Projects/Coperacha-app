@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { View, Text, ScrollView, StyleSheet, Button, TextInput, Dimensions, Keyboard, TouchableWithoutFeedback, Image } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { kit } from '../root';
@@ -56,9 +56,6 @@ function CreateListing(props) {
       imageResponse(selectedImage.uri);
     }
   }
-
-  console.log("Create: ", props.logIn);
-  console.log('Address: ', address);
   
   const write = async () => {
     const requestId = 'update_projects'
@@ -114,45 +111,42 @@ function CreateListing(props) {
   return (
     <View>
       {props.loggedIn ? ( 
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
-          <View>
-            <Text style={styles.title}>Create your fundraiser</Text>
-        <View>
-          <Text style={styles.bigText}>Create a Fundraiser{"\n\n\n\n\n"}</Text>
-          <Button style={{padding: 30}} title="Create Fundraiser" 
-            onPress={()=> write()} />
+        <ScrollView>
+          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
+            <View style={styles.container}>
+              <Text style={styles.bigText}>Create Fundraiser</Text>
 
-            {/* Image Picker */}
-            <Icon style={styles.image} raised name='photo-camera' onPress={pickImage} />
-            {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+              {/* Image Picker */}
+              <Icon style={styles.image} raised name='photo-camera' onPress={pickImage} />
+              {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
 
-            {/* Title  */}
-            <Text style={styles.headers}>Title</Text>
-            <TextInput style={styles.textbox} onChangeText={onChangeTitle} onSubmitEditing={Keyboard.dismiss} placeholder='Title' value={title}/>
+              {/* Title  */}
+              <Text style={styles.headers}>Title</Text>
+              <TextInput style={styles.textbox} onChangeText={onChangeTitle} onSubmitEditing={Keyboard.dismiss} placeholder='Title' value={title}/>
 
-            {/* Description */}
-            <Text style={styles.headers}>Description</Text>
-            <TextInput multiline={true} numberOfLines={10} style={styles.textboxDescription} onChangeText={onChangeDescription} placeholder='Description' value={description}/>
-            
-            {/* Amount to raise (cUSD) */}
-            <Text style={styles.headers}>Fundraising amount (cUSD)</Text>
-            <TextInput style={styles.textbox} keyboardType='numeric' onChangeText={onChangeAmount} placeholder='Amount' value={amount}/>
-  
-            {/* Deadline */}
-            <Button title="Pick a deadline" onPress={showDatePicker} />
-            <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirm} onCancel={hideDatePicker}/>
-            
-            {/* Testinggg */}
-            <Text style={styles.headers}> {Date(deadline)} </Text>
-            
-            <Button style={{padding: 30}} title="Create Project" onPress={()=> write()} />
+              {/* Description */}
+              <Text style={styles.headers}>Description</Text>
+              <TextInput multiline={true} numberOfLines={10} style={styles.textboxDescription} onChangeText={onChangeDescription} placeholder='Description' value={description}/>
+              
+              {/* Amount to raise (cUSD) */}
+              <Text style={styles.headers}>Fundraising amount (cUSD)</Text>
+              <TextInput style={styles.textbox} keyboardType='numeric' onChangeText={onChangeAmount} placeholder='Amount' value={amount}/>
+    
+              {/* Deadline */}
+              <Button title="Pick a deadline" onPress={showDatePicker} />
+              <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirm} onCancel={hideDatePicker}/>
+              
+              {/* Testinggg */}
+              <Text style={styles.headers}> {Date(deadline)} </Text>
+              
+              <Button style={{padding: 30}} title="Create Project" onPress={()=> write()} />
 
-            <Button title = "Submit" onPress={submit} />
-            {/* <Button title = "Submit" onPress={()=> navigation.navigate('CreateReceipt')} /> */}
+              <Button title = "Submit" onPress={submit} />
+              {/* <Button title = "Submit" onPress={()=> navigation.navigate('CreateReceipt')} /> */}
 
-          </View>
-        </View>
-        </TouchableWithoutFeedback>
+            </View>
+          </TouchableWithoutFeedback>
+        </ScrollView>
       ) : (
         <View style={styles.container}>
           <LogIn reason={"to create a fundraiser"} handleLogIn={props.handleLogIn}/>
@@ -165,11 +159,18 @@ function CreateListing(props) {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    marginLeft: 10
+  },
+  bigText: { 
+    paddingTop: 40,
+    fontSize: 35, 
+    fontWeight: 'bold'
   },
   title: {
     fontSize: 30, 
+    marginVertical: 40,
     marginBottom: 20,
     fontWeight: 'bold'
   }, 
