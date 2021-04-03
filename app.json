@@ -24,9 +24,15 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "xyz.coperacha.client"
+      "bundleIdentifier": "xyz.coperacha.client",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Allow Coperacha to save photos",
+        "NSCameraUsageDescription": "Allow Coperacha to access your camera", 
+        "NSMicrophoneUsageDescription": "Allow Coperacha to use your microphone"
+      }
     },
     "description": "Crowdfunding for you and your community, on Celo",
     "githubUrl": "https://github.com/Alex-Neo-Projects/celo-crowdfunding"
   }
 }
+
