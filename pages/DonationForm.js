@@ -19,6 +19,7 @@ function DonationForm(props) {
   var address = props.route.params.address; 
 
   console.log(address);
+
   const write = async () => {
     const requestId = 'fund_projects'
     const dappName = 'Coperacha'
@@ -28,7 +29,6 @@ function DonationForm(props) {
       from: address, 
       value: 1, // TODO
     });
-
     
     // Send a request to the Celo wallet
     requestTxSig(
