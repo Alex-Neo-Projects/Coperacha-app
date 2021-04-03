@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, Button, TextInput, Dimensions, Keyboard, TouchableWithoutFeedback, Image } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Button, TextInput, Dimensions, Keyboard, TouchableWithoutFeedback, Image } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { kit } from '../root';
 import { useNavigation } from '@react-navigation/native';
@@ -113,7 +113,6 @@ function CreateListing(props) {
   
   return (
     <View>
-    {/* // <View style={styles.container}> */}
       {props.loggedIn ? ( 
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
           <View>
@@ -152,6 +151,7 @@ function CreateListing(props) {
             {/* <Button title = "Submit" onPress={()=> navigation.navigate('CreateReceipt')} /> */}
 
           </View>
+        </View>
         </TouchableWithoutFeedback>
       ) : (
         <View style={styles.container}>
