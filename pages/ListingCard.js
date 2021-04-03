@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Button, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Button, Text, StyleSheet, Dimensions, Pressable } from 'react-native';
 import { Card } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import ProgressBar from 'react-native-progress/Bar';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 function ListingCard(props) {
   const navigation = useNavigation();
@@ -22,6 +23,7 @@ function ListingCard(props) {
   var currentProgress = currentAmount / projectGoalAmount; 
 
   return (
+
     <TouchableOpacity 
       onPress={() => navigation.navigate('FundraiserListing', {projectData: data})}
       activeOpacity={0.8}

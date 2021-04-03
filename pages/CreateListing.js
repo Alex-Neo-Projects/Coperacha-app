@@ -60,8 +60,8 @@ function CreateListing(props) {
     <View style={styles.container}>
       {props.loggedIn ? ( 
         <View>
-          <Text style={styles.title}>Create new Project</Text>
-          <Button style={{padding: 30}} title="Create Project" 
+          <Text style={styles.bigText}>Create a Fundraiser</Text>
+          <Button style={{padding: 30}} title="Create Fundraiser" 
             onPress={()=> write()} />
 
           <Button title = "Submit" onPress={()=> navigation.navigate('CreateReceipt')} />
@@ -85,7 +85,12 @@ const styles = StyleSheet.create({
     marginVertical: 8, 
     fontSize: 20, 
     fontWeight: 'bold'
-  }
+  },
+  bigText: { 
+    paddingTop: 40,
+    fontSize: 35, 
+    fontWeight: 'bold'
+  },
 });
 
 export default CreateListing;

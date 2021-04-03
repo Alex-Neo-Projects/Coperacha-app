@@ -47,7 +47,7 @@ function DonationForm(props) {
       <Text style={styles.title}>Name {"\n\n"}</Text>
       <Text style={styles.title}>Donation amount: {"\n\n"}</Text>
       
-      <Button title="Submit" onPress={() => navigation.navigate('DonationReceipt')}></Button>
+      <Button title="Donate" onPress={() => navigation.navigate('DonationReceipt')}></Button>
     </View>
   );
 }

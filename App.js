@@ -112,7 +112,7 @@ class App extends React.Component {
     
     // The deeplink that the Celo Wallet will use to redirect the user back to the DApp with the appropriate payload.
     const callback = Linking.makeUrl('/my/path');
-  
+    
     // Ask the Celo Alfajores Wallet for user info
     requestAccountAddress({
       requestId,

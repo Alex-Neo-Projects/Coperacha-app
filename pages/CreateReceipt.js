@@ -11,8 +11,8 @@ function CreateReceipt() {
       <Image style={styles.Image} source={require("../assets/nonprofit.png")}></Image>
       <Text style={styles.title}>Your fundraiser is now live on Coperacha {"\n\n"}</Text>
 
-      <Button title={"View Fundraiser"}
-          onPress={() => navigation.navigate('Home')} />
+      <Button title={"Home"}
+          onPress={() => navigation.navigate('Create')} />
     </View>
   );
 }
