@@ -2,12 +2,12 @@ import React from 'react'
 import { View, Text, StyleSheet, Button, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LogIn from '../components/LogIn';
-import LogOut from '../components/LogOut'; 
 
 function Manage(props) {
   // Set the defaults for the state
   const navigation = useNavigation();
-  // console.log(props);
+  console.log('Manage', props);
+
   return (
     <View style={styles.container}>
       {props.loggedIn ? ( 
@@ -22,7 +22,7 @@ function Manage(props) {
           <Button title="New Fundraiser" onPress={() => navigation.navigate('Create')}></Button>
           
           <Text>{"\n"}</Text>
-          <LogOut handleLogOut={props.handleLogOut}/>
+          <Button title="Settings" onPress={() => navigation.navigate('Settings')}></Button>
         </View>
       ) : (
         <View>

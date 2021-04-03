@@ -14,6 +14,7 @@ import ProjectInstanceContract from './contracts/ProjectInstance.json';
 import { Ionicons } from '@expo/vector-icons';
 import DonationReceipt from './pages/DonationReceipt';
 import DonationForm from './pages/DonationForm'; 
+import Settings from './pages/Settings';
 import CreateReceipt from './pages/CreateReceipt';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {   
@@ -30,7 +31,8 @@ function HomeStackScreen(props) {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen name="Home" 
-        children={()=><Home projectData={props.projectData}/>}
+        children={()=><Home 
+          projectData={props.projectData} loggedIn={props.loggedIn} address={props.address}/>}
         options={{ headerShown: false }}
       />
       <HomeStack.Screen name="FundraiserListing"  
@@ -57,11 +59,12 @@ function CreateStackScreen(props) {
         children={()=>
           <CreateListing 
             loggedIn={props.loggedIn}
+            handleLogIn={props.handleLogIn}
             address={props.address}
             celoCrowdfundContract={props.celoCrowdfundContract}
-            options={{ headerShown: false }}
-          />
-        }
+            />
+          }
+        options={{ headerShown: false }}
       />
       <HomeStack.Screen name="CreateReceipt"  
         component={CreateReceipt}
@@ -70,6 +73,34 @@ function CreateStackScreen(props) {
     </HomeStack.Navigator>
   );
 }
+
+function ManageStackScreen(props) {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen name="Manage"
+        children={()=>
+          <Manage 
+            loggedIn={props.loggedIn}
+            handleLogIn={props.handleLogIn}
+            />
+          }
+        options={{ headerShown: false }}
+      />
+      <HomeStack.Screen name="Settings"  
+        children={()=>
+          <Settings 
+            loggedIn={props.loggedIn}
+            handleLogOut={props.handleLogOut}
+            handleLogIn={props.handleLogIn}
+          />
+        }
+        options={{ headerShown: false }}
+      />
+
+    </HomeStack.Navigator>
+  );
+}
+
 class App extends React.Component {
   constructor() {
     super(); 
@@ -80,6 +111,7 @@ class App extends React.Component {
   state = {
     projectData: [],
     celoCrowdfundContract: '', 
+    projectInstanceContract: '', 
     address: 'Not logged in', 
     balance: 'Not logged in', 
     loggedIn: false
@@ -112,7 +144,7 @@ class App extends React.Component {
     
     // The deeplink that the Celo Wallet will use to redirect the user back to the DApp with the appropriate payload.
     const callback = Linking.makeUrl('/my/path');
-  
+    
     // Ask the Celo Alfajores Wallet for user info
     requestAccountAddress({
       requestId,
@@ -180,7 +212,7 @@ class App extends React.Component {
       );
   
       await projectInstanceContract.methods.getDetails().call().then((result) => {
-        projectData.push(result);
+        projectData.push({result: result, projectInstanceContract: projectInstanceContract});
       });
     }
 
@@ -246,6 +278,7 @@ class App extends React.Component {
             children={()=><HomeStackScreen 
               projectData={this.state.projectData} 
               loggedIn={this.state.loggedIn}
+              address={this.state.address}
               />
             }
           />
@@ -259,7 +292,7 @@ class App extends React.Component {
             }
           />
           <Tab.Screen name="Manage"
-            children={()=><Manage  
+            children={()=><ManageStackScreen  
               loggedIn={this.state.loggedIn}
               handleLogOut={this.logOut}
               handleLogIn={this.logIn}
