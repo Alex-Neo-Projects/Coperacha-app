@@ -1,7 +1,9 @@
 import React from 'react'
 import { View, Text, Button, StyleSheet, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 function LogOut(props) {
+  const navigation = useNavigation();
   const logOutAlert = () =>
     Alert.alert(
       "Log out?",
@@ -17,7 +19,8 @@ function LogOut(props) {
     );
   // Passed from App.js since it needs to modify the loggedIn state in App.js 
   logOut = () => {
-    props.handleLogOut()
+    props.handleLogOut();
+    navigation.navigate('Home')
   }
 
   return(

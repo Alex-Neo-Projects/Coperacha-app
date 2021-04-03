@@ -8,13 +8,13 @@ function Home(props) {
 
   // Current sort: Most recently created first
   const projectData = props.projectData;
-
+  
   return (
     <ScrollView> 
       <Text style={styles.bigText}>Fundraisers</Text>
       <View style={styles.container}>
         {projectData.map((project, i) => {
-          return <ListingCard key={i} projectData={project}/>
+          return <ListingCard key={i} loggedIn={props.loggedIn} address={props.address} projectData={project.result} projectInstanceContract={project.projectInstanceContract}/>
         })}
       </View>
     </ScrollView>

@@ -9,6 +9,7 @@ function ListingCard(props) {
   const navigation = useNavigation();
 
   var data = props.projectData; 
+  var projectInstanceContract = props.projectInstanceContract;
 
   //Data 
   var currentAmount = data.currentAmount; 
@@ -25,7 +26,7 @@ function ListingCard(props) {
   return (
 
     <TouchableOpacity 
-      onPress={() => navigation.navigate('FundraiserListing', {projectData: data})}
+      onPress={() => navigation.navigate('FundraiserListing', {loggedIn: props.loggedIn, address: props.address, projectData: data, projectInstanceContract: projectInstanceContract})}
       activeOpacity={0.8}
       // Tweak so cards don't get opaque on scroll
       delayPressIn={50}>         

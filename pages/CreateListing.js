@@ -13,9 +13,11 @@ import LogIn from '../components/LogIn';
 
 function CreateListing(props) {
   const navigation = useNavigation();
-
   const [address, setAddress] = useState(props.address);
-
+  
+  console.log("Create: ", props.logIn);
+  console.log('Address: ', address);
+  
   const write = async () => {
     const requestId = 'update_projects'
     const dappName = 'Coperacha'
@@ -55,19 +57,19 @@ function CreateListing(props) {
     console.log(`Project created contract update transaction receipt: `, result)  
   }
 
-  console.log(props.handleLogIn);
   return (
-    <View style={styles.container}>
+    <View>
+    {/* // <View style={styles.container}> */}
       {props.loggedIn ? ( 
         <View>
-          <Text style={styles.bigText}>Create a Fundraiser</Text>
+          <Text style={styles.bigText}>Create a Fundraiser{"\n\n\n\n\n"}</Text>
           <Button style={{padding: 30}} title="Create Fundraiser" 
             onPress={()=> write()} />
 
           <Button title = "Submit" onPress={()=> navigation.navigate('CreateReceipt')} />
         </View>
       ) : (
-        <View>
+        <View style={styles.container}>
           <LogIn reason={"to create a fundraiser"} handleLogIn={props.handleLogIn}/>
         </View>
       )}
@@ -77,7 +79,6 @@ function CreateListing(props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -89,6 +90,7 @@ const styles = StyleSheet.create({
   bigText: { 
     paddingTop: 40,
     fontSize: 35, 
+    marginLeft: 20,
     fontWeight: 'bold'
   },
 });
