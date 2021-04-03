@@ -17,7 +17,6 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 function CreateListing(props) {
   const navigation = useNavigation();
-
   const [address, setAddress] = useState(props.address);
   
   const [title, onChangeTitle] = useState('');
@@ -58,6 +57,9 @@ function CreateListing(props) {
     }
   }
 
+  console.log("Create: ", props.logIn);
+  console.log('Address: ', address);
+  
   const write = async () => {
     const requestId = 'update_projects'
     const dappName = 'Coperacha'
@@ -110,11 +112,16 @@ function CreateListing(props) {
   };
   
   return (
-    <View style={styles.container}>
+    <View>
+    {/* // <View style={styles.container}> */}
       {props.loggedIn ? ( 
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
           <View>
             <Text style={styles.title}>Create your fundraiser</Text>
+        <View>
+          <Text style={styles.bigText}>Create a Fundraiser{"\n\n\n\n\n"}</Text>
+          <Button style={{padding: 30}} title="Create Fundraiser" 
+            onPress={()=> write()} />
 
             {/* Image Picker */}
             <Icon style={styles.image} raised name='photo-camera' onPress={pickImage} />
@@ -147,7 +154,7 @@ function CreateListing(props) {
           </View>
         </TouchableWithoutFeedback>
       ) : (
-        <View>
+        <View style={styles.container}>
           <LogIn reason={"to create a fundraiser"} handleLogIn={props.handleLogIn}/>
         </View>
 
@@ -158,7 +165,6 @@ function CreateListing(props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },

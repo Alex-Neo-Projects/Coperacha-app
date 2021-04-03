@@ -2,14 +2,12 @@ import React from 'react'
 import { View, Text, Button, StyleSheet } from 'react-native';
 
 function LogIn(props) {
-  
-  console.log(props);
   // Passed from App.js since it needs to modify the loggedIn state in App.js    
   logInToCelo = () => {
-    console.log("clicked")
+    console.log("Log in clicked")
+  
     props.handleLogIn()
   }
-
 
   return(
     <View>
