@@ -4,8 +4,6 @@ import LogOut from '../components/LogOut';
 import LogIn from '../components/LogOut'; 
 
 function Settings(props) {
-  console.log(props);
-
   return (
     <View style={styles.container}>
       <Text style={styles.bigText}>Settings{"\n"}</Text>

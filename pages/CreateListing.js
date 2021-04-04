@@ -109,11 +109,11 @@ function CreateListing(props) {
   };
   
   return (
-    <View>
+    <View style={styles.container}>
       {props.loggedIn ? ( 
         <ScrollView>
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
-            <View style={styles.container}>
+            <View >
               <Text style={styles.bigText}>Create Fundraiser</Text>
 
               {/* Image Picker */}
@@ -139,16 +139,14 @@ function CreateListing(props) {
               {/* Testinggg */}
               <Text style={styles.headers}> {Date(deadline)} </Text>
               
-              <Button style={{padding: 30}} title="Create Project" onPress={()=> write()} />
-
-              <Button title = "Submit" onPress={submit} />
+              <Button title = "Submit" onPress={submit} onPress={()=> write()}/>
               {/* <Button title = "Submit" onPress={()=> navigation.navigate('CreateReceipt')} /> */}
 
             </View>
           </TouchableWithoutFeedback>
         </ScrollView>
       ) : (
-        <View style={styles.container}>
+        <View >
           <LogIn reason={"to create a fundraiser"} handleLogIn={props.handleLogIn}/>
         </View>
 
@@ -159,14 +157,15 @@ function CreateListing(props) {
 
 const styles = StyleSheet.create({
   container: {
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    marginLeft: 10
+    margin: 10,
+    alignItems: 'center',
+    justifyContent: 'center', 
+    flex: 1,
   },
   bigText: { 
     paddingTop: 40,
     fontSize: 35, 
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   title: {
     fontSize: 30, 

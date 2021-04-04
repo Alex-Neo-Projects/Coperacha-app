@@ -22,6 +22,7 @@ import {
   waitForAccountAuth,
 } from '@celo/dappkit';
 import * as Linking from 'expo-linking';
+import DataContext from './components/DataContext'; 
 
 const Tab = createBottomTabNavigator();
 
@@ -242,65 +243,67 @@ class App extends React.Component {
 
   render() {
     return (
-      <NavigationContainer>
-        <StatusBar  barStyle="dark-content" />
+      <DataContext.Provider value={this.state.projectData}>
+        <NavigationContainer>
+          <StatusBar  barStyle="dark-content" />
 
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-  
-              if (route.name === 'Home') {
-                iconName = focused
-                  ? 'home'
-                  : 'home-outline';
-              } else if (route.name === 'Create') {
-                iconName = focused 
-                  ? 'add-circle'
-                  : 'add-circle-outline';
+          <Tab.Navigator
+            screenOptions={({ route }) => ({
+              tabBarIcon: ({ focused, color, size }) => {
+                let iconName;
+    
+                if (route.name === 'Home') {
+                  iconName = focused
+                    ? 'home'
+                    : 'home-outline';
+                } else if (route.name === 'Create') {
+                  iconName = focused 
+                    ? 'add-circle'
+                    : 'add-circle-outline';
+                }
+                else if (route.name === 'Manage') {
+                  iconName = focused 
+                    ? 'cog-outline'
+                    : 'cog-outline';
+                }
+    
+                // You can return any component that you like here!
+                return <Ionicons name={iconName} size={size} color={color} />;
+              },
+            })}
+            tabBarOptions={{
+              activeTintColor: '#35D07F',
+              inactiveTintColor: 'gray',
+            }}
+          > 
+            <Tab.Screen name="Home"
+              children={()=><HomeStackScreen 
+                projectData={this.state.projectData} 
+                loggedIn={this.state.loggedIn}
+                address={this.state.address}
+                />
               }
-              else if (route.name === 'Manage') {
-                iconName = focused 
-                  ? 'cog-outline'
-                  : 'cog-outline';
+            />
+            <Tab.Screen name="Create" 
+              children={()=><CreateStackScreen 
+                loggedIn={this.state.loggedIn}
+                address={this.state.address}
+                celoCrowdfundContract={this.state.celoCrowdfundContract}
+                handleLogIn={this.logIn}
+                />
               }
-  
-              // You can return any component that you like here!
-              return <Ionicons name={iconName} size={size} color={color} />;
-            },
-          })}
-          tabBarOptions={{
-            activeTintColor: '#35D07F',
-            inactiveTintColor: 'gray',
-          }}
-        > 
-          <Tab.Screen name="Home"
-            children={()=><HomeStackScreen 
-              projectData={this.state.projectData} 
-              loggedIn={this.state.loggedIn}
-              address={this.state.address}
-              />
-            }
-          />
-          <Tab.Screen name="Create" 
-            children={()=><CreateStackScreen 
-              loggedIn={this.state.loggedIn}
-              address={this.state.address}
-              celoCrowdfundContract={this.state.celoCrowdfundContract}
-              handleLogIn={this.logIn}
-              />
-            }
-          />
-          <Tab.Screen name="Manage"
-            children={()=><ManageStackScreen  
-              loggedIn={this.state.loggedIn}
-              handleLogOut={this.logOut}
-              handleLogIn={this.logIn}
-              />
-            }
-          />
-        </Tab.Navigator>
-      </NavigationContainer>
+            />
+            <Tab.Screen name="Manage"
+              children={()=><ManageStackScreen  
+                loggedIn={this.state.loggedIn}
+                handleLogOut={this.logOut}
+                handleLogIn={this.logIn}
+                />
+              }
+            />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </DataContext.Provider>
     );
   }
 }

@@ -7,9 +7,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 function ListingCard(props) {
   const navigation = useNavigation();
-
+  
   var data = props.projectData; 
-  var projectInstanceContract = props.projectInstanceContract;
 
   //Data 
   var currentAmount = data.currentAmount; 
@@ -26,7 +25,7 @@ function ListingCard(props) {
   return (
 
     <TouchableOpacity 
-      onPress={() => navigation.navigate('FundraiserListing', {loggedIn: props.loggedIn, address: props.address, projectData: data, projectInstanceContract: projectInstanceContract})}
+      onPress={() => navigation.navigate('FundraiserListing', {projectId: props.projectId, loggedIn: props.loggedIn, address: props.address, projectData: data})}
       activeOpacity={0.8}
       // Tweak so cards don't get opaque on scroll
       delayPressIn={50}>         

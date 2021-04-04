@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput } from 'react-native-gesture-handler';
@@ -10,15 +10,21 @@ import {
 } from '@celo/dappkit';
 import { toTxResult } from "@celo/connect";
 import * as Linking from 'expo-linking';
+import DataContext from '../components/DataContext';
 
 function DonationForm(props) {
   const navigation = useNavigation();
 
   var title = props.route.params.title;
-  var projectInstanceContract = props.route.params.projectInstanceContract;
+  
+  const projectDataContext = useContext(DataContext);
+  var projectId = props.route.params.projectId;
   var address = props.route.params.address; 
+  
 
-  console.log(address);
+  var projectInstanceContract = projectDataContext[projectId].projectInstanceContract
+  console.log(projectInstanceContract);
+
 
   const write = async () => {
     const requestId = 'fund_projects'
@@ -65,8 +71,8 @@ function DonationForm(props) {
       <TextInput keyboardType="numeric" style={[styles.input, { borderColor: '#c0cbd3'}]} ></TextInput>
       <Text>{"\n\n\n"}</Text>
 
-      {/* <Button title="Donate" onPress={() => navigation.navigate('DonationReceipt')}></Button> */}
-      <Button title="Donate" onPress={() => write()}></Button>
+      <Button title="Donate" onPress={() => navigation.navigate('DonationReceipt', {title: title})}></Button>
+      {/* <Button title="Donate" onPress={() => write()}></Button> */}
     </View>
   );
 }

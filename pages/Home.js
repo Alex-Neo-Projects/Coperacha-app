@@ -8,13 +8,17 @@ function Home(props) {
 
   // Current sort: Most recently created first
   const projectData = props.projectData;
+
   
   return (
     <ScrollView> 
       <Text style={styles.bigText}>Fundraisers</Text>
       <View style={styles.container}>
-        {projectData.map((project, i) => {
-          return <ListingCard key={i} loggedIn={props.loggedIn} address={props.address} projectData={project.result} projectInstanceContract={project.projectInstanceContract}/>
+        {projectData.map((project, index) => {
+          // Need to reverse order bc the shown list is backwards. -1 bc arrays start at 0 
+          var projectId = projectData.length - index - 1; 
+
+          return <ListingCard key={index} projectId={projectId} loggedIn={props.loggedIn} address={props.address} projectData={project.result}/>
         })}
       </View>
     </ScrollView>
