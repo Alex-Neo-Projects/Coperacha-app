@@ -181,8 +181,8 @@ class App extends React.Component {
     }
     storeData();
   }
-   
-  componentDidMount = async () => {
+  
+  async getFeedData() {
     // Check the Celo network ID
     const networkId = await web3.eth.net.getId();
     console.log("NETWORK ID: ", networkId);
@@ -240,6 +240,9 @@ class App extends React.Component {
     }
 
     getData()
+  }
+  componentDidMount = async () => {
+    this.getFeedData();
   }
 
   render() {

@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import '../global'
 import { StyleSheet, View, Text } from 'react-native';
 import ListingCard from './ListingCard';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView} from 'react-native-gesture-handler';
 import AppContext from '../components/AppContext';
 
 function Home() {
@@ -11,7 +11,8 @@ function Home() {
   const projectData = appContext.projectData; 
 
   return (
-    <ScrollView> 
+    <ScrollView>
+
       <Text style={styles.bigText}>Fundraisers</Text>
       <View style={styles.container}>
         {projectData.map((project, index) => {

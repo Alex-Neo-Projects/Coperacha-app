@@ -43,7 +43,7 @@ function ListingCard(props) {
           <Text>{projectCreator} {"\n"}</Text>
           <Text>{projectDescription} {"\n"}</Text>
 
-          <Text>{dateOutput} {"\n"}</Text>
+          <Text>Deadline: {dateOutput} {"\n"}</Text>
           <Text style={styles.boldText}>${currentAmount} raised of ${projectGoalAmount}</Text>
           <ProgressBar progress={currentProgress} color='#35D07F' style={styles.progress}/>
         </View>
