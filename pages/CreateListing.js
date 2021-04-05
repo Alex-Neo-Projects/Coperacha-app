@@ -41,9 +41,19 @@ function CreateListing(props) {
 
   const handleChange = (date) => {
     //date is a Date object, convert to unix timestamp
+    var currentDate = new Date();
+    currentDate = Math.floor(currentDate.getTime()/1000);
 
-    var unixTimestamp = Math.floor(date.getTime()/1000);
-    onChangeDeadline(unixTimestamp);
+    var userDefinedDate = Math.floor(date.getTime()/1000);
+
+    var differenceDateTime = Math.ceil((userDefinedDate-currentDate)/3600)/24;
+
+    if(differenceDateTime < 0){
+      console.log("ERRRRORRRR");
+
+    }else{
+      onChangeDeadline(differenceDateTime);
+    }
   }
 
   const handleConfirm = (_) => {   
@@ -100,9 +110,9 @@ function CreateListing(props) {
     
     function startProject(string calldata title, string calldata description, 
       string calldata imageLink, uint durationInDays, uint amountToRaise)
-    */
-     
-     // Create a transaction object to update the contract
+    */    
+
+    // Create a transaction object to update the contract
     const txObject = await props.celoCrowdfundContract.methods.startProject(title, description, imageDownloadUrl, deadline, amount);
     console.log('DA ADDY: ' + address);
     // Send a request to the Celo wallet to send an update transaction to the HelloWorld contract
