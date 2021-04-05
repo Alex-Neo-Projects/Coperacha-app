@@ -142,8 +142,8 @@ function CreateListing(props) {
   return (
     <View style={styles.container}>
       {props.loggedIn ? ( 
-        <ScrollView>
-          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
+      <ScrollView>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
             <View >
               <Text style={styles.bigText}>Create Fundraiser</Text>
 

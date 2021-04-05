@@ -32,10 +32,6 @@ function DonationForm(props) {
     const dappName = 'Coperacha'
     const callback = Linking.makeUrl('/my/path')
 
-    // const txObject = await projectInstanceContract.methods.contribute().send({
-    //   from: address, 
-    //   value: 1000000000000000000, // TODO
-    // });
     const txObject = await projectInstanceContract.methods.contribute();
     
     console.log(address);
@@ -47,6 +43,7 @@ function DonationForm(props) {
       [
         {
           from: address,
+          value: 100,
           to: projectInstanceContract._address, // interact w/ address of CeloCrowdfund contract
           tx: txObject,
           feeCurrency: FeeCurrency.cUSD
