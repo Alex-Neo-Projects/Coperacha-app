@@ -19,17 +19,14 @@ function ListingCard(props) {
   var projectGoalAmount = data.projectGoalAmount;
   var projectImageLink = data.projectImageLink;
   var projectTitle = data.projectTitle; 
-
+  
   var currentProgress = currentAmount / projectGoalAmount; 
-
-  console.log("TITLE: ", projectTitle, " deadline: ", fundraisingDeadline);
-
+  
   const milliseconds = fundraisingDeadline * 1000; 
   const dateObject = new Date(milliseconds)
 
   var dateOutput = new Date(dateObject).toLocaleDateString();
-  
-  console.log(dateOutput);
+
   return (
 
     <TouchableOpacity 
