@@ -10,17 +10,19 @@ import {
 } from '@celo/dappkit';
 import { toTxResult } from "@celo/connect";
 import * as Linking from 'expo-linking';
-import DataContext from '../components/DataContext';
+import AppContext from '../components/AppContext';
 
 function DonationForm(props) {
   const navigation = useNavigation();
 
   var title = props.route.params.title;
   
-  const projectDataContext = useContext(DataContext);
+  const appContext = useContext(AppContext);
+  const projectDataContext = appContext.projectData; 
+
   var projectId = props.route.params.projectId;
   var address = props.route.params.address; 
-  
+
 
   var projectInstanceContract = projectDataContext[projectId].projectInstanceContract
 
@@ -33,10 +35,7 @@ function DonationForm(props) {
     const callback = Linking.makeUrl('/my/path')
 
     const txObject = await projectInstanceContract.methods.contribute();
-    
-    // const valueToTransfer = kit.web3.utils.toWei('1', 'ether');
-    // console.log(valueToTransfer);
-    // Send a request to the Celo wallet
+   
     requestTxSig(
       kit,
       [
