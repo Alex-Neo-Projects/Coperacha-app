@@ -20,7 +20,7 @@ function LogOut(props) {
   // Passed from App.js since it needs to modify the loggedIn state in App.js 
   logOut = () => {
     props.handleLogOut();
-    navigation.navigate('Home')
+    navigation.navigate('Manage')
   }
 
   return(

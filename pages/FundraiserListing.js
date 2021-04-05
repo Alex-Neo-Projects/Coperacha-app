@@ -5,9 +5,8 @@ import { useNavigation } from '@react-navigation/native';
 
 function FundraiserListing(props) {
   const navigation = useNavigation();
-  // Param for project data passed by ListingCard line: 
   
-  var projectInstanceContract = props.route.params.projectInstanceContract;
+  var projectId = props.route.params.projectId;
   var loggedIn = props.route.params.loggedIn; 
   var address = props.route.params.address; 
   
@@ -35,7 +34,7 @@ function FundraiserListing(props) {
         <Text style={styles.regularText}>{description}{"\n"}</Text>
         
         <Button title={"Donate"}
-          onPress={() => navigation.navigate('DonationForm', {loggedIn: loggedIn, address: address, title: title, projectInstanceContract: projectInstanceContract})}></Button>
+          onPress={() => navigation.navigate('DonationForm', {projectId: projectId, loggedIn: loggedIn, address: address, title: title})}></Button>
       </View>
     </ScrollView>
   );

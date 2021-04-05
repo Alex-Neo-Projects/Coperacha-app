@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput } from 'react-native-gesture-handler';
@@ -10,25 +10,36 @@ import {
 } from '@celo/dappkit';
 import { toTxResult } from "@celo/connect";
 import * as Linking from 'expo-linking';
+import DataContext from '../components/DataContext';
 
 function DonationForm(props) {
   const navigation = useNavigation();
 
   var title = props.route.params.title;
-  var projectInstanceContract = props.route.params.projectInstanceContract;
+  
+  const projectDataContext = useContext(DataContext);
+  var projectId = props.route.params.projectId;
   var address = props.route.params.address; 
+  
 
-  console.log(address);
+  var projectInstanceContract = projectDataContext[projectId].projectInstanceContract
 
-  const write = async () => {
+  console.log("address: ", address);
+  console.log("Project address: ", projectInstanceContract._address);
+  
+  const donate = async () => {
     const requestId = 'fund_projects'
     const dappName = 'Coperacha'
     const callback = Linking.makeUrl('/my/path')
 
-    const txObject = await projectInstanceContract.methods.contribute().send({
-      from: address, 
-      value: 1, // TODO
-    });
+    // const txObject = await projectInstanceContract.methods.contribute().send({
+    //   from: address, 
+    //   value: 1000000000000000000, // TODO
+    // });
+    const txObject = await projectInstanceContract.methods.contribute();
+    
+    console.log(address);
+    console.log(projectInstanceContract._address);
     
     // Send a request to the Celo wallet
     requestTxSig(
@@ -65,8 +76,8 @@ function DonationForm(props) {
       <TextInput keyboardType="numeric" style={[styles.input, { borderColor: '#c0cbd3'}]} ></TextInput>
       <Text>{"\n\n\n"}</Text>
 
-      {/* <Button title="Donate" onPress={() => navigation.navigate('DonationReceipt')}></Button> */}
-      <Button title="Donate" onPress={() => write()}></Button>
+      {/* <Button title="Donate" onPress={() => navigation.navigate('DonationReceipt', {title: title})}></Button> */}
+      <Button title="Donate" onPress={() => donate()}></Button>
     </View>
   );
 }

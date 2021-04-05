@@ -2,13 +2,16 @@ import React from 'react'
 import { View, Text, StyleSheet, Image, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-function DonationReceipt() {
+function DonationReceipt(props) {
   const navigation = useNavigation();
+  
+  var title = props.route.params.title;
+
   return (
     <View>
       <Text style={styles.bigText}>Thank you for donating! {"\n\n"}</Text>
       <Text style={styles.title}>100% of proceeds go directly to: {"\n\n"}</Text>
-      <Text style={styles.title}>"Building a new road"</Text>
+      <Text style={styles.title}>"{title}"</Text>
           
       <Image style={styles.Image} source={require("../assets/give.png")}></Image>
 

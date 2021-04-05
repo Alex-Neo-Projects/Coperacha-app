@@ -6,7 +6,6 @@ import LogIn from '../components/LogIn';
 function Manage(props) {
   // Set the defaults for the state
   const navigation = useNavigation();
-  console.log('Manage', props);
 
   return (
     <View style={styles.container}>
@@ -35,7 +34,7 @@ function Manage(props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 3,
     alignItems: 'center',
     justifyContent: 'center',
   },

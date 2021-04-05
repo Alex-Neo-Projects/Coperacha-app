@@ -140,11 +140,11 @@ function CreateListing(props) {
   }
   
   return (
-    <View>
+    <View style={styles.container}>
       {props.loggedIn ? ( 
         <ScrollView>
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
-            <View style={styles.container}>
+            <View >
               <Text style={styles.bigText}>Create Fundraiser</Text>
 
               {/* Image Picker */}
@@ -182,7 +182,7 @@ function CreateListing(props) {
           </TouchableWithoutFeedback>
         </ScrollView>
       ) : (
-        <View style={styles.container}>
+        <View >
           <LogIn reason={"to create a fundraiser"} handleLogIn={props.handleLogIn}/>
         </View>
       )}
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   bigText: { 
     paddingTop: 40,
     fontSize: 35, 
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   title: {
     fontSize: 30, 
