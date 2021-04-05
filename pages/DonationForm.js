@@ -33,10 +33,7 @@ function DonationForm(props) {
     const callback = Linking.makeUrl('/my/path')
 
     const txObject = await projectInstanceContract.methods.contribute();
-    
-    // const valueToTransfer = kit.web3.utils.toWei('1', 'ether');
-    // console.log(valueToTransfer);
-    // Send a request to the Celo wallet
+   
     requestTxSig(
       kit,
       [
