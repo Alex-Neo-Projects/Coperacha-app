@@ -11,7 +11,7 @@ import CreateListing from './pages/CreateListing';
 import Manage from './pages/Manage'; 
 import CeloCrowdfundContract from './contracts/CeloCrowdfund.json';
 import ProjectInstanceContract from './contracts/ProjectInstance.json';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, Entypo } from '@expo/vector-icons';
 import DonationReceipt from './pages/DonationReceipt';
 import DonationForm from './pages/DonationForm'; 
 import Settings from './pages/Settings';
@@ -261,20 +261,20 @@ class App extends React.Component {
                 if (route.name === 'Home') {
                   iconName = focused
                     ? 'home'
-                    : 'home-outline';
+                    : 'home';
                 } else if (route.name === 'Create') {
                   iconName = focused 
-                    ? 'add-circle'
-                    : 'add-circle-outline';
+                    ? 'plus'
+                    : 'plus';
                 }
                 else if (route.name === 'Manage') {
                   iconName = focused 
-                    ? 'cog-outline'
-                    : 'cog-outline';
+                    ? 'dots-three-horizontal'
+                    : 'dots-three-horizontal';
                 }
     
                 // You can return any component that you like here!
-                return <Ionicons name={iconName} size={size} color={color} />;
+                return <Entypo name={iconName} size={size} color={color} />;
               },
             })}
             tabBarOptions={{
