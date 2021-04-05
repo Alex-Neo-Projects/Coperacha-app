@@ -228,6 +228,8 @@ class App extends React.Component {
         if(value !== null) {
           this.setState({ address: value, balance: userBalance, loggedIn: true })
           console.log("user logged in");
+          console.log("BALANCE: ", this.state.balance);
+
         }
         else {
           console.log('User not logged in');
@@ -237,6 +239,7 @@ class App extends React.Component {
         console.log("Error: ", e);
       }
     }
+
     getData()
   }
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, ScrollView, StyleSheet, Button, TextInput, Dimensions, Keyboard, TouchableWithoutFeedback, Image } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { kit } from '../root';
@@ -11,6 +11,7 @@ import {
 import { toTxResult } from "@celo/connect";
 import * as Linking from 'expo-linking';
 import LogIn from '../components/LogIn';
+import firebaseStorageRef from '../components/Firebase';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
@@ -19,12 +20,15 @@ function CreateListing(props) {
   const navigation = useNavigation();
   const [address, setAddress] = useState(props.address);
   
+  // Paload info
   const [title, onChangeTitle] = useState('');
   const [description, onChangeDescription] = useState('');
-  const [amount, onChangeAmount] = useState('');
-  const [deadline, onChangeDeadline] = useState('');
+  const [amount, onChangeAmount] = useState(0);
+  const [deadline, onChangeDeadline] = useState(0);
   const [image, imageResponse] = useState(null);
+  const [imageDownloadUrl, setImageDownloadUrl] = useState('');
 
+  // ui
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const showDatePicker = () => {
@@ -35,12 +39,16 @@ function CreateListing(props) {
     setDatePickerVisibility(false);
   };
 
-  const handleConfirm = (date) => {
-    //date is a Date object
-    onChangeDeadline(date);
+  const handleChange = (date) => {
+    //date is a Date object, convert to unix timestamp
+
+    var unixTimestamp = Math.floor(date.getTime()/1000);
+    onChangeDeadline(unixTimestamp);
+  }
+
+  const handleConfirm = (_) => {   
     hideDatePicker();
   };
-
 
   const pickImage = async () => {
     let selectedImage = await ImagePicker.launchImageLibraryAsync({
@@ -53,8 +61,33 @@ function CreateListing(props) {
     console.log(selectedImage);
 
     if(!selectedImage.cancelled){
+      console.log('IMAGE SELECTED');
       imageResponse(selectedImage.uri);
+      firestorePost(selectedImage.uri);
     }
+  }
+
+  const firestorePost = async (localImageUrl) => {
+    // Transform to blob
+    const fetchResponse = await fetch(localImageUrl);
+    const blob = await fetchResponse.blob();
+
+    // Change filename
+    const storageFileName = localImageUrl.substring(localImageUrl.lastIndexOf('/')+1);
+    console.log('storageFileName: ' + storageFileName);
+
+    var uploadImage = firebaseStorageRef.ref('fundraiserImages').child(storageFileName).put(blob);
+
+    uploadImage.on('state_changed', (snapshot) => {
+        console.log('Uploading');
+    }, (error) => {
+        console.log(error);
+    }, () => {
+        uploadImage.snapshot.ref.getDownloadURL().then((downloadURL) => {
+            console.log(downloadURL);
+            setImageDownloadUrl(downloadURL);
+        });
+    });
   }
   
   const write = async () => {
@@ -70,8 +103,8 @@ function CreateListing(props) {
     */
      
      // Create a transaction object to update the contract
-    const txObject = await props.celoCrowdfundContract.methods.startProject('Building a new road', 'We need a new road to connect the two sides of town. We are asking for $900 cUSD in order to build this road. ', 'https://i.imgur.com/elTnbFf.png', 5, 900);
-    
+    const txObject = await props.celoCrowdfundContract.methods.startProject(title, description, imageDownloadUrl, deadline, amount);
+    console.log('DA ADDY: ' + address);
     // Send a request to the Celo wallet to send an update transaction to the HelloWorld contract
     requestTxSig(
       kit,
@@ -92,21 +125,9 @@ function CreateListing(props) {
     
     // Get the transaction result, once it has been included in the Celo blockchain
     let result = await toTxResult(kit.web3.eth.sendSignedTransaction(tx)).waitReceipt()
-    console.log('here')
+    
     console.log(`Project created contract update transaction receipt: `, result)  
   }
-
-  const submit = async () => {
-    const payload = {
-      'title': title, 
-      'description': description, 
-      'amount': amount,
-      'deadline': deadline, 
-      'img': null
-    };
-
-    console.log(payload);
-  };
   
   return (
     <View>
@@ -134,16 +155,19 @@ function CreateListing(props) {
     
               {/* Deadline */}
               <Button title="Pick a deadline" onPress={showDatePicker} />
-              <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirm} onCancel={hideDatePicker}/>
+              <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirm} onCancel={hideDatePicker} onChange={handleChange}/>
               
               {/* Testinggg */}
-              <Text style={styles.headers}> {Date(deadline)} </Text>
+              <Text style={styles.headers}> {deadline} </Text>
               
-              <Button style={{padding: 30}} title="Create Project" onPress={()=> write()} />
+              {/* <Button style={{padding: 30}} title="Create Project" onPress={()=> write()} /> */}
 
-              <Button title = "Submit" onPress={submit} />
-              {/* <Button title = "Submit" onPress={()=> navigation.navigate('CreateReceipt')} /> */}
+              <Button title = "Create Fundraiser" onPress={()=>{
+                write();
 
+                // User can't go back
+                navigation.replace('CreateReceipt');
+              }} />
             </View>
           </TouchableWithoutFeedback>
         </ScrollView>
@@ -151,7 +175,6 @@ function CreateListing(props) {
         <View style={styles.container}>
           <LogIn reason={"to create a fundraiser"} handleLogIn={props.handleLogIn}/>
         </View>
-
       )}
     </View>
   );
@@ -159,8 +182,6 @@ function CreateListing(props) {
 
 const styles = StyleSheet.create({
   container: {
-    // alignItems: 'center',
-    // justifyContent: 'center',
     marginLeft: 10
   },
   bigText: { 

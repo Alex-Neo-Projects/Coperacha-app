@@ -24,6 +24,7 @@
     "expo-file-system": "^10.0.0",
     "expo-image-picker": "~9.2.0",
     "expo-linking": "~2.0.1",
+    "firebase": "^8.3.2",
     "https-browserify": "^1.0.0",
     "node-libs-react-native": "^1.2.1",
     "os-browserify": "^0.3.0",
