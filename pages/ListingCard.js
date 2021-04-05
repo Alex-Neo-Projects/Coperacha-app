@@ -23,10 +23,13 @@ function ListingCard(props) {
   var currentProgress = currentAmount / projectGoalAmount; 
 
   console.log("TITLE: ", projectTitle, " deadline: ", fundraisingDeadline);
-  var dateOutput = new Date(fundraisingDeadline).toLocaleDateString(
-    'en-gb'
-  ); // 18/02/2019
+
+  const milliseconds = fundraisingDeadline * 1000; 
+  const dateObject = new Date(milliseconds)
+
+  var dateOutput = new Date(dateObject).toLocaleDateString();
   
+  console.log(dateOutput);
   return (
 
     <TouchableOpacity 
