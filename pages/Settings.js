@@ -1,14 +1,25 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { View, Text, StyleSheet } from 'react-native';
 import LogOut from '../components/LogOut'; 
 import LogIn from '../components/LogOut'; 
+import AppContext from '../components/AppContext';
+import { web3 } from '../root';
 
 function Settings(props) {
+  const context = useContext(AppContext);
+  const loggedIn = context.loggedIn; 
+  const address = context.address; 
+  const balance = context.balance; 
+  
+  console.log(balance);
   return (
     <View style={styles.container}>
       <Text style={styles.bigText}>Settings{"\n"}</Text>
-      {props.loggedIn ? ( 
+      {loggedIn ? ( 
         <View>
+          <Text style={styles.title}>Logged into: {address} {"\n\n"}</Text>
+          <Text style={styles.title}>cUSD balance: {balance} {"\n\n"}</Text>
+
           <LogOut handleLogOut={props.handleLogOut}/>
         </View>
       ) : (
@@ -28,20 +39,13 @@ const styles = StyleSheet.create({
   },
   title: {
     marginVertical: 30, 
-    fontSize: 20, 
-    fontWeight: 'bold'
+    fontSize: 14, 
+    // fontWeight: 'bold'
   },
   bigText: { 
     paddingTop: 40,
     fontSize: 35, 
     fontWeight: 'bold'
-  },
-  Image: {
-    flex: 1,
-    width: 250,
-    height: 250,
-    marginLeft: 50,
-    resizeMode: 'contain'
   },
 });
 

@@ -1,15 +1,19 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { View, Text, StyleSheet, Button, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LogIn from '../components/LogIn';
+import AppContext from '../components/AppContext';
 
 function Manage(props) {
   // Set the defaults for the state
   const navigation = useNavigation();
 
+  const context = useContext(AppContext);
+  const loggedIn = context.loggedIn; 
+  
   return (
     <View style={styles.container}>
-      {props.loggedIn ? ( 
+      {loggedIn ? ( 
         <View>
           <Text style={styles.bigText}>My Fundraisers{"\n"}</Text>
 

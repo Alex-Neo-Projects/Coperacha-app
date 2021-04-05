@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import '../global'
 import { StyleSheet, View, Text } from 'react-native';
 import ListingCard from './ListingCard';
 import { ScrollView } from 'react-native-gesture-handler';
+import AppContext from '../components/AppContext';
 
-function Home(props) {
-
+function Home() {
   // Current sort: Most recently created first
-  const projectData = props.projectData;
+  const appContext = useContext(AppContext);
+  const projectData = appContext.projectData; 
 
   return (
     <ScrollView> 
@@ -16,7 +17,7 @@ function Home(props) {
         {projectData.map((project, index) => {
           // Need to reverse order bc the shown list is backwards. -1 bc arrays start at 0 
           var projectId = projectData.length - index - 1; 
-          return <ListingCard key={index} projectId={projectId} loggedIn={props.loggedIn} address={props.address} projectData={project.result}/>
+          return <ListingCard key={index} projectId={projectId} projectData={project.result}/>
         })}
       </View>
     </ScrollView>
