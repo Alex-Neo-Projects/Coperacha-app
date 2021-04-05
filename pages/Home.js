@@ -9,7 +9,6 @@ function Home(props) {
   // Current sort: Most recently created first
   const projectData = props.projectData;
 
-  
   return (
     <ScrollView> 
       <Text style={styles.bigText}>Fundraisers</Text>
@@ -17,7 +16,8 @@ function Home(props) {
         {projectData.map((project, index) => {
           // Need to reverse order bc the shown list is backwards. -1 bc arrays start at 0 
           var projectId = projectData.length - index - 1; 
-
+          
+          console.log("YO!");
           return <ListingCard key={index} projectId={projectId} loggedIn={props.loggedIn} address={props.address} projectData={project.result}/>
         })}
       </View>

@@ -43,10 +43,10 @@ function CreateListing(props) {
     //date is a Date object, convert to unix timestamp
     var currentDate = new Date();
     currentDate = Math.floor(currentDate.getTime()/1000);
-
     var userDefinedDate = Math.floor(date.getTime()/1000);
-
+    
     var differenceDateTime = Math.ceil((userDefinedDate-currentDate)/3600)/24;
+    console.log(differenceDateTime);
 
     if(differenceDateTime < 0){
       console.log("ERRRRORRRR");
@@ -112,6 +112,7 @@ function CreateListing(props) {
       string calldata imageLink, uint durationInDays, uint amountToRaise)
     */    
 
+    console.log('Days till deadline: ', deadline);
     // Create a transaction object to update the contract
     const txObject = await props.celoCrowdfundContract.methods.startProject(title, description, imageDownloadUrl, deadline, amount);
     console.log('DA ADDY: ' + address);

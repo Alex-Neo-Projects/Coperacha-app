@@ -33,20 +33,16 @@ function DonationForm(props) {
     const callback = Linking.makeUrl('/my/path')
 
     const txObject = await projectInstanceContract.methods.contribute();
-    // const stableToken = await kit.contracts.getStableToken();
-
-    // const txObject = stableToken.transfer(
-    //   projectInstanceContract._address,
-    //   '100000'
-    // ).txo;
-
     
+    // const valueToTransfer = kit.web3.utils.toWei('1', 'ether');
+    // console.log(valueToTransfer);
     // Send a request to the Celo wallet
     requestTxSig(
       kit,
       [
         {
           from: address,
+          value: 1000000000000000000, // 1 CELO 
           to: projectInstanceContract._address, // interact w/ address of CeloCrowdfund contract
           tx: txObject,
           estimatedGas: 200000,

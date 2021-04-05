@@ -22,6 +22,11 @@ function ListingCard(props) {
 
   var currentProgress = currentAmount / projectGoalAmount; 
 
+  console.log("TITLE: ", projectTitle, " deadline: ", fundraisingDeadline);
+  var dateOutput = new Date(fundraisingDeadline).toLocaleDateString(
+    'en-gb'
+  ); // 18/02/2019
+  
   return (
 
     <TouchableOpacity 
@@ -38,6 +43,7 @@ function ListingCard(props) {
           <Text>{projectCreator} {"\n"}</Text>
           <Text>{projectDescription} {"\n"}</Text>
 
+          <Text>{dateOutput} {"\n"}</Text>
           <Text style={styles.boldText}>${currentAmount} raised of ${projectGoalAmount}</Text>
           <ProgressBar progress={currentProgress} color='#35D07F' style={styles.progress}/>
         </View>
