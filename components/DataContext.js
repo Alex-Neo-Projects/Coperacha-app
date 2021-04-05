@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 const DataContext = createContext({
-  projectData: '', 
+  projectData: '',
 })
 
 export default DataContext; 

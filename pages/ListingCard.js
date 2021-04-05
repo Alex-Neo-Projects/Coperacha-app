@@ -35,7 +35,7 @@ function ListingCard(props) {
         <View style={styles.view}>
           <Card.Title style={styles.title}>{projectTitle}</Card.Title>
           
-          <Text>By: {projectCreator} {"\n"}</Text>
+          <Text>{projectCreator} {"\n"}</Text>
           <Text>{projectDescription} {"\n"}</Text>
 
           <Text style={styles.boldText}>${currentAmount} raised of ${projectGoalAmount}</Text>

@@ -218,7 +218,7 @@ class App extends React.Component {
     }
 
     // Current sort: Most recently created first
-    this.setState({ projectData: projectData.reverse() })
+    this.setState({ projectData : projectData.reverse() })
     this.setState({ celoCrowdfundContract: celoCrowdfundContract })
 
     const getData = async () => {
@@ -227,6 +227,9 @@ class App extends React.Component {
         const userBalance = await AsyncStorage.getItem('@userBalance');
   
         if(value !== null) {
+          console.log("1 ether: ", kit.web3.utils.toWei('1', 'ether'));
+
+          console.log("BALANCE: ", userBalance);
           this.setState({ address: value, balance: userBalance, loggedIn: true })
           console.log("user logged in");
         }

@@ -23,18 +23,23 @@ function DonationForm(props) {
   
 
   var projectInstanceContract = projectDataContext[projectId].projectInstanceContract
-  console.log(projectInstanceContract);
 
-
-  const write = async () => {
+  console.log("address: ", address);
+  console.log("Project address: ", projectInstanceContract._address);
+  
+  const donate = async () => {
     const requestId = 'fund_projects'
     const dappName = 'Coperacha'
     const callback = Linking.makeUrl('/my/path')
 
-    const txObject = await projectInstanceContract.methods.contribute().send({
-      from: address, 
-      value: 1, // TODO
-    });
+    // const txObject = await projectInstanceContract.methods.contribute().send({
+    //   from: address, 
+    //   value: 1000000000000000000, // TODO
+    // });
+    const txObject = await projectInstanceContract.methods.contribute();
+    
+    console.log(address);
+    console.log(projectInstanceContract._address);
     
     // Send a request to the Celo wallet
     requestTxSig(
@@ -71,8 +76,8 @@ function DonationForm(props) {
       <TextInput keyboardType="numeric" style={[styles.input, { borderColor: '#c0cbd3'}]} ></TextInput>
       <Text>{"\n\n\n"}</Text>
 
-      <Button title="Donate" onPress={() => navigation.navigate('DonationReceipt', {title: title})}></Button>
-      {/* <Button title="Donate" onPress={() => write()}></Button> */}
+      {/* <Button title="Donate" onPress={() => navigation.navigate('DonationReceipt', {title: title})}></Button> */}
+      <Button title="Donate" onPress={() => donate()}></Button>
     </View>
   );
 }
