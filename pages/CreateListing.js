@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { View, Text, ScrollView, StyleSheet, Button, TextInput, Dimensions, Keyboard, TouchableWithoutFeedback, Image } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { kit } from '../root';
@@ -14,12 +14,16 @@ import LogIn from '../components/LogIn';
 import firebaseStorageRef from '../components/Firebase';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-
+import AppContext from '../components/AppContext';
 
 function CreateListing(props) {
   const navigation = useNavigation();
-  const [address, setAddress] = useState(props.address);
   
+  // Get context variables
+  const context = useContext(AppContext);
+  const address = context.address; 
+  const loggedIn = context.loggedIn; 
+
   // Paload info
   const [title, onChangeTitle] = useState('');
   const [description, onChangeDescription] = useState('');
@@ -142,7 +146,7 @@ function CreateListing(props) {
   
   return (
     <View style={styles.container}>
-      {props.loggedIn ? ( 
+      {loggedIn ? ( 
       <ScrollView>
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
             <View >

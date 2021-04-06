@@ -22,18 +22,15 @@ import {
   waitForAccountAuth,
 } from '@celo/dappkit';
 import * as Linking from 'expo-linking';
-import DataContext from './components/DataContext'; 
+import AppContext from './components/AppContext'; 
 
 const Tab = createBottomTabNavigator();
-
 const HomeStack = createStackNavigator();
 
-function HomeStackScreen(props) {
+function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="Home" 
-        children={()=><Home 
-          projectData={props.projectData} loggedIn={props.loggedIn} address={props.address}/>}
+      <HomeStack.Screen name="Home" component={Home}
         options={{ headerShown: false }}
       />
       <HomeStack.Screen name="FundraiserListing"  
@@ -81,7 +78,6 @@ function ManageStackScreen(props) {
       <HomeStack.Screen name="Manage"
         children={()=>
           <Manage 
-            loggedIn={props.loggedIn}
             handleLogIn={props.handleLogIn}
             />
           }
@@ -90,7 +86,6 @@ function ManageStackScreen(props) {
       <HomeStack.Screen name="Settings"  
         children={()=>
           <Settings 
-            loggedIn={props.loggedIn}
             handleLogOut={props.handleLogOut}
             handleLogIn={props.handleLogIn}
           />
@@ -165,14 +160,18 @@ class App extends React.Component {
     // Get the user account balance (cUSD)
     const cUSDBalanceBig = await stableToken.balanceOf(kit.defaultAccount);
     
+    const balance = cUSDBalanceBig / 1E18
+
     // Convert from a big number to a string
-    let cUSDBalance = cUSDBalanceBig.toString();
+    let cUSDBalance = balance.toString();
     
     const storeData = async () => {
       try {
         await AsyncStorage.setItem('@userAddress', dappkitResponse.address)
         await AsyncStorage.setItem('@userBalance', cUSDBalance)
         
+        console.log("Balance: ", cUSDBalance);
+
         this.setState({loggedIn: true})
         console.log("Saved login data to local storage");
       } catch (e) {
@@ -227,13 +226,9 @@ class App extends React.Component {
         const userBalance = await AsyncStorage.getItem('@userBalance');
   
         if(value !== null) {
-          console.log("1 ether: ", kit.web3.utils.toWei('1', 'ether'));
-
-          console.log("BALANCE: ", userBalance);
           this.setState({ address: value, balance: userBalance, loggedIn: true })
           console.log("user logged in");
-          console.log("BALANCE: ", this.state.balance);
-
+          console.log("BALANCE in App.js: ", this.state.balance);
         }
         else {
           console.log('User not logged in');
@@ -249,7 +244,11 @@ class App extends React.Component {
 
   render() {
     return (
-      <DataContext.Provider value={this.state.projectData}>
+      <AppContext.Provider value={{ projectData: this.state.projectData, 
+        loggedIn: this.state.loggedIn,
+        address: this.state.address,
+        balance: this.state.balance}}>
+
         <NavigationContainer>
           <StatusBar  barStyle="dark-content" />
 
@@ -283,17 +282,11 @@ class App extends React.Component {
             }}
           > 
             <Tab.Screen name="Home"
-              children={()=><HomeStackScreen 
-                projectData={this.state.projectData} 
-                loggedIn={this.state.loggedIn}
-                address={this.state.address}
-                />
+              children={()=><HomeStackScreen />
               }
             />
             <Tab.Screen name="Create" 
               children={()=><CreateStackScreen 
-                loggedIn={this.state.loggedIn}
-                address={this.state.address}
                 celoCrowdfundContract={this.state.celoCrowdfundContract}
                 handleLogIn={this.logIn}
                 />
@@ -301,7 +294,6 @@ class App extends React.Component {
             />
             <Tab.Screen name="Manage"
               children={()=><ManageStackScreen  
-                loggedIn={this.state.loggedIn}
                 handleLogOut={this.logOut}
                 handleLogIn={this.logIn}
                 />
@@ -309,7 +301,7 @@ class App extends React.Component {
             />
           </Tab.Navigator>
         </NavigationContainer>
-      </DataContext.Provider>
+      </AppContext.Provider>
     );
   }
 }
