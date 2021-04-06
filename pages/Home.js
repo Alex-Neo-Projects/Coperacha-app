@@ -36,7 +36,7 @@ function Home(props) {
 
   return (
     <ScrollView> 
-      <Text style={styles.header}> Ongoing Fundraisers </Text>
+      <Text style={styles.headerInitial}> Ongoing <Text style={styles.header}>Fundraisers </Text> </Text>
       <View style={styles.container}>
         {projectData.map((project, index) => {
           // Need to reverse order bc the shown list is backwards. -1 bc arrays start at 0 
@@ -50,7 +50,7 @@ function Home(props) {
 }
 
 const styles = StyleSheet.create({
-  header: { 
+  headerInitial: { 
     fontSize: 25,
     color: '#2E3338',
     fontFamily: 'Jost_600SemiBold',
@@ -58,6 +58,11 @@ const styles = StyleSheet.create({
     marginTop: 60,
     marginLeft: 14,
     marginBottom: 20,
+  },
+  header: {
+    fontSize: 25,
+    color: '#2E3338',
+    fontFamily: 'Jost_600SemiBold',
   },
   container: {
     flex: 1,

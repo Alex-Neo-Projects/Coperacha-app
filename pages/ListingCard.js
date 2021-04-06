@@ -27,6 +27,8 @@ function ListingCard(props) {
   var projectImageLink = data.projectImageLink;
   var projectTitle = data.projectTitle; 
 
+  console.log(projectImageLink);
+
   var currentProgress = currentAmount / projectGoalAmount; 
 
   console.log("TITLE: ", projectTitle, " deadline: ", fundraisingDeadline);
