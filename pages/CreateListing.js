@@ -154,7 +154,7 @@ function CreateListing(props) {
 
               {/* Image Picker */}
               <Icon style={styles.image} raised name='photo-camera' onPress={pickImage} />
-              {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+              {image && <Image source={{ uri: image, cache: 'only-if-cached' }} style={{ width: 200, height: 200 }} />}
 
               {/* Title  */}
               <Text style={styles.headers}>Title</Text>

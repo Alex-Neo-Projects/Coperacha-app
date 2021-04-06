@@ -237,7 +237,7 @@ class App extends React.Component {
         // error reading value
         console.log("Error: ", e);
       }
-    }
+    }    
 
     getData()
   }
