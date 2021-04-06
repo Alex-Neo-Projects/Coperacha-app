@@ -21,8 +21,7 @@ function DonationForm(props) {
   const projectDataContext = appContext.projectData; 
 
   var projectId = props.route.params.projectId;
-  var address = props.route.params.address; 
-
+  var address = appContext.address; 
 
   var projectInstanceContract = projectDataContext[projectId].projectInstanceContract
 
@@ -35,7 +34,14 @@ function DonationForm(props) {
     const callback = Linking.makeUrl('/my/path')
 
     const txObject = await projectInstanceContract.methods.contribute();
-   
+    let stabletoken = await kit.contracts.getStableToken()
+
+    // get access to the data 
+    let cUSDtx = await stabletoken.transfer(projectInstanceContract._address, 1).txo;
+
+    // console.log("txObject: ", txObject); 
+    // console.log("encode ABI: ", cUSDtx); 
+
     requestTxSig(
       kit,
       [
@@ -58,7 +64,7 @@ function DonationForm(props) {
     // Get the transaction result, once it has been included in the Celo blockchain
     let result = await toTxResult(kit.web3.eth.sendSignedTransaction(tx)).waitReceipt()
 
-    console.log(`Donated to project transaction receipt: `, result)  
+    console.log(`Donated to project transaction receipt: `, result);
   }
 
   return (

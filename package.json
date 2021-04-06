@@ -45,7 +45,7 @@
     "react-native-image-picker": "^3.3.2",
     "react-native-mmkv": "^1.1.6",
     "react-native-modal-datetime-picker": "^9.2.0",
-    "react-native-paper": "^4.7.2",
+    "react-native-onboarding-swiper": "^1.1.4",
     "react-native-pressable-opacity": "^1.0.1",
     "react-native-progress": "^4.1.2",
     "react-native-reanimated": "~1.13.0",
