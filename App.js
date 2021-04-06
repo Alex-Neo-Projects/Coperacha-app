@@ -187,10 +187,15 @@ class App extends React.Component {
    
   componentDidMount = async () => {
 
-    Font.loadAsync({
-      'proxima': require('./assets/fonts/proxima.ttf'),
-      'proximaBold': require('./assets/fonts/ProximaNovaBold.ttf')
-    });
+    try {
+      await Font.loadAsync({
+        'proxima': require('./assets/fonts/proxima.ttf'),
+        'proximanova_bold': require('./assets/fonts/proximanova_bold.ttf'),
+      });
+    } catch (error){
+      console.log(error);
+    }
+  
 
   
   async getFeedData() {

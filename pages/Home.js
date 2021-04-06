@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   headerInitial: { 
     fontSize: 25,
     color: '#2E3338',
-    fontFamily: 'proximaBold',
+    fontFamily: 'proximanova_bold',
 
     marginTop: 60,
     marginLeft: 10,
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 25,
     color: '#35D07F',
-    fontFamily: 'proximaBold',
+    fontFamily: 'proximanova_bold',
   },
   container: {
     flex: 1,
