@@ -2,8 +2,7 @@ import React, { useContext } from 'react'
 import { View, Text, StyleSheet } from 'react-native';
 import LogOut from '../components/LogOut'; 
 import LogIn from '../components/LogOut'; 
-import AppContext from '../components/AppContext';
-import { web3 } from '../root';
+import AppContext from '../components/AppContext';  
 
 function Settings(props) {
   const context = useContext(AppContext);

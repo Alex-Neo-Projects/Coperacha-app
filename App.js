@@ -16,6 +16,7 @@ import DonationReceipt from './pages/DonationReceipt';
 import DonationForm from './pages/DonationForm'; 
 import Settings from './pages/Settings';
 import CreateReceipt from './pages/CreateReceipt';
+import AppOnboarding from './pages/AppOnboarding';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {   
   requestAccountAddress,
@@ -111,7 +112,8 @@ class App extends React.Component {
     projectInstanceContract: '', 
     address: 'Not logged in', 
     balance: 'Not logged in', 
-    loggedIn: false
+    loggedIn: false, 
+    onboardingFinished: false, 
   }
 
   logOut() {
@@ -190,6 +192,8 @@ class App extends React.Component {
       'proximaBold': require('./assets/fonts/ProximaNovaBold.ttf')
     });
 
+  
+  async getFeedData() {
     // Check the Celo network ID
     const networkId = await web3.eth.net.getId();
     console.log("NETWORK ID: ", networkId);
@@ -248,6 +252,13 @@ class App extends React.Component {
 
     getData()
   }
+  componentDidMount = async () => {
+    const onboard = await AsyncStorage.getItem('@onboardingFinished');
+    // await AsyncStorage.setItem("@onboardingFinished", 'false');
+    this.setState({ onboardingFinished: onboard })
+
+    this.getFeedData();
+  }
 
   render() {
     return (
@@ -255,15 +266,14 @@ class App extends React.Component {
         loggedIn: this.state.loggedIn,
         address: this.state.address,
         balance: this.state.balance}}>
-
+        
         <NavigationContainer>
-          <StatusBar  barStyle="dark-content" />
-
+          <StatusBar barStyle="dark-content" />
           <Tab.Navigator
             screenOptions={({ route }) => ({
               tabBarIcon: ({ focused, color, size }) => {
                 let iconName;
-    
+                
                 if (route.name === 'Home') {
                   iconName = focused
                     ? 'home'
@@ -289,24 +299,32 @@ class App extends React.Component {
               inactiveTintColor: 'gray',
             }}
           > 
-            <Tab.Screen name="Home"
-              children={()=><HomeStackScreen />
-              }
-            />
-            <Tab.Screen name="Create" 
-              children={()=><CreateStackScreen 
-                celoCrowdfundContract={this.state.celoCrowdfundContract}
-                handleLogIn={this.logIn}
-                />
-              }
-            />
-            <Tab.Screen name="Manage"
-              children={()=><ManageStackScreen  
-                handleLogOut={this.logOut}
-                handleLogIn={this.logIn}
-                />
-              }
-            />
+          {/* {this.state.onboardingFinished === 'true' ? ( */}
+            <>
+              <Tab.Screen name="Home"
+                children={()=><HomeStackScreen />
+                }
+              />
+              <Tab.Screen name="Create" 
+                children={()=><CreateStackScreen 
+                  celoCrowdfundContract={this.state.celoCrowdfundContract}
+                  handleLogIn={this.logIn}
+                  />
+                }
+              />
+              <Tab.Screen name="Manage"
+                children={()=><ManageStackScreen  
+                  handleLogOut={this.logOut}
+                  handleLogIn={this.logIn}
+                  />
+                }
+              />
+              </>
+          {/* ) : (
+            <>
+            <Tab.Screen name="Onboarding" component={AppOnboarding}/>
+            </>
+          )} */}
           </Tab.Navigator>
         </NavigationContainer>
       </AppContext.Provider>

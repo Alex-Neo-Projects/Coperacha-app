@@ -7,7 +7,7 @@ import AppContext from '../components/AppContext';
 function Manage(props) {
   // Set the defaults for the state
   const navigation = useNavigation();
-
+  
   const context = useContext(AppContext);
   const loggedIn = context.loggedIn; 
   
