@@ -185,18 +185,6 @@ class App extends React.Component {
     storeData();
   }
    
-  componentDidMount = async () => {
-
-    try {
-      await Font.loadAsync({
-        'proxima': require('./assets/fonts/proxima.ttf'),
-        'proximanova_bold': require('./assets/fonts/proximanova_bold.ttf'),
-      });
-    } catch (error){
-      console.log(error);
-    }
-  
-
   
   async getFeedData() {
     // Check the Celo network ID
@@ -257,7 +245,17 @@ class App extends React.Component {
 
     getData()
   }
+
   componentDidMount = async () => {
+    try {
+      await Font.loadAsync({
+        'proxima': require('./assets/fonts/proxima.ttf'),
+        'proximanova_bold': require('./assets/fonts/proximanova_bold.ttf'),
+      });
+    } catch (error){
+      console.log(error);
+    }
+    
     const onboard = await AsyncStorage.getItem('@onboardingFinished');
     // await AsyncStorage.setItem("@onboardingFinished", 'false');
     this.setState({ onboardingFinished: onboard })
