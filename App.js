@@ -24,6 +24,7 @@ import {
 } from '@celo/dappkit';
 import * as Linking from 'expo-linking';
 import AppContext from './components/AppContext'; 
+import * as Font from 'expo-font';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -183,6 +184,14 @@ class App extends React.Component {
     }
     storeData();
   }
+   
+  componentDidMount = async () => {
+
+    Font.loadAsync({
+      'proxima': require('./assets/fonts/proxima.ttf'),
+      'proximaBold': require('./assets/fonts/ProximaNovaBold.ttf')
+    });
+
   
   async getFeedData() {
     // Check the Celo network ID
@@ -285,6 +294,7 @@ class App extends React.Component {
               },
             })}
             tabBarOptions={{
+              style: {height: 80},
               activeTintColor: '#35D07F',
               inactiveTintColor: 'gray',
             }}

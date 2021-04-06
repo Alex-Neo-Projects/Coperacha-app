@@ -145,13 +145,13 @@ function CreateListing(props) {
   }
   
   return (
-    <View style={styles.container}>
+    <View>
       {loggedIn ? ( 
-      <ScrollView>
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
-            <View >
-              <Text style={styles.bigText}>Create Fundraiser</Text>
-
+            <View>
+              <Text style={styles.headerInitial}> Create <Text style={styles.header}>Fundraiser </Text> </Text>
+              <View  style={styles.container}> 
+              
               {/* Image Picker */}
               <Icon style={styles.image} raised name='photo-camera' onPress={pickImage} />
               {image && <Image source={{ uri: image, cache: 'only-if-cached' }} style={{ width: 200, height: 200 }} />}
@@ -169,23 +169,22 @@ function CreateListing(props) {
               <TextInput style={styles.textbox} keyboardType='numeric' onChangeText={onChangeAmount} placeholder='Amount' value={amount}/>
     
               {/* Deadline */}
-              <Button title="Pick a deadline" onPress={showDatePicker} />
+              <Button title="Pick a deadline" style={styles.deadlineButton} onPress={showDatePicker} />
               <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirm} onCancel={hideDatePicker} onChange={handleChange}/>
               
               {/* Testinggg */}
               <Text style={styles.headers}> {deadline} </Text>
-              
-              {/* <Button style={{padding: 30}} title="Create Project" onPress={()=> write()} /> */}
 
-              <Button title = "Create Fundraiser" onPress={()=>{
+              <Button style={styles.createFundraiserButton} title = "Create Fundraiser" onPress={()=>{
                 write();
 
                 // User can't go back
                 navigation.replace('CreateReceipt');
               }} />
+              
+              </View>
             </View>
           </TouchableWithoutFeedback>
-        </ScrollView>
       ) : (
         <View >
           <LogIn reason={"to create a fundraiser"} handleLogIn={props.handleLogIn}/>
@@ -197,22 +196,25 @@ function CreateListing(props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginLeft: 10
+    marginLeft: 10,
+    alignItems : 'flex-start',
+    justifyContent : 'flex-start',
   },
-  bigText: { 
-    paddingTop: 40,
-    fontSize: 35, 
-    fontWeight: 'bold',
+  headerInitial: { 
+    fontSize: 25,
+    color: '#2E3338',
+    fontFamily: 'proximaBold',
+
+    marginTop: 60,
+    marginLeft: 10,
   },
-  title: {
-    fontSize: 30, 
-    marginVertical: 40,
-    marginBottom: 20,
-    fontWeight: 'bold'
-  }, 
-  headers: {
-    fontSize: 20, 
-    fontWeight: 'bold'
+  headers:{
+    fontSize: 20,
+    color: '#2E3338',
+    fontFamily: 'proximaBold',
+    marginLeft: 4,
+    marginRight: 10,
+    marginBottom: 6
   },
   image: {
     marginBottom: 10
@@ -220,11 +222,13 @@ const styles = StyleSheet.create({
   textbox: {
     minHeight: 40,
     width: Dimensions.get('window').width - 20,
+    marginLeft: 4,
     paddingLeft: 10,
     paddingRight: 10,
     marginBottom: 30,
     borderWidth: 1.3,
-    borderRadius: 10
+    borderRadius: 10,
+    borderColor: '#ABADAF'
   }, 
   textboxDescription: {
     minHeight: 100,
@@ -233,7 +237,14 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     marginBottom: 30,
     borderWidth: 1.3,
-    borderRadius: 10
+    borderRadius: 10,
+    borderColor: '#ABADAF'
+  }, 
+  deadlineButton: {
+
+  }, 
+  createFundraiserButton: {
+    
   }
 });
 
