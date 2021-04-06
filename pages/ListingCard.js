@@ -38,12 +38,12 @@ function ListingCard(props) {
 
         <View style={styles.textView}>
           <Text style={styles.titleText}>{projectTitle} </Text>
-          <Text style={styles.creatorInitialText}>Fundraiser created by <Text style={styles.creatorText}> {projectCreator}... </Text> </Text>
+          <Text style={styles.creatorInitialText}>Fundraiser created by <Text style={styles.creatorText}>{projectCreator}... </Text> </Text>
           <Text style={styles.projectDescriptionText}>{projectDescription} </Text>
           <Text style={styles.currentRaisedText}>${currentAmount} raised of ${projectGoalAmount} </Text>
 
           <ProgressBar progress={currentProgress} color='#35D07F' style={styles.progress}/>
-          <Text style={styles.dateText}> Fundraising ends on  {dateOutput} </Text>
+          <Text style={styles.dateText}> Fundraising ends on {dateOutput} </Text>
         </View>
       </View>      
  
@@ -74,29 +74,34 @@ const styles = StyleSheet.create({
     marginRight: 5  
 }, 
   titleText: {
-    fontSize: 24, 
+    fontFamily: 'proximanova_bold',
+    fontSize: 25, 
     color: '#2E3338',    
   },
   creatorInitialText: {
-    fontSize: 18, 
+    fontFamily: 'proxima',
+    fontSize: 14, 
     color: '#2E3338',
-    marginTop: 1, 
+    marginTop: 5, 
     marginRight: 3, 
     marginLeft: 3
   }, 
   creatorText: {
-    fontSize: 15,
+    fontFamily: 'proxima',
+    fontSize: 14,
     color: '#767676',
   },
   projectDescriptionText: {
-    fontSize: 19,
+    fontFamily: 'proxima',
+    fontSize: 16,
     color: '#2E3338',
     marginTop: 8, 
     marginLeft: 3,
     marginRight: 6
   },
   currentRaisedText: {
-    fontSize: 18,
+    fontFamily: 'proxima',
+    fontSize: 16,
     color: '#2E3338',
     marginTop: 20,
     marginLeft: 3
@@ -108,6 +113,7 @@ const styles = StyleSheet.create({
     marginLeft: 3,
   },
   dateText: {
+    fontFamily: 'proximanova_bold',
     fontSize: 15,
     color: '#2E3338',
     position: 'absolute', 

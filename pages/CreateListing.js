@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { View, Text, ScrollView, StyleSheet, Button, TextInput, Dimensions, Keyboard, TouchableWithoutFeedback, Image } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TextInput, Dimensions, Keyboard, TouchableWithoutFeedback, Image, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { kit } from '../root';
 import { useNavigation } from '@react-navigation/native';
@@ -15,6 +15,7 @@ import firebaseStorageRef from '../components/Firebase';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AppContext from '../components/AppContext';
+import { Button } from 'react-native-elements';
 
 function CreateListing(props) {
   const navigation = useNavigation();
@@ -30,10 +31,14 @@ function CreateListing(props) {
   const [amount, onChangeAmount] = useState(0);
   const [deadline, onChangeDeadline] = useState(0);
   const [image, imageResponse] = useState(null);
+  const [imageState, setImageState] = useState('No Image Selected'); 
   const [imageDownloadUrl, setImageDownloadUrl] = useState('');
 
   // ui
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  var currentDate = new Date();
+  console.log(currentDate);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -53,8 +58,7 @@ function CreateListing(props) {
     console.log(differenceDateTime);
 
     if(differenceDateTime < 0){
-      console.log("ERRRRORRRR");
-
+      onChangeDeadline(0);
     }else{
       onChangeDeadline(differenceDateTime);
     }
@@ -93,18 +97,61 @@ function CreateListing(props) {
     var uploadImage = firebaseStorageRef.ref('fundraiserImages').child(storageFileName).put(blob);
 
     uploadImage.on('state_changed', (snapshot) => {
-        console.log('Uploading');
+      setImageState('Image Uploading');
     }, (error) => {
-        console.log(error);
+        setImageState(null);
     }, () => {
         uploadImage.snapshot.ref.getDownloadURL().then((downloadURL) => {
             console.log(downloadURL);
             setImageDownloadUrl(downloadURL);
+            setImageState('Image Uploaded');
         });
     });
   }
   
   const write = async () => {
+    //problem with image upload
+    if(imageState == null){
+      Alert.alert(
+        "Reupload image!"
+      ); 
+
+      return;
+    }
+
+    if(title.length == 0){
+      Alert.alert(
+        "Add a title!"
+      );
+
+      return;
+    }
+
+    if(description.length == 0){
+      Alert.alert(
+        "Add a description!"
+      );
+
+      return;
+    }
+
+    // if fundraising amount is 0 then alert 
+    if(amount <= 0){
+      Alert.alert(
+        "Fundraising amount must be greater than 0 cUSD!"
+      ); 
+
+      return;
+    }
+
+    if(deadline == 0){
+      Alert.alert(
+        "Add a deadline!"
+      );
+
+      return;
+    }
+
     const requestId = 'update_projects'
     const dappName = 'Coperacha'
     const callback = Linking.makeUrl('/my/path')
@@ -140,9 +187,14 @@ function CreateListing(props) {
     
     // Get the transaction result, once it has been included in the Celo blockchain
     let result = await toTxResult(kit.web3.eth.sendSignedTransaction(tx)).waitReceipt()
-    
-    console.log(`Project created contract update transaction receipt: `, result)  
+  
+    console.log(`Project created contract update transaction receipt: `, result);
+
+    // User can't go back
+    navigation.replace('CreateReceipt');
   }
+
+
   
   return (
     <View>
@@ -150,39 +202,39 @@ function CreateListing(props) {
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
             <View>
               <Text style={styles.headerInitial}> Create <Text style={styles.header}>Fundraiser </Text> </Text>
-              <View  style={styles.container}> 
-              
-              {/* Image Picker */}
-              <Icon style={styles.image} raised name='photo-camera' onPress={pickImage} />
-              {image && <Image source={{ uri: image, cache: 'only-if-cached' }} style={{ width: 200, height: 200 }} />}
+                <View  style={styles.container}> 
+                
+                  {/* Image Picker */}
+                  <View style={styles.imagePickerView}> 
+                    <Icon style={styles.image} raised name='photo-camera' size={18} onPress={pickImage} />
+                    <Text style={styles.imageStateText}> {imageState} </Text>
+                    {image && <Image source={{ uri: image, cache: 'only-if-cached' }} style={styles.imagePreview} />}
 
-              {/* Title  */}
-              <Text style={styles.headers}>Title</Text>
-              <TextInput style={styles.textbox} onChangeText={onChangeTitle} onSubmitEditing={Keyboard.dismiss} placeholder='Title' value={title}/>
+                  </View> 
+                  
+                  {/* Title  */}
+                  <Text style={styles.headers}>Title</Text>
+                  <TextInput style={styles.textbox} onChangeText={onChangeTitle} onSubmitEditing={Keyboard.dismiss} placeholder='Title' maxLength={50} value={title}/>
 
-              {/* Description */}
-              <Text style={styles.headers}>Description</Text>
-              <TextInput multiline={true} numberOfLines={10} style={styles.textboxDescription} onChangeText={onChangeDescription} placeholder='Description' value={description}/>
-              
-              {/* Amount to raise (cUSD) */}
-              <Text style={styles.headers}>Fundraising amount (cUSD)</Text>
-              <TextInput style={styles.textbox} keyboardType='numeric' onChangeText={onChangeAmount} placeholder='Amount' value={amount}/>
-    
-              {/* Deadline */}
-              <Button title="Pick a deadline" style={styles.deadlineButton} onPress={showDatePicker} />
-              <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirm} onCancel={hideDatePicker} onChange={handleChange}/>
-              
-              {/* Testinggg */}
-              <Text style={styles.headers}> {deadline} </Text>
+                  {/* Description */}
+                  <Text style={styles.headers}>Description</Text>
+                  <TextInput multiline={true} numberOfLines={10} style={styles.textboxDescription} onChangeText={onChangeDescription} placeholder='Description' maxLength={300} value={description}/>
+                  
+                  {/* Amount to raise (cUSD) */}
+                  <Text style={styles.headers}>Fundraising amount (cUSD)</Text>
+                  <TextInput style={styles.textbox} keyboardType='numeric' onChangeText={onChangeAmount} placeholder='Amount' value={amount}/>
+        
+                  {/* Deadline */}
+                  <Button title="Pick a deadline" buttonStyle={styles.deadlineButton} titleStyle={styles.deadlineTextStyle} onPress={showDatePicker} raised={true}  type="outline"/>
+                  <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirm} onCancel={hideDatePicker} onChange={handleChange}/>
+                  
+                  <Text style={styles.deadlineText}> {deadline} days from now </Text>
 
-              <Button style={styles.createFundraiserButton} title = "Create Fundraiser" onPress={()=>{
-                write();
-
-                // User can't go back
-                navigation.replace('CreateReceipt');
-              }} />
-              
-              </View>
+                  <Button style={styles.createFundraiserButton} buttonStyle={styles.fundraiserButtonStyle} titleStyle={styles.fundraiserTextStyle} raised={true}  type="outline" title = "Create Fundraiser" onPress={()=>{
+                    write();
+                  }} />
+                
+                </View>
             </View>
           </TouchableWithoutFeedback>
       ) : (
@@ -203,7 +255,7 @@ const styles = StyleSheet.create({
   headerInitial: { 
     fontSize: 25,
     color: '#2E3338',
-    fontFamily: 'proximaBold',
+    fontFamily: 'proximanova_bold',
 
     marginTop: 60,
     marginLeft: 10,
@@ -211,18 +263,31 @@ const styles = StyleSheet.create({
   headers:{
     fontSize: 20,
     color: '#2E3338',
-    fontFamily: 'proximaBold',
+    fontFamily: 'proximanova_bold',
     marginLeft: 4,
     marginRight: 10,
     marginBottom: 6
   },
+  imagePickerView: {
+    flexDirection: "row",
+    marginTop: 10, 
+    marginBottom: 10,
+  },
   image: {
-    marginBottom: 10
+    
+  },
+  imageStateText: {
+    marginTop: 18
+  }, 
+  imagePreview: {
+    marginLeft: 140, 
+    width: 50, 
+    height: 50
   },
   textbox: {
     minHeight: 40,
     width: Dimensions.get('window').width - 20,
-    marginLeft: 4,
+    marginLeft: 3,
     paddingLeft: 10,
     paddingRight: 10,
     marginBottom: 30,
@@ -233,18 +298,40 @@ const styles = StyleSheet.create({
   textboxDescription: {
     minHeight: 100,
     width: Dimensions.get('window').width - 20,
+    marginLeft: 3,
     paddingLeft: 10,
     paddingRight: 10,
     marginBottom: 30,
     borderWidth: 1.3,
     borderRadius: 10,
     borderColor: '#ABADAF'
-  }, 
+  },
+  deadlineText: {
+    fontFamily: 'proxima',
+    color: '#2E3338',
+    fontSize: 20,
+    marginTop: 20,
+    marginBottom: 50
+  },
   deadlineButton: {
-
+    borderColor: '#DDDDDD'
   }, 
+  deadlineTextStyle: {
+    fontFamily: 'proxima',
+    fontSize: 18, 
+    color: '#2E3338'
+  },
   createFundraiserButton: {
-    
+    borderColor: '#DDDDDD',
+    width: Dimensions.get('window').width - 20,
+  }, 
+  fundraiserButtonStyle: {
+    borderColor: '#DDDDDD'
+  },
+  fundraiserTextStyle: {
+    fontFamily: 'proxima',
+    fontSize: 18, 
+    color: '#2E3338'
   }
 });
 
