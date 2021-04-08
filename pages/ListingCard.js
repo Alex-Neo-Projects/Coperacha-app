@@ -28,7 +28,7 @@ function ListingCard(props) {
   
   return (
     <TouchableOpacity 
-      onPress={() => navigation.navigate('FundraiserListing', {projectId: props.projectId, loggedIn: props.loggedIn, address: props.address, projectData: data})}
+      onPress={() => navigation.navigate('FundraiserListing', {projectId: props.projectId, loggedIn: props.loggedIn, address: props.address, projectData: data, nav: navigation})}
       activeOpacity={0.8}
       // Tweak so cards don't get opaque on scroll
       delayPressIn={50}>   

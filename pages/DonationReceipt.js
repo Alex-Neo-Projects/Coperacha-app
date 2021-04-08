@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 function DonationReceipt(props) {
-  const navigation = useNavigation();
+  const navigation = props.route.params.nav;
   
   var title = props.route.params.title;
 
@@ -15,8 +15,8 @@ function DonationReceipt(props) {
           
       <Image style={styles.Image} source={require("../assets/give.png")}></Image>
 
-      <Button title={"Home"}
-          onPress={() => navigation.navigate('Home')}></Button>
+      <Button title={"Done"}
+          onPress={() => navigation.replace('Home')}></Button>
     </View>
   );
 }
