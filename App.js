@@ -309,7 +309,7 @@ class App extends React.Component {
               inactiveTintColor: 'gray',
             }}
           > 
-          {this.state.onboardingFinished === 'true' ? (
+          {/* {this.state.onboardingFinished === 'true' ? ( */}
             <>
               <Tab.Screen name="Home"
                 children={()=><HomeStackScreen 
@@ -331,11 +331,11 @@ class App extends React.Component {
                 }
               />
               </>
-          ) : (
+          {/* ) : (
             <>
             <Tab.Screen name="Onboarding" component={AppOnboarding}/>
             </>
-          )} 
+          )}  */}
           </Tab.Navigator>
         </NavigationContainer>
       </AppContext.Provider>
