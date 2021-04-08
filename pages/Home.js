@@ -41,10 +41,7 @@ function Home() {
       <Text style={styles.header}> Ongoing Fundraisers </Text>
       <View style={styles.container}>
         {projectData.map((project, index) => {
-          // Need to reverse order bc the shown list is backwards. -1 bc arrays start at 0 
-          var projectId = projectData.length - index - 1; 
-
-          return <ListingCard key={index} projectId={projectId} projectData={project.result}/>
+          return <ListingCard key={index} projectId={index} projectData={project.result}/>
         })}
       </View>
     </ScrollView>
