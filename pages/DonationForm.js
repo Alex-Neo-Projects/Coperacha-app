@@ -11,6 +11,7 @@ import {
 import { toTxResult } from "@celo/connect";
 import * as Linking from 'expo-linking';
 import AppContext from '../components/AppContext';
+import BigNumber from "bignumber.js";
 
 function DonationForm(props) {
   const navigation = useNavigation();
@@ -23,45 +24,47 @@ function DonationForm(props) {
   var projectId = props.route.params.projectId;
   var address = appContext.address; 
 
-  var projectInstanceContract = projectDataContext[projectId].projectInstanceContract
+  console.log(projectId);
+  var projectInstanceContract = projectDataContext[projectId].projectInstanceContract;
 
   console.log("address: ", address);
   console.log("Project address: ", projectInstanceContract._address);
   
+  const txObject = projectInstanceContract.methods.getDetails().call().then((result) => {
+    console.log(result);
+  });
+
   const donate = async () => {
     const requestId = 'fund_projects'
     const dappName = 'Coperacha'
     const callback = Linking.makeUrl('/my/path')
-
+    
     const txObject = await projectInstanceContract.methods.contribute();
-    let stabletoken = await kit.contracts.getStableToken()
-
-    // get access to the data 
-    let cUSDtx = await stabletoken.transfer(projectInstanceContract._address, 1).txo;
-
-    // console.log("txObject: ", txObject); 
-    // console.log("encode ABI: ", cUSDtx); 
+    
+    // const stableToken = await kit.contracts.getStableToken();
+    // // get access to the data 
+    // let cUSDtx = await stableToken.transfer(projectInstanceContract._address, 10).txo;
 
     requestTxSig(
       kit,
       [
         {
           from: address,
-          value: 1000000000000000000, // 1 CELO 
           to: projectInstanceContract._address, // interact w/ address of CeloCrowdfund contract
           tx: txObject,
-          estimatedGas: 200000,
+          value: 2000000000000000000, 
+          estimatedGas: 300000,
           feeCurrency: FeeCurrency.cUSD
         }
       ],
       { requestId, dappName, callback }
     )
 
-    // Get the response from the Celo wallet
+    // // Get the response from the Celo wallet
     const dappkitResponse = await waitForSignedTxs(requestId)
     const tx = dappkitResponse.rawTxs[0]
     
-    // Get the transaction result, once it has been included in the Celo blockchain
+    // // // Get the transaction result, once it has been included in the Celo blockchain
     let result = await toTxResult(kit.web3.eth.sendSignedTransaction(tx)).waitReceipt()
 
     console.log(`Donated to project transaction receipt: `, result);

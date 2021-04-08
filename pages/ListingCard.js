@@ -11,7 +11,7 @@ function ListingCard(props) {
   var data = props.projectData; 
 
   //Data 
-  var currentAmount = data.currentAmount; 
+  var currentAmount = data.currentAmount / 1E18; // Gotta convert from bigNumber to regular integer; 
   var currentState = data.currentState;
   var fundraisingDeadline = data.fundRaisingDeadline; 
   var projectCreator = data.projectCreator.toString().substring(0, 16);
