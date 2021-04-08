@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react'
 import { View, Text, Alert, Button, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { TextInput } from 'react-native-gesture-handler';
 import { kit } from '../root';
 import {   
@@ -13,12 +12,13 @@ import * as Linking from 'expo-linking';
 import AppContext from '../components/AppContext';
 import BigNumber from "bignumber.js";
 import LogIn from '../components/LogIn';
+import { useNavigation } from '@react-navigation/core';
 
 function DonationForm(props) {
   const navigation = useNavigation();
 
-  [name, onChangeName] = useState('');
-  [donationAmount, onChangeDonationAmount] = useState(0);
+  var [name, onChangeName] = useState('');
+  var [donationAmount, onChangeDonationAmount] = useState(0);
 
   var title = props.route.params.title;
   
@@ -85,7 +85,7 @@ function DonationForm(props) {
 
     console.log(`Donated to project transaction receipt: `, result);
     
-    navigation.replace('DonationReceipt', {title: title});
+    navigation.replace('DonationReceipt', {title: title, nav: navigation});
   }
 
   return (

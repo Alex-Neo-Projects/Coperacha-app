@@ -1,10 +1,11 @@
 import React from 'react'
-import { View, Text, ScrollView, Image, StyleSheet, Button } from 'react-native';
+import { View, Text, ScrollView, Image, StyleSheet, Button, Icon } from 'react-native';
 import ProgressBar from 'react-native-progress/Bar';
 import { useNavigation } from '@react-navigation/native';
+import CachedImage from 'react-native-expo-cached-image';
 
 function FundraiserListing(props) {
-  const navigation = useNavigation();
+  var navigation = props.route.params.nav;
   
   var projectId = props.route.params.projectId;
   var loggedIn = props.route.params.loggedIn; 
@@ -23,18 +24,20 @@ function FundraiserListing(props) {
   
   return (
     <ScrollView>
-      
-      <Image source={imageURL} style={{height: 200, resizeMode : 'stretch', marginBottom:10}} />
+      <CachedImage source={imageURL} style={{height: 250, resizeMode : 'cover', marginBottom:10}} />
+
+      <Button title="Back" onPress={()=>{navigation.goBack()}} />
+
       <View style={{margin: 10}}>
         <Text style={styles.title}>{title}</Text>
         
-        <Text style={styles.smallText, { fontWeight: 'bold'}}>${currentAmount} raised of ${goal} goal</Text>
+        <Text style={styles.smallText, { fontWeight: 'bold'}}>${currentAmount.toString()} raised of ${goal} goal</Text>
         <ProgressBar progress={progress} width={400} color={'#35D07F'} style={{marginBottom:10}}/>
         
         <Text style={styles.regularText}>{description}{"\n"}</Text>
         
         <Button title={"Donate"}
-          onPress={() => navigation.navigate('DonationForm', {projectId: projectId, loggedIn: loggedIn, address: address, title: title})}></Button>
+          onPress={() => navigation.navigate('DonationForm', {projectId: projectId, loggedIn: loggedIn, address: address, title: title, nav: navigation})}></Button>
       </View>
     </ScrollView>
   );

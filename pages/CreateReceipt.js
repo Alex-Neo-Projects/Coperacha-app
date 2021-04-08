@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 function CreateReceipt() {
   const navigation = useNavigation();
+
   return (
     <View>
       <Text style={styles.bigText}>Congratulations! {"\n\n"}</Text>
@@ -12,7 +13,7 @@ function CreateReceipt() {
       <Text style={styles.title}>Your fundraiser is now live on Coperacha {"\n\n"}</Text>
 
       <Button title={"Home"}
-          onPress={() => navigation.navigate('Create')} />
+          onPress={() => navigation.replace('Create')} />
     </View>
   );
 }

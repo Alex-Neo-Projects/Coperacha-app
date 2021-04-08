@@ -1,9 +1,7 @@
-import { Alert, Image } from 'react-native';
+import { Image } from 'react-native';
 import React from 'react'; 
 import Onboarding from 'react-native-onboarding-swiper';
 import { Button } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
 
 class AppOnboarding extends React.Component {
   render(){
