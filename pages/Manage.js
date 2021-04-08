@@ -9,6 +9,7 @@ function Manage(props) {
   const navigation = useNavigation();
   
   const context = useContext(AppContext);
+  
   const loggedIn = context.loggedIn; 
   
   return (
@@ -29,7 +30,7 @@ function Manage(props) {
         </View>
       ) : (
         <View>
-          <LogIn reason={"to view your fundraisers"} handleLogIn={props.handleLogIn}/>
+          <LogIn reason={"to view your fundraisers"} handleLogIn={context.handleLogIn}/>
         </View>
       )}
     </View>
