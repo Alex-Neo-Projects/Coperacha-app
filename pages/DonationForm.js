@@ -11,6 +11,7 @@ import {
 import { toTxResult } from "@celo/connect";
 import * as Linking from 'expo-linking';
 import AppContext from '../components/AppContext';
+import BigNumber from "bignumber.js";
 
 function DonationForm(props) {
   const navigation = useNavigation();
@@ -33,24 +34,28 @@ function DonationForm(props) {
     const dappName = 'Coperacha'
     const callback = Linking.makeUrl('/my/path')
 
-    const txObject = await projectInstanceContract.methods.contribute();
-    let stabletoken = await kit.contracts.getStableToken()
+    // const txObject = await projectInstanceContract.methods.contribute();
+    
+    const stableToken = await kit.contracts.getStableToken();
+    const decimals = await stableToken.decimals();
+    const txObject = stableToken.transfer(address,
+      new BigNumber(10).pow(parseInt(decimals, 10)).toString()
+    ).txo;
 
     // get access to the data 
-    let cUSDtx = await stabletoken.transfer(projectInstanceContract._address, 1).txo;
-
-    // console.log("txObject: ", txObject); 
-    // console.log("encode ABI: ", cUSDtx); 
+    // let cUSDtx = await stabletoken.transfer(projectInstanceContract._address, 10).txo;
+    
+    // console.log("txObject: ", cUSDtx); 
+    // console.log("value: ", cUSDtx.value); 
 
     requestTxSig(
       kit,
       [
         {
           from: address,
-          value: 1000000000000000000, // 1 CELO 
-          to: projectInstanceContract._address, // interact w/ address of CeloCrowdfund contract
+          to: '0xa7ed835288Aa4524bB6C73DD23c0bF4315D9Fe3e', // interact w/ address of CeloCrowdfund contract
           tx: txObject,
-          estimatedGas: 200000,
+          // estimatedGas: 300000,
           feeCurrency: FeeCurrency.cUSD
         }
       ],

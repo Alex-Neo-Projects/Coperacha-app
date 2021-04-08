@@ -253,10 +253,12 @@ class App extends React.Component {
 
   render() {
     return (
-      <AppContext.Provider value={{ projectData: this.state.projectData, 
+      <AppContext.Provider value={{ 
+        projectData: this.state.projectData, 
         loggedIn: this.state.loggedIn,
         address: this.state.address,
-        balance: this.state.balance}}>
+        balance: this.state.balance, 
+        onboardingFinished: this.state.onboardingFinished}}>
         
         <NavigationContainer>
           <StatusBar barStyle="dark-content" />
@@ -289,7 +291,7 @@ class App extends React.Component {
               inactiveTintColor: 'gray',
             }}
           > 
-          {/* {this.state.onboardingFinished === 'true' ? ( */}
+          {this.state.onboardingFinished === 'true' ? (
             <>
               <Tab.Screen name="Home"
                 children={()=><HomeStackScreen />
@@ -310,11 +312,11 @@ class App extends React.Component {
                 }
               />
               </>
-          {/* ) : (
+          ) : (
             <>
             <Tab.Screen name="Onboarding" component={AppOnboarding}/>
             </>
-          )} */}
+          )} 
           </Tab.Navigator>
         </NavigationContainer>
       </AppContext.Provider>
