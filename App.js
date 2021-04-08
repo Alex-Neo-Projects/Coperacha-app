@@ -11,7 +11,7 @@ import CreateListing from './pages/CreateListing';
 import Manage from './pages/Manage'; 
 import CeloCrowdfundContract from './contracts/CeloCrowdfund.json';
 import ProjectInstanceContract from './contracts/ProjectInstance.json';
-import { Ionicons, Entypo } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import DonationReceipt from './pages/DonationReceipt';
 import DonationForm from './pages/DonationForm'; 
 import Settings from './pages/Settings';
@@ -29,10 +29,15 @@ import * as Font from 'expo-font';
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 
-function HomeStackScreen() {
+function HomeStackScreen(props) {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="Home" component={Home}
+      <HomeStack.Screen name="Home" 
+        children={()=>
+          <Home 
+            getFeedData={props.getFeedData}
+            />
+          }
         options={{ headerShown: false }}
       />
       <HomeStack.Screen name="FundraiserListing"  
@@ -58,9 +63,6 @@ function CreateStackScreen(props) {
       <HomeStack.Screen name="Create"
         children={()=>
           <CreateListing 
-            loggedIn={props.loggedIn}
-            handleLogIn={props.handleLogIn}
-            address={props.address}
             celoCrowdfundContract={props.celoCrowdfundContract}
             />
           }
@@ -79,9 +81,7 @@ function ManageStackScreen(props) {
     <HomeStack.Navigator>
       <HomeStack.Screen name="Manage"
         children={()=>
-          <Manage 
-            handleLogIn={props.handleLogIn}
-            />
+          <Manage />
           }
         options={{ headerShown: false }}
       />
@@ -89,7 +89,6 @@ function ManageStackScreen(props) {
         children={()=>
           <Settings 
             handleLogOut={props.handleLogOut}
-            handleLogIn={props.handleLogIn}
           />
         }
         options={{ headerShown: false }}
@@ -104,6 +103,7 @@ class App extends React.Component {
     super(); 
     this.logOut = this.logOut.bind(this);
     this.logIn = this.logIn.bind(this);
+    this.getFeedData = this.getFeedData.bind(this); 
   }
 
   state = {
@@ -240,10 +240,13 @@ class App extends React.Component {
       } catch(e) {
         // error reading value
         console.log("Error: ", e);
+        return "Error";
       }
     }    
 
     getData()
+
+    return "Success";
   }
 
   componentDidMount = async () => {
@@ -309,7 +312,9 @@ class App extends React.Component {
           {this.state.onboardingFinished === 'true' ? (
             <>
               <Tab.Screen name="Home"
-                children={()=><HomeStackScreen />
+                children={()=><HomeStackScreen 
+                  getFeedData={this.getFeedData}
+                />
                 }
               />
               <Tab.Screen name="Create" 
@@ -322,7 +327,6 @@ class App extends React.Component {
               <Tab.Screen name="Manage"
                 children={()=><ManageStackScreen  
                   handleLogOut={this.logOut}
-                  handleLogIn={this.logIn}
                   />
                 }
               />

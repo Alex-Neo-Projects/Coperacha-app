@@ -241,7 +241,7 @@ function CreateListing(props) {
           </ScrollView>
       ) : (
         <View style={styles.centerLogin}>
-          <LogIn reason={"to create a fundraiser"} handleLogIn={props.handleLogIn}/>
+          <LogIn reason={"to create a fundraiser"} handleLogIn={context.handleLogIn}/>
         </View>
       )}
     </View>
