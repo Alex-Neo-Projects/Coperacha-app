@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
 import '../global'
-import { StyleSheet, Button, RefreshControl, ScrollView, View, Text } from 'react-native';
+import { StyleSheet, RefreshControl, ScrollView, View, Text } from 'react-native';
 import ListingCard from './ListingCard';
 import AppContext from '../components/AppContext';
 
 
 function Home(props) {
-  const wait = (timeout) => {
+  const refresh = (timeout) => {
     let promise = new Promise(async function(resolve, reject) {
       var result = await props.getFeedData(); 
 
@@ -30,7 +30,7 @@ function Home(props) {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
+    refresh(2000).then(() => setRefreshing(false));
   }, []);
 
 
