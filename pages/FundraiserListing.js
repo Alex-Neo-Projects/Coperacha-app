@@ -15,7 +15,7 @@ function FundraiserListing(props) {
   var image = data['projectImageLink'];
   var goal = data['projectGoalAmount'];
   var description = data['projectDescription'];
-  var currentAmount = data['currentAmount'];
+  var currentAmount = data['currentAmount'] / 1E18; // Gotta convert from bigNumber to regular integer
   var fundRaisingDeadline = data['fundRaisingDeadline'];
   
   var progress = currentAmount / goal;
