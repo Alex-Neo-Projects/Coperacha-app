@@ -23,7 +23,7 @@ function Settings(props) {
         </View>
       ) : (
         <View>
-          <LogIn reason={"to view your settings"} handleLogIn={props.handleLogIn}/>
+          <LogIn reason={"to view your settings"} handleLogIn={context.handleLogIn}/>
         </View>
       )}
     </View>

@@ -20,8 +20,6 @@ function ListingCard(props) {
   var projectImageLink = data.projectImageLink;
   var projectTitle = data.projectTitle; 
   var currentProgress = currentAmount / projectGoalAmount; 
-  
-  console.log("Current progress: ", currentProgress);
 
   const milliseconds = fundraisingDeadline * 1000; 
   const dateObject = new Date(milliseconds)

@@ -106,7 +106,9 @@ function DonationForm(props) {
           </View>
         </TouchableWithoutFeedback>
       ) : (
-        <LogIn reason="to donate"></LogIn>
+        <View style={styles.centerLogin}>
+          <LogIn reason="to donate"></LogIn>
+        </View>
       )}
     </View>
   );
@@ -115,7 +117,12 @@ function DonationForm(props) {
 const styles = StyleSheet.create({
   container: {
     padding:15,
+    height:'100%',
+  },
+  centerLogin: {
+    flex: 1, 
     justifyContent: 'center',
+    alignItems: 'center'
   },
   title: {
     marginVertical: 30, 
