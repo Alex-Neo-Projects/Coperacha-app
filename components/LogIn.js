@@ -1,12 +1,15 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { View, Text, Button, StyleSheet } from 'react-native';
+import AppContext from './AppContext';
 
 function LogIn(props) {
+  const appContext = useContext(AppContext);
+
   // Passed from App.js since it needs to modify the loggedIn state in App.js    
   logInToCelo = () => {
     console.log("Log in clicked")
   
-    props.handleLogIn()
+    appContext.handleLogIn()
   }
 
   return(

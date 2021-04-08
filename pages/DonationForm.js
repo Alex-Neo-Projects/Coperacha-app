@@ -1,8 +1,8 @@
-import React, { useContext } from 'react'
-import { View, Text, Button, StyleSheet } from 'react-native';
+import React, { useContext, useState } from 'react'
+import { View, Text, Alert, Button, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput } from 'react-native-gesture-handler';
-import { web3, kit } from '../root';
+import { kit } from '../root';
 import {   
   requestTxSig,
   waitForSignedTxs,
@@ -11,46 +11,65 @@ import {
 import { toTxResult } from "@celo/connect";
 import * as Linking from 'expo-linking';
 import AppContext from '../components/AppContext';
+import BigNumber from "bignumber.js";
+import LogIn from '../components/LogIn';
 
 function DonationForm(props) {
   const navigation = useNavigation();
 
+  [name, onChangeName] = useState('');
+  [donationAmount, onChangeDonationAmount] = useState(0);
+
   var title = props.route.params.title;
   
-  const appContext = useContext(AppContext);
+  const appContext = useContext(AppContext);  
+  const loggedIn = appContext.loggedIn
+
   const projectDataContext = appContext.projectData; 
 
   var projectId = props.route.params.projectId;
   var address = appContext.address; 
 
-  var projectInstanceContract = projectDataContext[projectId].projectInstanceContract
+  var projectInstanceContract = projectDataContext[projectId].projectInstanceContract;
 
-  console.log("address: ", address);
-  console.log("Project address: ", projectInstanceContract._address);
-  
   const donate = async () => {
+    if(name.length == 0){
+      Alert.alert(
+        "Add a name!"
+      );
+
+      return;
+    }
+
+    if(donationAmount == 0){
+      Alert.alert(
+        "Add a donation amount!"
+      );
+      
+      return;
+    }
+
     const requestId = 'fund_projects'
     const dappName = 'Coperacha'
     const callback = Linking.makeUrl('/my/path')
-
+    
     const txObject = await projectInstanceContract.methods.contribute();
-    let stabletoken = await kit.contracts.getStableToken()
+    
+    const value = new BigNumber(donationAmount * 1e+18);
 
-    // get access to the data 
-    let cUSDtx = await stabletoken.transfer(projectInstanceContract._address, 1).txo;
-
-    // console.log("txObject: ", txObject); 
-    // console.log("encode ABI: ", cUSDtx); 
+    // const stableToken = await kit.contracts.getStableToken();
+    // // get access to the data 
+    // let cUSDtx = await stableToken.transfer(projectInstanceContract._address, 10).txo;
 
     requestTxSig(
       kit,
       [
         {
           from: address,
-          value: 1000000000000000000, // 1 CELO 
           to: projectInstanceContract._address, // interact w/ address of CeloCrowdfund contract
           tx: txObject,
-          estimatedGas: 200000,
+          value: value, 
+          estimatedGas: 300000,
           feeCurrency: FeeCurrency.cUSD
         }
       ],
@@ -65,21 +84,30 @@ function DonationForm(props) {
     let result = await toTxResult(kit.web3.eth.sendSignedTransaction(tx)).waitReceipt()
 
     console.log(`Donated to project transaction receipt: `, result);
+    
+    navigation.replace('DonationReceipt', {title: title});
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.bigText}>Donation</Text>
-      <Text style={styles.small}>For: "{title}"</Text>
+      {loggedIn ? (
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
+          <View>
+            <Text style={styles.bigText}>Donation</Text>
+            <Text style={styles.small}>For: "{title}"</Text>
 
-      <Text style={styles.title}>Name:</Text>
-      <TextInput style={[styles.input, { borderColor: '#c0cbd3'}]}></TextInput>
-      <Text style={styles.title}>Donation amount: </Text>
-      <TextInput keyboardType="numeric" style={[styles.input, { borderColor: '#c0cbd3'}]} ></TextInput>
-      <Text>{"\n\n\n"}</Text>
+            <Text style={styles.title}>Name:</Text>
+            <TextInput onChangeText={onChangeName} value={name} placeholder="Kanye West" style={[styles.input, { borderColor: '#c0cbd3'}]}></TextInput>
+            <Text style={styles.title}>Donation amount: </Text>
+            <TextInput keyboardType="numeric" onChangeText={onChangeDonationAmount} value={donationAmount} placeholder="20" style={[styles.input, { borderColor: '#c0cbd3'}]} ></TextInput>
+            <Text>{"\n\n\n"}</Text>
 
-      {/* <Button title="Donate" onPress={() => navigation.navigate('DonationReceipt', {title: title})}></Button> */}
-      <Button title="Donate" onPress={() => donate()}></Button>
+            <Button title="Donate" onPress={() => donate()}></Button>
+          </View>
+        </TouchableWithoutFeedback>
+      ) : (
+        <LogIn reason="to donate"></LogIn>
+      )}
     </View>
   );
 }
@@ -102,7 +130,6 @@ const styles = StyleSheet.create({
   small: { 
     paddingTop: 30,
     fontSize: 15, 
-
   },
   input: {
     borderStyle: 'solid',

@@ -11,7 +11,7 @@ function ListingCard(props) {
   var data = props.projectData; 
 
   //Data 
-  var currentAmount = data.currentAmount; 
+  var currentAmount = data.currentAmount / 1E18; // Gotta convert from bigNumber to regular integer; 
   var currentState = data.currentState;
   var fundraisingDeadline = data.fundRaisingDeadline; 
   var projectCreator = data.projectCreator.toString().substring(0, 16);
@@ -21,6 +21,8 @@ function ListingCard(props) {
   var projectTitle = data.projectTitle; 
   var currentProgress = currentAmount / projectGoalAmount; 
   
+  console.log("Current progress: ", currentProgress);
+
   const milliseconds = fundraisingDeadline * 1000; 
   const dateObject = new Date(milliseconds)
 
@@ -42,7 +44,7 @@ function ListingCard(props) {
           <Text style={styles.projectDescriptionText}>{projectDescription} </Text>
           <Text style={styles.currentRaisedText}>${currentAmount} raised of ${projectGoalAmount} </Text>
 
-          <ProgressBar progress={currentProgress} color='#35D07F' style={styles.progress}/>
+          <ProgressBar progress={currentProgress} color='#35D07F' width={350} style={styles.progress}/>
           <Text style={styles.dateText}> Fundraising ends on {dateOutput} </Text>
         </View>
       </View>      
@@ -107,10 +109,7 @@ const styles = StyleSheet.create({
     marginLeft: 3
   },
   progress: {
-    height: 15,
-    width: 330, 
-    marginTop: 3,
-    marginLeft: 3,
+    margin: 3
   },
   dateText: {
     fontFamily: 'proximanova_bold',
