@@ -12,6 +12,7 @@ import { toTxResult } from "@celo/connect";
 import * as Linking from 'expo-linking';
 import AppContext from '../components/AppContext';
 import BigNumber from "bignumber.js";
+import LogIn from '../components/LogIn';
 
 function DonationForm(props) {
   const navigation = useNavigation();
@@ -21,7 +22,9 @@ function DonationForm(props) {
 
   var title = props.route.params.title;
   
-  const appContext = useContext(AppContext);
+  const appContext = useContext(AppContext);  
+  const loggedIn = appContext.loggedIn
+
   const projectDataContext = appContext.projectData; 
 
   var projectId = props.route.params.projectId;
@@ -87,20 +90,24 @@ function DonationForm(props) {
 
   return (
     <View style={styles.container}>
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
-        <View>
-          <Text style={styles.bigText}>Donation</Text>
-          <Text style={styles.small}>For: "{title}"</Text>
+      {loggedIn ? (
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
+          <View>
+            <Text style={styles.bigText}>Donation</Text>
+            <Text style={styles.small}>For: "{title}"</Text>
 
-          <Text style={styles.title}>Name:</Text>
-          <TextInput onChangeText={onChangeName} value={name} placeholder="Kanye West" style={[styles.input, { borderColor: '#c0cbd3'}]}></TextInput>
-          <Text style={styles.title}>Donation amount: </Text>
-          <TextInput keyboardType="numeric" onChangeText={onChangeDonationAmount} value={donationAmount} placeholder="20" style={[styles.input, { borderColor: '#c0cbd3'}]} ></TextInput>
-          <Text>{"\n\n\n"}</Text>
+            <Text style={styles.title}>Name:</Text>
+            <TextInput onChangeText={onChangeName} value={name} placeholder="Kanye West" style={[styles.input, { borderColor: '#c0cbd3'}]}></TextInput>
+            <Text style={styles.title}>Donation amount: </Text>
+            <TextInput keyboardType="numeric" onChangeText={onChangeDonationAmount} value={donationAmount} placeholder="20" style={[styles.input, { borderColor: '#c0cbd3'}]} ></TextInput>
+            <Text>{"\n\n\n"}</Text>
 
-          <Button title="Donate" onPress={() => donate()}></Button>
-        </View>
-      </TouchableWithoutFeedback>
+            <Button title="Donate" onPress={() => donate()}></Button>
+          </View>
+        </TouchableWithoutFeedback>
+      ) : (
+        <LogIn reason="to donate"></LogIn>
+      )}
     </View>
   );
 }
@@ -123,7 +130,6 @@ const styles = StyleSheet.create({
   small: { 
     paddingTop: 30,
     fontSize: 15, 
-
   },
   input: {
     borderStyle: 'solid',

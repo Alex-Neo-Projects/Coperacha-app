@@ -6,6 +6,7 @@ const AppContext = createContext({
   address: 'NOT LOGGED IN',
   balance: 'NOT LOGGED IN',
   onboardingFinished: 'false',
+  handleLogIn: null, 
 })
 
 export default AppContext; 

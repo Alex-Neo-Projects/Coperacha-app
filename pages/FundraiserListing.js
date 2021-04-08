@@ -2,7 +2,6 @@ import React from 'react'
 import { View, Text, ScrollView, Image, StyleSheet, Button } from 'react-native';
 import ProgressBar from 'react-native-progress/Bar';
 import { useNavigation } from '@react-navigation/native';
-import CachedImage from 'react-native-expo-cached-image';
 
 function FundraiserListing(props) {
   const navigation = useNavigation();
@@ -24,7 +23,8 @@ function FundraiserListing(props) {
   
   return (
     <ScrollView>
-      <CachedImage source={imageURL} style={{height: 200, resizeMode : 'stretch', marginBottom:10}} />
+      
+      <Image source={imageURL} style={{height: 200, resizeMode : 'stretch', marginBottom:10}} />
       <View style={{margin: 10}}>
         <Text style={styles.title}>{title}</Text>
         

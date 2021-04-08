@@ -270,7 +270,9 @@ class App extends React.Component {
         loggedIn: this.state.loggedIn,
         address: this.state.address,
         balance: this.state.balance, 
-        onboardingFinished: this.state.onboardingFinished}}>
+        onboardingFinished: this.state.onboardingFinished,
+        handleLogIn: this.logIn,
+        }}>
         
         <NavigationContainer>
           <StatusBar barStyle="dark-content" />

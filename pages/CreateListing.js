@@ -197,13 +197,13 @@ function CreateListing(props) {
 
   
   return (
-    <View>
+    <View style={styles.entireThing}>
       {loggedIn ? ( 
         <ScrollView>
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
               <View>
                 <Text style={styles.headerInitial}> Create <Text style={styles.header}>Fundraiser </Text> </Text>
-                  <View  style={styles.container}> 
+                  <View > 
                   
                     {/* Image Picker */}
                     <View style={styles.imagePickerView}> 
@@ -240,7 +240,7 @@ function CreateListing(props) {
             </TouchableWithoutFeedback>
           </ScrollView>
       ) : (
-        <View >
+        <View style={styles.centerLogin}>
           <LogIn reason={"to create a fundraiser"} handleLogIn={props.handleLogIn}/>
         </View>
       )}
@@ -249,6 +249,9 @@ function CreateListing(props) {
 }
 
 const styles = StyleSheet.create({
+  entireThing: {
+    height: '100%',
+  },
   container: {
     marginLeft: 10,
     alignItems : 'flex-start',
@@ -274,9 +277,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 10, 
     marginBottom: 10,
-  },
-  image: {
-    
   },
   imageStateText: {
     marginTop: 18
@@ -327,6 +327,11 @@ const styles = StyleSheet.create({
     borderColor: '#DDDDDD',
     width: Dimensions.get('window').width - 20,
   }, 
+  centerLogin: {
+    flex: 1, 
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   fundraiserButtonStyle: {
     borderColor: '#DDDDDD'
   },
