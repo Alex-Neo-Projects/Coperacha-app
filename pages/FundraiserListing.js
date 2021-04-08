@@ -25,7 +25,7 @@ function FundraiserListing(props) {
     <ScrollView>
       
       <Image source={imageURL} style={{height: 200, resizeMode : 'stretch', marginBottom:10}} />
-      <View style={{margin: 10 }}>
+      <View style={{margin: 10}}>
         <Text style={styles.title}>{title}</Text>
         
         <Text style={styles.smallText, { fontWeight: 'bold'}}>${currentAmount} raised of ${goal} goal</Text>
