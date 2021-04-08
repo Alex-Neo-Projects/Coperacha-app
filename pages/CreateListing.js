@@ -199,44 +199,46 @@ function CreateListing(props) {
   return (
     <View>
       {loggedIn ? ( 
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
-            <View>
-              <Text style={styles.headerInitial}> Create <Text style={styles.header}>Fundraiser </Text> </Text>
-                <View  style={styles.container}> 
-                
-                  {/* Image Picker */}
-                  <View style={styles.imagePickerView}> 
-                    <Icon style={styles.image} raised name='photo-camera' size={18} onPress={pickImage} />
-                    <Text style={styles.imageStateText}> {imageState} </Text>
-                    {image && <Image source={{ uri: image, cache: 'only-if-cached' }} style={styles.imagePreview} />}
-
-                  </View> 
+        <ScrollView>
+          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
+              <View>
+                <Text style={styles.headerInitial}> Create <Text style={styles.header}>Fundraiser </Text> </Text>
+                  <View  style={styles.container}> 
                   
-                  {/* Title  */}
-                  <Text style={styles.headers}>Title</Text>
-                  <TextInput style={styles.textbox} onChangeText={onChangeTitle} onSubmitEditing={Keyboard.dismiss} placeholder='Title' maxLength={50} value={title}/>
+                    {/* Image Picker */}
+                    <View style={styles.imagePickerView}> 
+                      <Icon style={styles.image} raised name='photo-camera' size={18} onPress={pickImage} />
+                      <Text style={styles.imageStateText}> {imageState} </Text>
+                      {image && <Image source={{ uri: image, cache: 'only-if-cached' }} style={styles.imagePreview} />}
 
-                  {/* Description */}
-                  <Text style={styles.headers}>Description</Text>
-                  <TextInput multiline={true} numberOfLines={10} style={styles.textboxDescription} onChangeText={onChangeDescription} placeholder='Description' maxLength={300} value={description}/>
-                  
-                  {/* Amount to raise (cUSD) */}
-                  <Text style={styles.headers}>Fundraising amount (cUSD)</Text>
-                  <TextInput style={styles.textbox} keyboardType='numeric' onChangeText={onChangeAmount} placeholder='Amount' value={amount}/>
-        
-                  {/* Deadline */}
-                  <Button title="Pick a deadline" buttonStyle={styles.deadlineButton} titleStyle={styles.deadlineTextStyle} onPress={showDatePicker} raised={true}  type="outline"/>
-                  <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirm} onCancel={hideDatePicker} onChange={handleChange}/>
-                  
-                  <Text style={styles.deadlineText}> {deadline} days from now </Text>
+                    </View> 
+                    
+                    {/* Title  */}
+                    <Text style={styles.headers}>Title</Text>
+                    <TextInput style={styles.textbox} onChangeText={onChangeTitle} onSubmitEditing={Keyboard.dismiss} placeholder='Title' maxLength={50} value={title}/>
 
-                  <Button style={styles.createFundraiserButton} buttonStyle={styles.fundraiserButtonStyle} titleStyle={styles.fundraiserTextStyle} raised={true}  type="outline" title = "Create Fundraiser" onPress={()=>{
-                    write();
-                  }} />
-                
-                </View>
-            </View>
-          </TouchableWithoutFeedback>
+                    {/* Description */}
+                    <Text style={styles.headers}>Description</Text>
+                    <TextInput multiline={true} numberOfLines={10} style={styles.textboxDescription} onChangeText={onChangeDescription} placeholder='Description' maxLength={300} value={description}/>
+                    
+                    {/* Amount to raise (cUSD) */}
+                    <Text style={styles.headers}>Fundraising amount (cUSD)</Text>
+                    <TextInput style={styles.textbox} keyboardType='numeric' onChangeText={onChangeAmount} placeholder='Amount' value={amount}/>
+          
+                    {/* Deadline */}
+                    <Button title="Pick a deadline" buttonStyle={styles.deadlineButton} titleStyle={styles.deadlineTextStyle} onPress={showDatePicker} raised={true}  type="outline"/>
+                    <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirm} onCancel={hideDatePicker} onChange={handleChange}/>
+                    
+                    <Text style={styles.deadlineText}> {deadline} days from now </Text>
+
+                    <Button style={styles.createFundraiserButton} buttonStyle={styles.fundraiserButtonStyle} titleStyle={styles.fundraiserTextStyle} raised={true}  type="outline" title = "Create Fundraiser" onPress={()=>{
+                      write();
+                    }} />
+                  
+                  </View>
+              </View>
+            </TouchableWithoutFeedback>
+          </ScrollView>
       ) : (
         <View >
           <LogIn reason={"to create a fundraiser"} handleLogIn={props.handleLogIn}/>
