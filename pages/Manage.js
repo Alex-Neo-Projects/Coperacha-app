@@ -1,12 +1,28 @@
 import React, { useContext } from 'react'
-import { View, Text, StyleSheet, Button, Image } from 'react-native';
+import { View, Text, RefreshControl, StyleSheet, Button, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LogIn from '../components/LogIn';
 import AppContext from '../components/AppContext';
 import ListingCard from './ListingCard';
 import { ScrollView } from 'react-native-gesture-handler';
 
-function Manage() {
+function Manage(props) {
+  const refresh = (timeout) => {
+    let promise = new Promise(async function(resolve, reject) {
+      var result = await props.getFeedData(); 
+
+      if (result === "Success") {
+        console.log("Resolved!");
+        resolve("Promise resolved!");
+      }
+      else {
+        console.log("Promise error"); 
+        reject("Promise error");
+      }
+    })
+    return promise; 
+  }
+
   // Set the defaults for the state
   const navigation = useNavigation();
   
@@ -21,7 +37,14 @@ function Manage() {
       count++; 
     }
   })
-  console.log(count); 
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    refresh(2000).then(() => setRefreshing(false));
+  }, []);
+
   return (
     <View style={styles.container}>
       {loggedIn ? ( 
@@ -42,7 +65,15 @@ function Manage() {
             </View>
           ) : ( 
             <View>
-              <ScrollView>
+              {/* User does have fundraisers they made */}
+              <ScrollView
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                  />
+                }
+              >
                 <Text style={styles.headerInitial}> Your <Text style={styles.header}>Fundraisers </Text> </Text>
 
                 {projectData.map((project, index) => {

@@ -81,7 +81,8 @@ function ManageStackScreen(props) {
     <HomeStack.Navigator>
       <HomeStack.Screen name="Manage"
         children={()=>
-          <Manage />
+          <Manage
+          getFeedData={props.getFeedData} />
           }
         options={{ headerShown: false }}
       />
@@ -341,7 +342,8 @@ class App extends React.Component {
               > 
                 <>
                   <Tab.Screen name="Home"
-                    children={()=><HomeStackScreen />
+                    children={()=><HomeStackScreen
+                    getFeedData={this.getFeedData}/>
                     }
                   />
                   <Tab.Screen name="Create" 
@@ -355,6 +357,7 @@ class App extends React.Component {
                     children={()=><ManageStackScreen  
                       handleLogOut={this.logOut}
                       handleLogIn={this.logIn}
+                      getFeedData={this.getFeedData}
                       />
                     }
                   />
