@@ -59,7 +59,7 @@ function DonationForm(props) {
 
     // const stableToken = await kit.contracts.getStableToken();
     // // get access to the data 
-    // let cUSDtx = await stableToken.transfer(projectInstanceContract._address, 10).txo;
+    // let cUSDtx = await stableToken.transfer(projectInstanceContract._address, value).txo;
 
     requestTxSig(
       kit,

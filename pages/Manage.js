@@ -75,6 +75,7 @@ function Manage(props) {
                 }
               >
                 <Text style={styles.headerInitial}> Your <Text style={styles.header}>Fundraisers </Text> </Text>
+                <Button title="Settings" onPress={() => navigation.navigate('Settings')}></Button>
 
                 {projectData.map((project, index) => {
                   if (project.result.projectCreator.toLowerCase() === address) {
