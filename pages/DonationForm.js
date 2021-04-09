@@ -32,6 +32,46 @@ function DonationForm(props) {
 
   var projectInstanceContract = projectDataContext[projectId].projectInstanceContract;
 
+  const approve = async() => {
+    const requestId = 'approve_projects'
+    const dappName = 'Coperacha'
+    const callback = Linking.makeUrl('/my/path')
+        
+    const value = new BigNumber(donationAmount * 1e+18);
+
+    // Step 1: Approve to send cUSD
+    // Step 2: send the cUSD
+    const stableToken = await kit.contracts.getStableToken();
+    const approveTx = await stableToken.approve(projectInstanceContract._address, value).txo;
+
+    // get access to the data 
+    // let cUSDtx = await stableToken.transfer(projectInstanceContract._address, value).txo;
+
+    requestTxSig(
+      kit,
+      [
+        {
+          from: address,
+          to: stableToken.contract.options.address, // interact w/ address of CeloCrowdfund contract
+          tx: approveTx,
+          feeCurrency: FeeCurrency.cUSD
+        }
+      ],
+      { requestId, dappName, callback }
+    )
+
+    // Get the response from the Celo wallet
+    const dappkitResponse = await waitForSignedTxs(requestId)
+    const tx = dappkitResponse.rawTxs[0]
+    
+    // Get the transaction result, once it has been included in the Celo blockchain
+    let result = await toTxResult(kit.web3.eth.sendSignedTransaction(tx)).waitReceipt()
+
+    console.log(`Donated to project transaction receipt: `, result);
+    
+    navigation.replace('DonationReceipt', {title: title, nav: navigation});
+  }
+
   const donate = async () => {
     if(name.length == 0){
       Alert.alert(
@@ -53,12 +93,20 @@ function DonationForm(props) {
     const dappName = 'Coperacha'
     const callback = Linking.makeUrl('/my/path')
     
-    const txObject = await projectInstanceContract.methods.contribute();
+    // const txObject = await projectInstanceContract.methods.contribute();
     
     const value = new BigNumber(donationAmount * 1e+18);
 
-    // const stableToken = await kit.contracts.getStableToken();
-    // // get access to the data 
+    // Step 1: Approve to send cUSD
+    // Step 2: send the cUSD
+    const stableToken = await kit.contracts.getStableToken();
+    
+    const txObject = stableToken.transfer(
+      projectInstanceContract._address, 
+      value.toString()
+    ).txo
+
+    // get access to the data 
     // let cUSDtx = await stableToken.transfer(projectInstanceContract._address, value).txo;
 
     requestTxSig(
@@ -66,10 +114,10 @@ function DonationForm(props) {
       [
         {
           from: address,
-          to: projectInstanceContract._address, // interact w/ address of CeloCrowdfund contract
+          to: stableToken.contract.options.address, // interact w/ address of CeloCrowdfund contract
           tx: txObject,
-          value: value, 
-          estimatedGas: 300000,
+          // value: value, 
+          // estimatedGas: 300000,
           feeCurrency: FeeCurrency.cUSD
         }
       ],
@@ -102,6 +150,7 @@ function DonationForm(props) {
             <TextInput keyboardType="numeric" onChangeText={onChangeDonationAmount} value={donationAmount} placeholder="20" style={[styles.input, { borderColor: '#c0cbd3'}]} ></TextInput>
             <Text>{"\n\n\n"}</Text>
 
+            <Button title="Approve" onPress={() => approve()}></Button>
             <Button title="Donate" onPress={() => donate()}></Button>
           </View>
         </TouchableWithoutFeedback>
