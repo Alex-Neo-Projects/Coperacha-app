@@ -38,7 +38,6 @@ function CreateListing(props) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   var currentDate = new Date();
-  console.log(currentDate);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -55,7 +54,6 @@ function CreateListing(props) {
     var userDefinedDate = Math.floor(date.getTime()/1000);
     
     var differenceDateTime = Math.ceil((userDefinedDate-currentDate)/3600)/24;
-    console.log(differenceDateTime);
 
     if(differenceDateTime < 0){
       onChangeDeadline(0);
@@ -73,13 +71,10 @@ function CreateListing(props) {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       includeBase64: false,
       maxHeight: 200,
-      maxWidth: 200,
+      maxWidth: 300,
     });
     
-    console.log(selectedImage);
-
     if(!selectedImage.cancelled){
-      console.log('IMAGE SELECTED');
       imageResponse(selectedImage.uri);
       firestorePost(selectedImage.uri);
     }
@@ -92,7 +87,6 @@ function CreateListing(props) {
 
     // Change filename
     const storageFileName = localImageUrl.substring(localImageUrl.lastIndexOf('/')+1);
-    console.log('storageFileName: ' + storageFileName);
 
     var uploadImage = firebaseStorageRef.ref('fundraiserImages').child(storageFileName).put(blob);
 
@@ -102,7 +96,6 @@ function CreateListing(props) {
         setImageState(null);
     }, () => {
         uploadImage.snapshot.ref.getDownloadURL().then((downloadURL) => {
-            console.log(downloadURL);
             setImageDownloadUrl(downloadURL);
             setImageState('Image Uploaded');
         });
@@ -163,10 +156,8 @@ function CreateListing(props) {
       string calldata imageLink, uint durationInDays, uint amountToRaise)
     */    
 
-    console.log('Days till deadline: ', deadline);
     // Create a transaction object to update the contract
     const txObject = await props.celoCrowdfundContract.methods.startProject(title, description, imageDownloadUrl, deadline, amount);
-    console.log('DA ADDY: ' + address);
     // Send a request to the Celo wallet to send an update transaction to the HelloWorld contract
     requestTxSig(
       kit,
@@ -223,13 +214,13 @@ function CreateListing(props) {
                     
                     {/* Amount to raise (cUSD) */}
                     <Text style={styles.headers}>Fundraising amount (cUSD)</Text>
-                    <TextInput style={styles.textbox} keyboardType='numeric' onChangeText={onChangeAmount} placeholder='Amount' value={amount}/>
+                    <TextInput style={styles.textbox} keyboardType='numeric' onChangeText={onChangeAmount} placeholder='Amount' value={amount.toString()}/>
           
                     {/* Deadline */}
                     <Button title="Pick a deadline" buttonStyle={styles.deadlineButton} titleStyle={styles.deadlineTextStyle} onPress={showDatePicker} raised={true}  type="outline"/>
                     <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirm} onCancel={hideDatePicker} onChange={handleChange}/>
                     
-                    <Text style={styles.deadlineText}> {deadline} days from now </Text>
+                    <Text style={styles.deadlineText}> {deadline.toString()} days from now </Text>
 
                     <Button style={styles.createFundraiserButton} buttonStyle={styles.fundraiserButtonStyle} titleStyle={styles.fundraiserTextStyle} raised={true}  type="outline" title = "Create Fundraiser" onPress={()=>{
                       write();

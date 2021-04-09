@@ -3,7 +3,7 @@ import Home from './pages/Home';
 import { web3, kit } from './root'
 import 'react-native-gesture-handler';
 import { StatusBar } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FundraiserListing from './pages/FundraiserListing';
@@ -81,7 +81,8 @@ function ManageStackScreen(props) {
     <HomeStack.Navigator>
       <HomeStack.Screen name="Manage"
         children={()=>
-          <Manage />
+          <Manage
+          getFeedData={props.getFeedData} />
           }
         options={{ headerShown: false }}
       />
@@ -124,6 +125,9 @@ class App extends React.Component {
       try {
         await AsyncStorage.removeItem('@userAddress');
         await AsyncStorage.removeItem('@userBalance');
+        
+        // can remove this if we want user to not see onboarding after logging out
+        await AsyncStorage.removeItem('@onboardingFinished');
 
         console.log("Removed user's login data from local storage");
       } catch (e) {
@@ -259,86 +263,112 @@ class App extends React.Component {
       console.log(error);
     }
     
-    const onboard = await AsyncStorage.getItem('@onboardingFinished');
-    // await AsyncStorage.setItem("@onboardingFinished", 'false');
-    this.setState({ onboardingFinished: onboard })
+    //checking onboarding finished or not 
+    try {
+      //get onboarding finished
+      var onboarding = await AsyncStorage.getItem('@onboardingFinished');
+      
+      //if true -> setonboarding state to true 
+      if(onboarding){
+        this.setState({onboardingFinished: true});
+      }
+      
+    }catch (error){
+      console.log(error);
+    }
 
     this.getFeedData();
   }
 
+  completeOnboarding = async () => {
+    try {
+      await AsyncStorage.setItem("@onboardingFinished", 'true');
+    }
+    catch (e) {
+      console.log("exception: ", e);
+    }
+
+    // finished onboarding
+    this.setState({onboardingFinished: true});
+  }
+
   render() {
     return (
-      <AppContext.Provider value={{ 
-        projectData: this.state.projectData, 
-        loggedIn: this.state.loggedIn,
-        address: this.state.address,
-        balance: this.state.balance, 
-        onboardingFinished: this.state.onboardingFinished,
-        handleLogIn: this.logIn,
-        }}>
+      <>
+      {
+        (!this.state.onboardingFinished) ? (
+            <AppOnboarding done={this.completeOnboarding} />
+        ) : (
+          <AppContext.Provider value={{ 
+            projectData: this.state.projectData, 
+            loggedIn: this.state.loggedIn,
+            address: this.state.address,
+            balance: this.state.balance, 
+            onboardingFinished: this.state.onboardingFinished,
+            handleLogIn: this.logIn,
+            }}>
+            
+            <NavigationContainer>
+              <StatusBar barStyle="dark-content" />
+              <Tab.Navigator
+                screenOptions={({ route }) => ({
+                  tabBarIcon: ({ focused, color, size }) => {
+                    let iconName;
+                    
+                    if (route.name === 'Home') {
+                      iconName = focused
+                        ? 'home'
+                        : 'home';
+                    } else if (route.name === 'Create') {
+                      iconName = focused 
+                        ? 'plus'
+                        : 'plus';
+                    }
+                    else if (route.name === 'Manage') {
+                      iconName = focused 
+                        ? 'dots-three-horizontal'
+                        : 'dots-three-horizontal';
+                    }
         
-        <NavigationContainer>
-          <StatusBar barStyle="dark-content" />
-          <Tab.Navigator
-            screenOptions={({ route }) => ({
-              tabBarIcon: ({ focused, color, size }) => {
-                let iconName;
-                
-                if (route.name === 'Home') {
-                  iconName = focused
-                    ? 'home'
-                    : 'home';
-                } else if (route.name === 'Create') {
-                  iconName = focused 
-                    ? 'plus'
-                    : 'plus';
-                }
-                else if (route.name === 'Manage') {
-                  iconName = focused 
-                    ? 'dots-three-horizontal'
-                    : 'dots-three-horizontal';
-                }
-    
-                // You can return any component that you like here!
-                return <Entypo name={iconName} size={size} color={color} />;
-              },
-            })}
-            tabBarOptions={{
-              style: {height: 80},
-              activeTintColor: '#35D07F',
-              inactiveTintColor: 'gray',
-            }}
-          > 
-          {/* {this.state.onboardingFinished === 'true' ? ( */}
-            <>
-              <Tab.Screen name="Home"
-                children={()=><HomeStackScreen 
-                  getFeedData={this.getFeedData}
-                />
-                }
-              />
-              <Tab.Screen name="Create" 
-                children={()=><CreateStackScreen 
-                  celoCrowdfundContract={this.state.celoCrowdfundContract}
-                  handleLogIn={this.logIn}
+                    // You can return any component that you like here!
+                    return <Entypo name={iconName} size={size} color={color} />;
+                  },
+                })}
+                tabBarOptions={{
+                  style: {height: 80},
+                  activeTintColor: '#35D07F',
+                  inactiveTintColor: 'gray',
+                }}
+              > 
+                <>
+                  <Tab.Screen name="Home"
+                    children={()=><HomeStackScreen
+                    getFeedData={this.getFeedData}/>
+                    }
                   />
-                }
-              />
-              <Tab.Screen name="Manage"
-                children={()=><ManageStackScreen  
-                  handleLogOut={this.logOut}
+                  <Tab.Screen name="Create" 
+                    children={()=><CreateStackScreen 
+                      celoCrowdfundContract={this.state.celoCrowdfundContract}
+                      handleLogIn={this.logIn}
+                      />
+                    }
                   />
-                }
-              />
-              </>
-          {/* ) : (
-            <>
-            <Tab.Screen name="Onboarding" component={AppOnboarding}/>
-            </>
-          )}  */}
-          </Tab.Navigator>
-        </NavigationContainer>
-      </AppContext.Provider>
+                  <Tab.Screen name="Manage"
+                    children={()=><ManageStackScreen  
+                      handleLogOut={this.logOut}
+                      handleLogIn={this.logIn}
+                      getFeedData={this.getFeedData}
+                      />
+                    }
+                  />
+                </>
+             
+              </Tab.Navigator>
+            </NavigationContainer>
+          </AppContext.Provider>
+        )
+      }
+      </>
     );
   }
 }
