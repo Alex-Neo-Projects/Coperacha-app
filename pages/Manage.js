@@ -21,7 +21,7 @@ function Manage() {
       count++; 
     }
   })
-  console.log(count); 
+
   return (
     <View style={styles.container}>
       {loggedIn ? ( 
@@ -44,6 +44,7 @@ function Manage() {
             <View>
               <ScrollView>
                 <Text style={styles.headerInitial}> Your <Text style={styles.header}>Fundraisers </Text> </Text>
+                <Button title="Settings" onPress={() => navigation.navigate('Settings')}></Button>
 
                 {projectData.map((project, index) => {
                   if (project.result.projectCreator.toLowerCase() === address) {
