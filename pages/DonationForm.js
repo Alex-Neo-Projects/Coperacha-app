@@ -31,11 +31,11 @@ function DonationForm(props) {
 
   const projectDataContext = appContext.projectData; 
 
-  var projectId = props.route.params.projectId;
   var address = appContext.address; 
-
+  
   const creatorName = props.route.params.creatorName; 
-
+  
+  var projectId = props.route.params.projectId;
   var projectInstanceContract = projectDataContext[projectId].projectInstanceContract;
 
   const approve = async() => {
@@ -137,21 +137,33 @@ function DonationForm(props) {
     
     // Get the response from the Celo wallet
     const dappkitResponse = await waitForSignedTxs(requestId);
-    console.log("THIS IS THE DAPPKITRESPONSE", dappkitResponse); 
     const tx = dappkitResponse.rawTxs[0];
-    console.log("THIS IS THE TX", tx); 
-
+    
     setLoading(true);
     setDonationDisabled(true);
-
-    // Get the transaction result, once it has been included in the Celo blockchain
-    let result = await toTxResult(kit.web3.eth.sendSignedTransaction(tx)).waitReceipt();
     
-    console.log(`Donated to project transaction receipt: `, result);
-    
-    setLoading(false);
+    try {
+      let result = await toTxResult(kit.web3.eth.sendSignedTransaction(tx)).waitReceipt();
 
-    navigation.replace('DonationReceipt', {title: title, creatorName, creatorName, nav: navigation});
+      // Get the transaction result, once it has been included in the Celo blockchain
+      console.log(`Donated to project transaction receipt: `, result);
+      navigation.replace('DonationReceipt', {title: title, creatorName, creatorName, nav: navigation});
+    }
+    catch (e) {
+      var exception = e.toString(); 
+
+      if (exception.startsWith("Error: Transaction has been reverted by the EVM:")) { 
+        Alert.alert("Error: Make sure you have enough cUSD to donate"); 
+      }
+      else {
+        Alert.alert("A transaction error occurred. Please try again");
+      }
+      console.log("Error caught:", exception);
+
+      setLoading(false); 
+      setDonationDisabled(false);
+    }
+    
   }
 
   return (

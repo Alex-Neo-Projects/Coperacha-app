@@ -6,6 +6,7 @@ import AppContext from '../components/AppContext';
 import normalize from 'react-native-normalize';
 
 function Home(props) {
+
   const refresh = (timeout) => {
     let promise = new Promise(async function(resolve, reject) {
       var result = await props.getFeedData(); 
