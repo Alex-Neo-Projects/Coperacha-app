@@ -261,7 +261,7 @@ function CreateListing(props) {
 
                     {loading && 
                       <>
-                        <Text  style={styles.title}>Transaction pending...{"\n"}</Text>
+                        <Text style={styles.title}>Transaction pending...{"\n"}</Text>
                         <ActivityIndicator size="large" />
                       </>
                     }
