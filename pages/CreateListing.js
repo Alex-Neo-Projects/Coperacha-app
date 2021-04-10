@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { View, Text, ScrollView, StyleSheet, TextInput, Dimensions, Keyboard, TouchableWithoutFeedback, Image, Alert } from 'react-native';
+import { View, ActivityIndicator, Text, ScrollView, StyleSheet, TextInput, Dimensions, Keyboard, TouchableWithoutFeedback, Image, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { kit } from '../root';
 import { useNavigation } from '@react-navigation/native';
@@ -17,6 +17,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AppContext from '../components/AppContext';
 import { Button } from 'react-native-elements';
 import normalize from 'react-native-normalize';
+import BigNumber from "bignumber.js";
 
 function CreateListing(props) {
   const navigation = useNavigation();
@@ -35,6 +36,9 @@ function CreateListing(props) {
   const [image, imageResponse] = useState(null);
   const [imageState, setImageState] = useState('No Image Selected'); 
   const [imageDownloadUrl, setImageDownloadUrl] = useState('');
+
+  // loading
+  var [loading, setLoading] = useState(false);
 
   // ui
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -149,6 +153,14 @@ function CreateListing(props) {
       return;
     }
 
+    if(amount < 1 && amount > 0){
+      Alert.alert(
+        "Minimum fundraiser amount is $1 cUSD"
+      ); 
+
+      return;
+    }
+
     if(deadline == 0){
       Alert.alert(
         "Add a deadline!"
@@ -169,9 +181,11 @@ function CreateListing(props) {
     */    
 
     const stableToken = await kit.contracts.getStableToken();
+    
+    const amountBigNum = new BigNumber(amount * 1e+18);
 
     // Create a transaction object to update the contract
-    const txObject = await props.celoCrowdfundContract.methods.startProject(stableToken.address, name, title, description, imageDownloadUrl, deadline, amount);
+    const txObject = await props.celoCrowdfundContract.methods.startProject(stableToken.address, name, title, description, imageDownloadUrl, deadline, amountBigNum);
     // Send a request to the Celo wallet to send an update transaction to the HelloWorld contract
     requestTxSig(
       kit,
@@ -190,11 +204,14 @@ function CreateListing(props) {
     const dappkitResponse = await waitForSignedTxs(requestId)
     const tx = dappkitResponse.rawTxs[0]
     
+    setLoading(true); 
+
     // Get the transaction result, once it has been included in the Celo blockchain
     let result = await toTxResult(kit.web3.eth.sendSignedTransaction(tx)).waitReceipt()
   
     console.log(`Project created contract update transaction receipt: `, result);
 
+    setLoading(false); 
     // User can't go back
     navigation.replace('CreateReceipt');
   }
@@ -230,7 +247,7 @@ function CreateListing(props) {
                     
                     {/* Amount to raise (cUSD) */}
                     <Text style={styles.headers}>Fundraising amount (cUSD)</Text>
-                    <TextInput style={styles.textbox} keyboardType='numeric' onChangeText={onChangeAmount} placeholder='Amount' value={amount.toString()}/>
+                    <TextInput style={styles.textbox} keyboardType='numeric' onChangeText={onChangeAmount} value={amount.toString()} placeholder='Amount'/>
           
                     {/* Deadline */}
                     <Button title={"Pick a deadline"} 
@@ -242,10 +259,18 @@ function CreateListing(props) {
                     <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={(date) => {handleConfirm(date)}} onCancel={hideDatePicker}/>  
                     <Text style={styles.deadlineText}> Fundraiser ends in {deadline.toString()} days from now.</Text>
 
+                    {loading && 
+                      <>
+                        <Text  style={styles.title}>Transaction pending...{"\n"}</Text>
+                        <ActivityIndicator size="large" />
+                      </>
+                    }
+
                     <Button title={"Create Fundraiser"} 
                     buttonStyle={styles.createFundraiserButton} 
                     titleStyle={styles.fundraiserTextStyle} 
                     type="solid"  
+                    disabled={loading}
                     onPress={() => write()}/>
                    
                   
