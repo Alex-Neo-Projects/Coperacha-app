@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { View, Text, Alert, StyleSheet, ScrollView, TouchableWithoutFeedback, Keyboard, Dimensions } from 'react-native';
+import { View, ActivityIndicator, Text, Alert, StyleSheet, ScrollView, TouchableWithoutFeedback, Keyboard, Dimensions } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { kit } from '../root';
 import {   
@@ -20,6 +20,9 @@ function DonationForm(props) {
 
   var [name, onChangeName] = useState('');
   var [donationAmount, onChangeDonationAmount] = useState(0);
+  var [approveDisabled, setApproveDisabled] = useState(false); 
+  var [donationDisabled, setDonationDisabled] = useState(true);
+  var [loading, setLoading] = useState(false);
 
   var title = props.route.params.title;
   
@@ -51,7 +54,7 @@ function DonationForm(props) {
       
       return;
     }
-
+    
     const requestId = 'approve_donation'
     const dappName = 'Coperacha'
     const callback = Linking.makeUrl('/my/path')
@@ -74,15 +77,21 @@ function DonationForm(props) {
       ],
       { requestId, dappName, callback }
     )
-
+    
     // Get the response from the Celo wallet
     const dappkitResponse = await waitForSignedTxs(requestId)
     const tx = dappkitResponse.rawTxs[0]
+    
+    setLoading(true);
+    setApproveDisabled(true);
     
     // Get the transaction result, once it has been included in the Celo blockchain
     let result = await toTxResult(kit.web3.eth.sendSignedTransaction(tx)).waitReceipt()
 
     console.log(`Approve donation transaction receipt: `, result);
+    
+    setDonationDisabled(false);
+    setLoading(false);
 
     Alert.alert("Now you can click donate")
   }
@@ -125,15 +134,21 @@ function DonationForm(props) {
       { requestId, dappName, callback }
     )
 
-    // Get the response from the Celo wallet
-    const dappkitResponse = await waitForSignedTxs(requestId)
-    const tx = dappkitResponse.rawTxs[0]
     
-    // Get the transaction result, once it has been included in the Celo blockchain
-    let result = await toTxResult(kit.web3.eth.sendSignedTransaction(tx)).waitReceipt()
+    // Get the response from the Celo wallet
+    const dappkitResponse = await waitForSignedTxs(requestId);
+    const tx = dappkitResponse.rawTxs[0];
 
+    setLoading(true);
+    setDonationDisabled(true);
+
+    // Get the transaction result, once it has been included in the Celo blockchain
+    let result = await toTxResult(kit.web3.eth.sendSignedTransaction(tx)).waitReceipt();
+    
     console.log(`Donated to project transaction receipt: `, result);
     
+    setLoading(false);
+
     navigation.replace('DonationReceipt', {title: title, creatorName, creatorName, nav: navigation});
   }
 
@@ -154,19 +169,25 @@ function DonationForm(props) {
               <Text style={styles.title}>Enter your donation amount </Text>
               <TextInput keyboardType="numeric" onChangeText={onChangeDonationAmount} value={donationAmount.toString()} placeholder="20" style={[styles.input, { borderColor: '#c0cbd3'}]} ></TextInput>
               
-              <Text>There are two steps:</Text>
-              <Text>1) Approve the donation</Text>
-              <Text>2) Donate! This sends the cUSD</Text>
               <Button title={"Approve Donation"} 
               buttonStyle={styles.createFundraiserButton} 
               titleStyle={styles.fundraiserTextStyle} 
               type="solid"  
+              disabled={approveDisabled}
               onPress={() => approve()}/>
 
-              <Button title={"Donate Now"} 
+              {loading && 
+                <>
+                  <Text  style={styles.title}>Transaction pending...{"\n"}</Text>
+                  <ActivityIndicator size="large" />
+                </>
+              }
+
+              <Button title={"Donate"} 
               buttonStyle={styles.createFundraiserButton} 
               titleStyle={styles.fundraiserTextStyle} 
               type="solid"  
+              disabled={donationDisabled}
               onPress={() => donate()}/>
 
             </View>
