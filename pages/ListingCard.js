@@ -44,7 +44,7 @@ function ListingCard(props) {
           <Text style={styles.projectDescriptionText}>{projectDescription} </Text>
           <Text style={styles.currentRaisedText}>${currentAmount} raised of ${projectGoalAmount} goal. </Text>
 
-          <ProgressBar progress={currentProgress} color='#35D07F' width={330} height={8} style={styles.progress}/>
+          <ProgressBar progress={currentProgress} color='#35D07F' width={normalize(330)} height={normalize(8)} style={styles.progress}/>
           <Text style={styles.dateText}>Fundraising ends on {dateOutput} </Text>
         </View>
       </View>      
@@ -56,13 +56,12 @@ const styles = StyleSheet.create({
   cardView: {
     width : Dimensions.get('window').width - 25,
     height : normalize(440),
-    marginBottom : 30,
-    borderRadius : 15,
-    elevation: 3,
-    backgroundColor : '#FFFFFF',
-    borderColor: '#EDEEEF',
+    marginBottom : normalize(30),
+    borderRadius : normalize(15),
     borderWidth: 1,
     overflow : 'hidden',
+    backgroundColor : '#FFFFFF',
+    borderColor: '#EDEEEF',
   }, 
   cardImage : {
       width : '100%',
@@ -72,9 +71,9 @@ const styles = StyleSheet.create({
     flex : 1,
     alignItems : 'flex-start',
     justifyContent : 'flex-start',
-    marginTop: 6,
-    marginLeft: 7,
-    marginRight: 5  
+    marginTop: normalize(6),
+    marginLeft: normalize(7),
+    marginRight: normalize(5)  
 }, 
   titleText: {
     fontFamily: 'proximanova_bold',
@@ -85,36 +84,37 @@ const styles = StyleSheet.create({
     fontFamily: 'proxima',
     fontSize: 15, 
     color: '#2E3338',
-    marginTop: 5, 
+    marginTop: normalize(5),
+    marginRight: normalize(5)  
   }, 
   creatorText: {
-    fontFamily: 'proxima',
+    fontFamily: 'proximanova_bold',
     fontSize: 14,
-    color: '#767676',
+    color: '#2E3338',
   },
   projectDescriptionText: {
     fontFamily: 'proxima',
     fontSize: 16,
     color: '#2E3338',
-    marginTop: 15, 
-    marginRight: 6
+    marginTop: normalize(15), 
+    marginRight: normalize(6)
   },
   currentRaisedText: {
     fontFamily: 'proximanova_bold',
     fontSize: 15,
     color: '#2E3338',
-    marginTop: 20,
+    marginTop: normalize(20),
   },
   progress: {
-    marginTop: 7
+    marginTop: normalize(7)
   },
   dateText: {
     fontFamily: 'proximanova_bold',
     fontSize: 15,
     color: '#2E3338',
     position: 'absolute', 
-    bottom: 10, 
-    right: 4
+    bottom: normalize(10), 
+    right: normalize(4)
   },
 });
 
