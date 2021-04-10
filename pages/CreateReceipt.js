@@ -1,41 +1,60 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image, Button } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
+import { Button } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 
 function CreateReceipt() {
   const navigation = useNavigation();
 
   return (
-    <View>
-      <Text style={styles.bigText}>Congratulations! {"\n\n"}</Text>
-          
+    <View style={styles.container}>
       <Image style={styles.Image} source={require("../assets/nonprofit.png")}></Image>
-      <Text style={styles.title}>Your fundraiser is now live on Coperacha {"\n\n"}</Text>
+      <Text style={styles.bigText}>Congratulations!</Text>
 
-      <Button title={"Home"}
-          onPress={() => navigation.replace('Create')} />
+      <Text style={styles.title}>Your fundraiser is now live on Coperacha! ✨</Text>
+      
+      <Button title={"Done"} 
+            buttonStyle={styles.createFundraiserButton} 
+            titleStyle={styles.fundraiserTextStyle} 
+            type="solid"  
+            onPress={() => navigation.replace('Create')}/>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container:{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   bigText: { 
-    paddingTop: 80,
-    fontSize: 35, 
-    textAlign: 'center', 
-    fontWeight: 'bold'
+    marginTop: 30,
+    fontSize: 30,
+    color: '#2E3338',
+    fontFamily: 'proximanova_bold',
+    marginBottom: 40
   },
   title: {
-    fontSize: 20, 
-    textAlign: 'center', 
+    fontFamily: 'proxima',
+    fontSize: 16, 
+    color: '#2E3338',
   },
   Image: {
-    // flex: 1,
     width: 250,
     height: 250,
-    marginLeft: 50,
     resizeMode: 'contain',
-    marginBottom: 40
+  },
+  createFundraiserButton: {
+    marginTop: 40,
+    height: 40,
+    width: Dimensions.get('window').width - 100,
+    backgroundColor: "#35D07F"
+  }, 
+  fundraiserTextStyle: {
+    fontFamily: 'proximanova_bold',
+    fontSize: 18, 
+    color: '#FFFFFF'
   }
 });
 

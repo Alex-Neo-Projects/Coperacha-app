@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import ProgressBar from 'react-native-progress/Bar';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-function ListingCard(props) {
+function SingleListingCard(props) {
   const navigation = useNavigation();
   
   var data = props.projectData; 
@@ -34,11 +34,8 @@ function ListingCard(props) {
       delayPressIn={50}>   
 
       <View style={styles.cardView}> 
-        <CachedImage style={styles.cardImage} source={{uri: projectImageLink}} /> 
         <View style={styles.textView}>
           <Text style={styles.titleText}>{projectTitle} </Text>
-          <Text style={styles.creatorInitialText}>Fundraiser created by <Text style={styles.creatorText}>{projectCreator}... </Text> </Text>
-          <Text style={styles.projectDescriptionText}>{projectDescription} </Text>
           <Text style={styles.currentRaisedText}>${currentAmount} raised of ${projectGoalAmount} goal. </Text>
 
           <ProgressBar progress={currentProgress} color='#35D07F' width={330} height={8} style={styles.progress}/>
@@ -52,18 +49,19 @@ function ListingCard(props) {
 const styles = StyleSheet.create({ 
   cardView: {
     width : Dimensions.get('window').width - 25,
-    height : 440,
-    marginBottom : 30,
+    height : 110,
+    marginBottom : 20,
     borderRadius : 15,
     elevation: 3,
     backgroundColor : '#FFFFFF',
     borderColor: '#EDEEEF',
     borderWidth: 1,
     overflow : 'hidden',
+    bottom: 20
   }, 
   cardImage : {
       width : '100%',
-      height : '55%',
+      height : '55%'
   },
   textView : {
     flex : 1,
@@ -97,22 +95,22 @@ const styles = StyleSheet.create({
     marginRight: 6
   },
   currentRaisedText: {
-    fontFamily: 'proximanova_bold',
+    fontFamily: 'proxima',
     fontSize: 15,
     color: '#2E3338',
-    marginTop: 20,
+    marginTop: 10,
   },
   progress: {
     marginTop: 7
   },
   dateText: {
-    fontFamily: 'proximanova_bold',
+    fontFamily: 'proxima',
     fontSize: 15,
     color: '#2E3338',
     position: 'absolute', 
-    bottom: 10, 
+    bottom: 2, 
     right: 4
   },
 });
 
-export default ListingCard;
+export default SingleListingCard;

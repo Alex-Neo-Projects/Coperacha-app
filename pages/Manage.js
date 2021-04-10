@@ -1,10 +1,11 @@
 import React, { useContext } from 'react'
-import { View, Text, RefreshControl, StyleSheet, Button, Image } from 'react-native';
+import { View, Text, RefreshControl, StyleSheet, Image, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LogIn from '../components/LogIn';
 import AppContext from '../components/AppContext';
-import ListingCard from './ListingCard';
+import SingleListingCard from './SingleListingCard';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Button } from 'react-native-elements';
 
 function Manage(props) {
   const refresh = (timeout) => {
@@ -49,22 +50,35 @@ function Manage(props) {
     <View style={styles.container}>
       {loggedIn ? ( 
         <View>
-          {count === 0 ? (
-            <View>
-              <Text style={styles.bigText}>My Fundraisers{"\n"}</Text>
-    
-              <Text style={styles.title}>You have no active fundraisers</Text>
-              <Text>Create a fundraiser below or browse existing fundraisers</Text>
-              
-              <Image style={styles.Image} source={require("../assets/nurture.png")}></Image>
-    
-              <Button title="New Fundraiser" onPress={() => navigation.navigate('Create')}></Button>
-              
-              <Text>{"\n"}</Text>
-              <Button title="Settings" onPress={() => navigation.navigate('Settings')}></Button>
+          {count === 0  ? (
+            <View style={styles.itemsContainer}>
+              <View style={styles.headerInitial}>
+                <View>
+                  <Text style={styles.titleHeader}>Your <Text style={styles.header}>Fundraisers </Text> </Text>
+                </View>
+
+                <View style={styles.headerFollow}>
+                  <Button title={"Settings"} 
+                      buttonStyle={styles.createSettingsButton} 
+                      titleStyle={styles.settingsTextStyle} 
+                      type="clear"  
+                      onPress={() => navigation.navigate('Settings')}/>
+                </View>
+
+              </View>
+
+              <View style={styles.centerLoginTop}>
+                <Image style={styles.Image} source={require("../assets/nurture.png")}></Image>
+                <Text style={styles.notifHeader}>You have no active fundraisers!</Text>
+                <Button title={"New Fundraiser"} 
+                buttonStyle={styles.createFundraiserButton} 
+                titleStyle={styles.fundraiserTextStyle} 
+                type="solid"  
+                onPress={() => navigation.navigate('Create')}/>
+              </View>
             </View>
           ) : ( 
-            <View>
+            <View style={styles.itemsContainer}>
               {/* User does have fundraisers they made */}
               <ScrollView
                 refreshControl={
@@ -74,21 +88,33 @@ function Manage(props) {
                   />
                 }
               >
-                <Text style={styles.headerInitial}> Your <Text style={styles.header}>Fundraisers </Text> </Text>
-                <Button title="Settings" onPress={() => navigation.navigate('Settings')}></Button>
-
-                {projectData.map((project, index) => {
-                  if (project.result.projectCreator.toLowerCase() === address) {
-                    return <ListingCard key={index} projectId={index} projectData={project.result}/>
-                  }
-                })}
+              
+              <View style={styles.headerInitial}>
+                <View>
+                  <Text style={styles.titleHeader}>Your <Text style={styles.header}>Fundraisers </Text> </Text>
+                </View>
+                <View style={styles.headerFollow}>
+                  <Button title={"Settings"} 
+                      buttonStyle={styles.createSettingsButton} 
+                      titleStyle={styles.settingsTextStyle} 
+                      type="clear"  
+                      onPress={() => navigation.navigate('Settings')}/>
+                </View>
+              </View>
+     
+              {projectData.map((project, index) => {
+                if (project.result.projectCreator.toLowerCase() === address) {
+                  return <SingleListingCard key={index} projectId={index} projectData={project.result}/>
+                }
+              })}
               </ScrollView>
             </View>
           )}
       </View>
       ) : (
-        <View>
-          <LogIn reason={"to view your fundraisers"} handleLogIn={context.handleLogIn}/>
+        <View style={styles.centerLogin}>
+          <Image style={styles.Image} source={require("../assets/login2.png")}></Image>
+          <LogIn reason={"View your fundraisers!"} handleLogIn={context.handleLogIn}/>
         </View>
       )}
     </View>
@@ -97,19 +123,32 @@ function Manage(props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingBottom: 8
+    backgroundColor: '#ffffff'
   },
-  headerInitial: { 
+  itemsContainer:{
+    marginLeft: 10
+  },
+  headerInitial:{
+    flexDirection: "row",
     fontSize: 25,
     color: '#2E3338',
     fontFamily: 'proximanova_bold',
-
     marginTop: 60,
     marginLeft: 10,
-    marginBottom: 30,
+  },
+  titleHeader: { 
+    fontSize: 25,
+    color: '#2E3338',
+    fontFamily: 'proximanova_bold',
+  },
+  notifHeader: { 
+    fontSize: 20,
+    color: '#2E3338',
+    fontFamily: 'proximanova_bold',
+  },
+  headerFollow:{
+    marginLeft: 20,
+    bottom: 40
   },
   header: {
     fontSize: 25,
@@ -117,22 +156,48 @@ const styles = StyleSheet.create({
     fontFamily: 'proximanova_bold',
   },
   title: {
-    marginVertical: 30, 
     fontSize: 20, 
     fontWeight: 'bold'
   },
-  bigText: { 
-    paddingTop: 40,
-    fontSize: 35, 
-    fontWeight: 'bold'
+  centerLogin: {
+    marginTop: 193,
+    marginBottom: 300,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  centerLoginTop: {
+    marginBottom: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   Image: {
-    flex: 1,
-    width: 250,
-    height: 250,
-    marginLeft: 50,
+    width: 300,
+    height: 300,
     resizeMode: 'contain'
   },
+  createSettingsButton: {
+    marginLeft: 28,
+    marginTop: 34,
+    height: 40,
+    width: 100,
+  }, 
+  settingsTextStyle: {
+    fontFamily: 'proximanova_bold',
+    fontSize: 18, 
+    color: '#2E3338'
+  },
+  createFundraiserButton: {
+    marginTop: 40,
+    height: 40,
+    marginRight: 10,
+    width: Dimensions.get('window').width - 20,
+    backgroundColor: "#35D07F"
+  }, 
+  fundraiserTextStyle: {
+    fontFamily: 'proximanova_bold',
+    fontSize: 18, 
+    color: '#FFFFFF'
+  }
 });
 
 export default Manage;

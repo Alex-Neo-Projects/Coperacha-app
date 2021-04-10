@@ -35,25 +35,31 @@ function Home(props) {
 
 
   return (
-    <ScrollView
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-        />
-      }
-    > 
-      <Text style={styles.headerInitial}> Ongoing <Text style={styles.header}>Fundraisers </Text> </Text>
-      <View style={styles.container}>
-        {projectData.map((project, index) => {
-          return <ListingCard key={index} projectId={index} projectData={project.result}/>
-        })}
-      </View>
-    </ScrollView>
+    <View style={styles.bcontainer}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
+      > 
+        <Text style={styles.headerInitial}> Ongoing <Text style={styles.header}>Fundraisers </Text> </Text>
+        <View style={styles.container}>
+          {projectData.map((project, index) => {
+            return <ListingCard key={index} projectId={index} projectData={project.result}/>
+          })}
+        </View>
+      </ScrollView>
+    </View>
+
   );
 }
 
 const styles = StyleSheet.create({
+  bcontainer:{
+    backgroundColor: '#ffffff'
+  },
   headerInitial: { 
     fontSize: 25,
     color: '#2E3338',
@@ -66,13 +72,14 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 25,
     color: '#35D07F',
-    fontFamily: 'proximanova_bold',
+    fontFamily: 'proximanova_bold'
   },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: 8
+    paddingBottom: 8,
+    backgroundColor: '#ffffff'
   }
 });
 

@@ -26,7 +26,9 @@ function FundraiserListing(props) {
   
   return (
     <ScrollView style={styles.sview}>
-      <CachedImage source={imageURL} style={styles.image} />
+      <View style={styles.fill}>
+        <CachedImage source={imageURL} style={styles.image} />
+      </View>
 
       <View style={styles.viewStyle}>
         <Text style={styles.title}>{title}</Text>
@@ -61,7 +63,6 @@ const styles = StyleSheet.create({
     height: 250, 
     borderRadius : 15,
     borderColor: '#DDDDDD',
-    borderWidth: 1,
     resizeMode : 'cover', 
     marginBottom: 5
   },

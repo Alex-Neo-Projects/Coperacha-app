@@ -117,7 +117,7 @@ function DonationForm(props) {
         </TouchableWithoutFeedback>
       ) : (
         <View style={styles.centerLogin}>
-          <LogIn reason="to donate"></LogIn>
+          <LogIn reason="😱 Uh oh, Login to donate!"></LogIn>
         </View>
       )}
     </View>
