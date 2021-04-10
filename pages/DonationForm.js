@@ -137,7 +137,9 @@ function DonationForm(props) {
     
     // Get the response from the Celo wallet
     const dappkitResponse = await waitForSignedTxs(requestId);
+    console.log("THIS IS THE DAPPKITRESPONSE", dappkitResponse); 
     const tx = dappkitResponse.rawTxs[0];
+    console.log("THIS IS THE TX", tx); 
 
     setLoading(true);
     setDonationDisabled(true);
@@ -159,7 +161,7 @@ function DonationForm(props) {
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
             <View>
               <Text style={styles.headerInitial}>Your Donation ❤️</Text>
-              <Text style={styles.titleInitial}>This is your donation to <Text style={styles.titleMidFollow}>{creatorName}</Text></Text>
+              <Text style={styles.titleInitial}>100% of proceeds go directly to <Text style={styles.titleMidFollow}>{creatorName}</Text></Text>
               <Text style={styles.titleMid}>for <Text style={styles.titleMidFollow}>{title}</Text></Text>
 
 
