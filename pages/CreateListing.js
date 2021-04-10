@@ -27,6 +27,7 @@ function CreateListing(props) {
 
   // Paload info
   const [title, onChangeTitle] = useState('');
+  const [name, onChangeName] = useState('');
   const [description, onChangeDescription] = useState('');
   const [amount, onChangeAmount] = useState(0);
   const [deadline, onChangeDeadline] = useState(0);
@@ -112,6 +113,14 @@ function CreateListing(props) {
       return;
     }
 
+    if(name.length == 0){
+      Alert.alert(
+        "Add a name!"
+      ); 
+
+      return;
+    }
+
     if(title.length == 0){
       Alert.alert(
         "Add a title!"
@@ -156,8 +165,10 @@ function CreateListing(props) {
       string calldata imageLink, uint durationInDays, uint amountToRaise)
     */    
 
+    const stableToken = await kit.contracts.getStableToken();
+
     // Create a transaction object to update the contract
-    const txObject = await props.celoCrowdfundContract.methods.startProject(title, description, imageDownloadUrl, deadline, amount);
+    const txObject = await props.celoCrowdfundContract.methods.startProject(stableToken.address, name, title, description, imageDownloadUrl, deadline, amount);
     // Send a request to the Celo wallet to send an update transaction to the HelloWorld contract
     requestTxSig(
       kit,
@@ -201,6 +212,11 @@ function CreateListing(props) {
                       {image && <Image source={{ uri: image, cache: 'only-if-cached' }} style={styles.imagePreview} />}
                     </View> 
                     
+                    {/* Name  */}
+                    <Text style={styles.headers}>Your name</Text>
+                    <TextInput style={styles.textbox} onChangeText={onChangeName} onSubmitEditing={Keyboard.dismiss} placeholder='Kanye West' maxLength={50} value={name}/>
+
+
                     {/* Title  */}
                     <Text style={styles.headers}>Title</Text>
                     <TextInput style={styles.textbox} onChangeText={onChangeTitle} onSubmitEditing={Keyboard.dismiss} placeholder='Title' maxLength={50} value={title}/>

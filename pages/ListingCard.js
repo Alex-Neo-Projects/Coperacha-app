@@ -10,9 +10,11 @@ function ListingCard(props) {
   
   var data = props.projectData; 
 
+  console.log(data); 
   //Data 
   var currentAmount = data.currentAmount / 1E18; // Gotta convert from bigNumber to regular integer; 
   var currentState = data.currentState;
+  var creatorName = data.projectCreatorName; 
   var fundraisingDeadline = data.fundRaisingDeadline; 
   var projectCreator = data.projectCreator.toString().substring(0, 16);
   var projectDescription = data.projectDescription.length > 115 ? data.projectDescription.substring(0, 115) : data.projectDescription;
@@ -37,7 +39,7 @@ function ListingCard(props) {
         <CachedImage style={styles.cardImage} source={{uri: projectImageLink}} /> 
         <View style={styles.textView}>
           <Text style={styles.titleText}>{projectTitle} </Text>
-          <Text style={styles.creatorInitialText}>Fundraiser created by <Text style={styles.creatorText}>{projectCreator}... </Text> </Text>
+          <Text style={styles.creatorInitialText}>Fundraiser created by <Text style={styles.creatorText}>{creatorName}</Text> </Text>
           <Text style={styles.projectDescriptionText}>{projectDescription} </Text>
           <Text style={styles.currentRaisedText}>${currentAmount} raised of ${projectGoalAmount} goal. </Text>
 
