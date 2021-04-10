@@ -12,7 +12,7 @@ function DonationReceipt(props) {
     <View style={styles.container}>
       <Text style={styles.bigText}>Thank you for donating 🙌</Text>
 
-      <Text style={styles.titleInitial}>100% of proceeds go directly to</Text>
+      <Text style={styles.titleInitial}>100% of proceeds go directly to </Text>
       <Text style={styles.titleFollow}>{creatorName}</Text>
 
       <Image style={styles.Image} source={require("../assets/give.png")}></Image>

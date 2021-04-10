@@ -4,6 +4,7 @@ import CachedImage from 'react-native-expo-cached-image';
 import { useNavigation } from '@react-navigation/native';
 import ProgressBar from 'react-native-progress/Bar';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import normalize from 'react-native-normalize';
 
 function ListingCard(props) {
   const navigation = useNavigation();
@@ -54,7 +55,7 @@ function ListingCard(props) {
 const styles = StyleSheet.create({ 
   cardView: {
     width : Dimensions.get('window').width - 25,
-    height : 440,
+    height : normalize(440),
     marginBottom : 30,
     borderRadius : 15,
     elevation: 3,

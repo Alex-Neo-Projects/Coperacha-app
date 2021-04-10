@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
 import '../global'
-import { StyleSheet, RefreshControl, ScrollView, View, Text } from 'react-native';
+import { StyleSheet, RefreshControl, ScrollView, View, Text, Dimensions } from 'react-native';
 import ListingCard from './ListingCard';
 import AppContext from '../components/AppContext';
-
+import normalize from 'react-native-normalize';
 
 function Home(props) {
   const refresh = (timeout) => {
@@ -35,7 +35,7 @@ function Home(props) {
 
 
   return (
-    <View style={styles.bcontainer}>
+    <View style={styles.bodyContainer}>
       <ScrollView
         refreshControl={
           <RefreshControl
@@ -57,17 +57,19 @@ function Home(props) {
 }
 
 const styles = StyleSheet.create({
-  bcontainer:{
-    backgroundColor: '#ffffff'
+  bodyContainer:{
+    backgroundColor: '#ffffff',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height
   },
   headerInitial: { 
     fontSize: 25,
     color: '#2E3338',
     fontFamily: 'proximanova_bold',
 
-    marginTop: 60,
-    marginLeft: 10,
-    marginBottom: 30,
+    marginTop: normalize(60),
+    marginLeft: normalize(10),
+    marginBottom: normalize(30),
   },
   header: {
     fontSize: 25,
@@ -78,7 +80,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: 8,
     backgroundColor: '#ffffff'
   }
 });
