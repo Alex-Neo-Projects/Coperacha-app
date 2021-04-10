@@ -1,4 +1,4 @@
-import { Image } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import React from 'react'; 
 import Onboarding from 'react-native-onboarding-swiper';
 import { Button } from 'react-native';
@@ -30,6 +30,8 @@ class AppOnboarding extends React.Component {
           subtitle: 
             <Button
               title={'Get Started with Coperacha'}
+              buttonStyle={styles.createFundraiserButton} 
+              titleStyle={styles.fundraiserTextStyle} 
               onPress={() => {
                 this.props.done();
               }}/>
@@ -39,5 +41,19 @@ class AppOnboarding extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  createFundraiserButton: {
+    marginTop: 40,
+    height: 40,
+    width: Dimensions.get('window').width - 20,
+    backgroundColor: "#35D07F"
+  }, 
+  fundraiserTextStyle: {
+    fontFamily: 'proximanova_bold',
+    fontSize: 18, 
+    color: '#FFFFFF'
+  }
+})
 
 export default AppOnboarding; 
