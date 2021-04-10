@@ -17,7 +17,6 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AppContext from '../components/AppContext';
 import { Button } from 'react-native-elements';
 import normalize from 'react-native-normalize';
-import BigNumber from "bignumber.js";
 
 function CreateListing(props) {
   const navigation = useNavigation();
@@ -181,11 +180,9 @@ function CreateListing(props) {
     */    
 
     const stableToken = await kit.contracts.getStableToken();
-    
-    const amountBigNum = new BigNumber(amount * 1e+18);
 
     // Create a transaction object to update the contract
-    const txObject = await props.celoCrowdfundContract.methods.startProject(stableToken.address, name, title, description, imageDownloadUrl, deadline, amountBigNum);
+    const txObject = await props.celoCrowdfundContract.methods.startProject(stableToken.address, name, title, description, imageDownloadUrl, deadline, amount);
     // Send a request to the Celo wallet to send an update transaction to the HelloWorld contract
     requestTxSig(
       kit,
@@ -206,14 +203,22 @@ function CreateListing(props) {
     
     setLoading(true); 
 
-    // Get the transaction result, once it has been included in the Celo blockchain
-    let result = await toTxResult(kit.web3.eth.sendSignedTransaction(tx)).waitReceipt()
-  
-    console.log(`Project created contract update transaction receipt: `, result);
+    try {
+      let result = await toTxResult(kit.web3.eth.sendSignedTransaction(tx)).waitReceipt();
 
-    setLoading(false); 
-    // User can't go back
-    navigation.replace('CreateReceipt');
+      setLoading(false); 
+      // Get the transaction result, once it has been included in the Celo blockchain
+      console.log(`Project created transaction receipt: `, result);
+      navigation.replace('CreateReceipt');
+    }
+    catch (e) {
+      var exception = e.toString(); 
+
+      Alert.alert("A transaction error occurred. Please try again");
+      setLoading(false); 
+      
+      console.log("Error caught:", exception);
+    }
   }
 
   return (
@@ -261,7 +266,6 @@ function CreateListing(props) {
 
                     {loading && 
                       <>
-                        <Text style={styles.title}>Transaction pending...{"\n"}</Text>
                         <ActivityIndicator size="large" />
                       </>
                     }

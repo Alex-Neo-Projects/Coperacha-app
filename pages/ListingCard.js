@@ -11,7 +11,6 @@ function ListingCard(props) {
   
   var data = props.projectData; 
 
-  console.log(data); 
   //Data 
   var currentAmount = data.currentAmount / 1E18; // Gotta convert from bigNumber to regular integer; 
   var currentState = data.currentState;

@@ -25,6 +25,7 @@ import {
 import * as Linking from 'expo-linking';
 import AppContext from './components/AppContext'; 
 import * as Font from 'expo-font';
+import ManageFundraiserListing from './pages/ManageFundraiserListing';
 import normalize from 'react-native-normalize';
 
 const Tab = createBottomTabNavigator();
@@ -83,7 +84,7 @@ function ManageStackScreen(props) {
       <HomeStack.Screen name="Manage"
         children={()=>
           <Manage
-          getFeedData={props.getFeedData} />
+            getFeedData={props.getFeedData} />
           }
         options={{ headerShown: false }}
       />
@@ -95,7 +96,10 @@ function ManageStackScreen(props) {
         }
         options={{ headerShown: false }}
       />
-
+      <HomeStack.Screen name="ManageFundraiserListing"  
+        component={ManageFundraiserListing}
+        options={{ headerShown: false }}
+      />
     </HomeStack.Navigator>
   );
 }
@@ -255,7 +259,7 @@ class App extends React.Component {
     const cUSDBalanceBig = await stableToken.balanceOf(this.state.address);
     const balance = cUSDBalanceBig / 1E18
     this.setState({ balance: balance })
-    
+
     return "Success";
   }
 
@@ -301,6 +305,7 @@ class App extends React.Component {
   render() {
     return (
       <>
+
       {
         (!this.state.onboardingFinished) ? (
             <AppOnboarding done={this.completeOnboarding} />
@@ -343,6 +348,7 @@ class App extends React.Component {
                 tabBarOptions={{
                   activeTintColor: '#35D07F',
                   inactiveTintColor: 'gray',
+                  keyboardHidesTabBar: true
                 }}
               > 
                 <>
