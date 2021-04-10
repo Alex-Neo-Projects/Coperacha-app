@@ -266,7 +266,7 @@ function CreateListing(props) {
 
                     {loading && 
                       <>
-                        <ActivityIndicator size="large" />
+                        <ActivityIndicator color="#999999" size="large" />
                       </>
                     }
 

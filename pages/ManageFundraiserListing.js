@@ -125,21 +125,18 @@ function ManageFundraiserListing(props) {
         <Text style={styles.amountRaisedText}>${currentAmount.toString()} raised of ${goal} goal.</Text>
         <ProgressBar progress={progress} color='#35D07F' width={350} height={8} style={styles.progress}/>
         
-        
+        {loading && 
+          <>
+            <ActivityIndicator color="#999999" size="large" />
+          </>
+        }
+
         <Button title={"Pay Out"} 
           buttonStyle={styles.createFundraiserButton} 
           titleStyle={styles.fundraiserTextStyle} 
           type="solid"  
           disabled={loading}
           onPress={() => alertUser()}/>
-
-
-        {loading && 
-          <>
-            <Text  style={styles.title}>Transaction pending...{"\n"}</Text>
-            <ActivityIndicator size="large" />
-          </>
-        }
         
       </View>
     </ScrollView>

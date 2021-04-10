@@ -184,10 +184,6 @@ function DonationForm(props) {
               <Text style={styles.title}>Enter your donation amount </Text>
               <TextInput keyboardType="numeric" onChangeText={onChangeDonationAmount} value={donationAmount.toString()} placeholder="20" style={[styles.input, { borderColor: '#c0cbd3'}]} ></TextInput>
               
-              <Text style={styles.titleInstructionsHeader}>Instructions:</Text>
-              <Text style={styles.titleInstructions}>1) Click Approve Donation! </Text>
-              <Text style={styles.titleInstructions}>2) Click Donate Now! This sends the cUSD.</Text>
-
               <Button title={"Approve Donation"} 
               buttonStyle={styles.createFundraiserButton} 
               titleStyle={styles.fundraiserTextStyle} 
@@ -197,8 +193,7 @@ function DonationForm(props) {
 
               {loading && 
                 <>
-                  <Text  style={styles.title}>Transaction pending...{"\n"}</Text>
-                  <ActivityIndicator size="large" />
+                  <ActivityIndicator color="#999999" size="large" />
                 </>
               }
 
@@ -231,8 +226,8 @@ const styles = StyleSheet.create({
   headerInitial:{
     fontSize: 30,
     color: '#2E3338',
+    marginTop: Platform.OS === 'ios' ? normalize(60): normalize(20),
     fontFamily: 'proximanova_bold',
-    marginTop: normalize(60),
     marginBottom: normalize(30),
   },
   titleInitial:{
