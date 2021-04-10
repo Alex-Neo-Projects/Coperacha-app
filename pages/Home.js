@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import '../global'
-import { StyleSheet, RefreshControl, ScrollView, View, Text, Dimensions } from 'react-native';
+import { StyleSheet, RefreshControl, ScrollView, View, Text, Dimensions, Platform } from 'react-native';
 import ListingCard from './ListingCard';
 import AppContext from '../components/AppContext';
 import normalize from 'react-native-normalize';
@@ -60,14 +60,19 @@ const styles = StyleSheet.create({
   bodyContainer:{
     backgroundColor: '#ffffff',
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height
+    height: '100%'
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ffffff'
   },
   headerInitial: { 
     fontSize: 25,
     color: '#2E3338',
     fontFamily: 'proximanova_bold',
-
-    marginTop: normalize(60),
+    marginTop: Platform.OS === 'ios' ? normalize(60): normalize(20),
     marginLeft: normalize(10),
     marginBottom: normalize(30),
   },
@@ -75,12 +80,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: '#35D07F',
     fontFamily: 'proximanova_bold'
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ffffff'
   }
 });
 

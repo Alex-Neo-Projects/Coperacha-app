@@ -1,8 +1,9 @@
 import React, { useContext } from 'react'
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import LogOut from '../components/LogOut'; 
 import LogIn from '../components/LogOut'; 
 import AppContext from '../components/AppContext';  
+import normalize from 'react-native-normalize';
 
 function Settings(props) {
   const context = useContext(AppContext);
@@ -13,7 +14,7 @@ function Settings(props) {
   console.log(balance);
   return (
     <View style={styles.container}>
-      <Text style={styles.headerInitial}> Settings </Text>
+      <Text style={styles.headerInitial}> Settings ⚙️</Text>
       {loggedIn ? ( 
         <View>
           <Text style={styles.headerStart}> Logged into </Text>
@@ -34,42 +35,47 @@ function Settings(props) {
 }
 
 const styles = StyleSheet.create({
+  container:{
+    backgroundColor: '#ffffff',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height
+  },
   headerInitial: { 
     fontSize: 25,
     color: '#2E3338',
     fontFamily: 'proximanova_bold',
-
-    marginTop: 60,
-    marginLeft: 10,
-    marginBottom: 30,
+    marginTop: normalize(60),
+    marginLeft: normalize(10),
+    marginRight: normalize(10),
+    marginBottom: normalize(30),
   },
   headerStart: {
-    marginLeft: 10,
     fontSize: 20,
     color: '#2E3338',
     fontFamily: 'proximanova_bold',
-    marginBottom: 5
+    marginLeft: normalize(10),
+    marginBottom: normalize(5)
   },
   headerEnd: {
-    marginLeft: 15,
     fontSize: 15,
     color: '#2E3338',
-    fontFamily: 'proxima'
+    fontFamily: 'proxima',
+    marginLeft: normalize(15),
   },
   headerStartBal:{
-    marginLeft: 10,
     fontSize: 20,
     color: '#2E3338',
     fontFamily: 'proximanova_bold',
-    marginTop: 20,
-    marginBottom: 5
+    marginLeft: normalize(10),
+    marginTop: normalize(20),
+    marginBottom: normalize(5)
   },
   headerEndBal:{
-    marginLeft: 15,
-    marginBottom: 40,
     fontSize: 15,
     color: '#2E3338',
-    fontFamily: 'proxima'
+    fontFamily: 'proxima',
+    marginLeft: normalize(15),
+    marginBottom: normalize(40),
   },
   centerLogin: {
     flex: 1, 

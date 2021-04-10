@@ -14,6 +14,7 @@ import BigNumber from "bignumber.js";
 import LogIn from '../components/LogIn';
 import { useNavigation } from '@react-navigation/core';
 import { Button } from 'react-native-elements';
+import normalize from 'react-native-normalize';
 
 function DonationForm(props) {
   const navigation = useNavigation();
@@ -154,9 +155,10 @@ function DonationForm(props) {
               <Text style={styles.title}>Enter your donation amount </Text>
               <TextInput keyboardType="numeric" onChangeText={onChangeDonationAmount} value={donationAmount.toString()} placeholder="20" style={[styles.input, { borderColor: '#c0cbd3'}]} ></TextInput>
               
-              <Text>There are two steps:</Text>
-              <Text>1) Approve the donation</Text>
-              <Text>2) Donate! This sends the cUSD</Text>
+              <Text style={styles.titleInstructionsHeader}>Instructions:</Text>
+              <Text style={styles.titleInstructions}>1) Click Approve Donation! </Text>
+              <Text style={styles.titleInstructions}>2) Click Donate Now! This sends the cUSD.</Text>
+
               <Button title={"Approve Donation"} 
               buttonStyle={styles.createFundraiserButton} 
               titleStyle={styles.fundraiserTextStyle} 
@@ -186,20 +188,20 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    // bottom: 50
+    backgroundColor: '#ffffff',
   },
   headerInitial:{
     fontSize: 30,
     color: '#2E3338',
     fontFamily: 'proximanova_bold',
-    marginTop: 60,
-    marginBottom: 30,
+    marginTop: normalize(60),
+    marginBottom: normalize(30),
   },
   titleInitial:{
     fontFamily: 'proxima',
     fontSize: 18, 
     color: '#2E3338',
-    marginBottom: 5
+    marginBottom: normalize(5)
   },
   titleFollow:{
     fontFamily: 'proximanova_bold',
@@ -210,13 +212,26 @@ const styles = StyleSheet.create({
     fontFamily: 'proxima',
     fontSize: 17, 
     color: '#2E3338',
-    marginTop: 6,
-    marginBottom: 5
+    marginTop: normalize(6),
+    marginBottom: normalize(5)
   },
   titleMidFollow:{
     fontFamily: 'proximanova_bold',
-    fontSize: 17, 
+    fontSize: 18, 
     color: '#2E3338',
+  },
+  titleInstructionsHeader: {
+    fontFamily: 'proximanova_bold',
+    fontSize: 20, 
+    color: '#2E3338',
+    marginTop: normalize(30),
+    marginBottom: normalize(6)
+  },
+  titleInstructions:{
+    fontFamily: 'proxima',
+    fontSize: 16, 
+    color: '#2E3338',
+    marginBottom: normalize(5)
   },
   centerLogin: {
     flex: 1, 
@@ -227,17 +242,8 @@ const styles = StyleSheet.create({
     fontFamily: 'proximanova_bold',
     fontSize: 20, 
     color: '#2E3338',
-    marginTop: 30,
-    marginBottom: 20
-  },
-  bigText: { 
-    paddingTop: 30,
-    fontSize: 35, 
-    fontWeight: 'bold'
-  },
-  small: { 
-    paddingTop: 30,
-    fontSize: 15, 
+    marginTop: normalize(30),
+    marginBottom: normalize(20)
   },
   input: {
     borderStyle: 'solid',
@@ -246,13 +252,13 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingLeft: 5,
     fontSize: 16,
-    height: 40,
+    height: normalize(40),
     color: '#000000',
   },
   createFundraiserButton: {
-    marginTop: 40,
-    height: 40,
-    width: Dimensions.get('window').width - 20,
+    marginTop: normalize(40),
+    height: normalize(40),
+    width: Dimensions.get('window').width - 30,
     backgroundColor: "#35D07F"
   }, 
   fundraiserTextStyle: {
