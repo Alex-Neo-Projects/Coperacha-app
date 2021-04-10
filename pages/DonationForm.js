@@ -88,7 +88,7 @@ function DonationForm(props) {
 
     console.log(`Donated to project transaction receipt: `, result);
     
-    navigation.replace('DonationReceipt', {title: title, nav: navigation});
+    navigation.replace('DonationReceipt', {title: title, creatorAddy: creatorAddy, nav: navigation});
   }
 
   return (
