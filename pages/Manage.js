@@ -123,7 +123,8 @@ function Manage(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
+    // flex: 1,
   },
   itemsContainer:{
     marginLeft: 10

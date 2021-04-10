@@ -31,7 +31,7 @@ function DonationForm(props) {
   var projectId = props.route.params.projectId;
   var address = appContext.address; 
 
-  const creatorAddy = props.route.params.creatorAddress;
+  const creatorName = props.route.params.creatorName; 
 
   var projectInstanceContract = projectDataContext[projectId].projectInstanceContract;
 
@@ -134,7 +134,7 @@ function DonationForm(props) {
 
     console.log(`Donated to project transaction receipt: `, result);
     
-    navigation.replace('DonationReceipt', {title: title, creatorAddy: creatorAddy, nav: navigation});
+    navigation.replace('DonationReceipt', {title: title, creatorName, creatorName, nav: navigation});
   }
 
   return (
@@ -144,8 +144,7 @@ function DonationForm(props) {
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
             <View>
               <Text style={styles.headerInitial}>Your Donation ❤️</Text>
-              <Text style={styles.titleInitial}>This is your donation to</Text>
-              <Text style={styles.titleFollow}>{creatorAddy}...</Text>
+              <Text style={styles.titleInitial}>This is your donation to <Text style={styles.titleMidFollow}>{creatorName}</Text></Text>
               <Text style={styles.titleMid}>for <Text style={styles.titleMidFollow}>{title}</Text></Text>
 
 

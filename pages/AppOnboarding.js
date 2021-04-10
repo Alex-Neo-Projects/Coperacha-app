@@ -1,8 +1,7 @@
 import { Image, StyleSheet, Dimensions } from 'react-native';
 import React from 'react'; 
 import Onboarding from 'react-native-onboarding-swiper';
-import { Button } from 'react-native';
-
+import { Button } from 'react-native-elements';
 class AppOnboarding extends React.Component {
   render(){
     return (

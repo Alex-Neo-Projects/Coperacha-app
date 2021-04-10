@@ -13,8 +13,7 @@ function FundraiserListing(props) {
   
   var data = props.route.params.projectData;
   var title = data['projectTitle'];
-  var creatorAddy = data['projectCreator'];
-  creatorAddy = creatorAddy.toString().substring(0,20);
+  var creatorName = data['projectCreatorName'];
   var image = data['projectImageLink'];
   var goal = data['projectGoalAmount'];
   var description = data['projectDescription'];
@@ -33,7 +32,7 @@ function FundraiserListing(props) {
       <View style={styles.viewStyle}>
         <Text style={styles.title}>{title}</Text>
 
-        <Text style={styles.creatorInitialText}>⭐️ Created by <Text style={styles.creatorText}>{creatorAddy}...</Text> </Text>
+        <Text style={styles.creatorInitialText}>⭐️ Created by <Text style={styles.creatorText}>{creatorName}</Text> </Text>
 
 
         <Text style={styles.descriptionTitle}>Description</Text>
@@ -48,7 +47,7 @@ function FundraiserListing(props) {
           buttonStyle={styles.createFundraiserButton} 
           titleStyle={styles.fundraiserTextStyle} 
           type="solid"  
-          onPress={() => navigation.navigate('DonationForm', {projectId: projectId, loggedIn: loggedIn, address: address, title: title, creatorAddress: creatorAddy, nav: navigation})}/>
+          onPress={() => navigation.navigate('DonationForm', {projectId: projectId, loggedIn: loggedIn, address: address, creatorName: creatorName, title: title, nav: navigation})}/>
         
       </View>
     </ScrollView>
