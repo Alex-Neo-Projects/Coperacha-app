@@ -69,7 +69,7 @@ function Manage(props) {
 
               <View style={styles.centerLoginTop}>
                 <Image style={styles.Image} source={require("../assets/nurture.png")}></Image>
-                <Text style={styles.titleHeader}>You have no active fundraisers!</Text>
+                <Text style={styles.notifHeader}>You have no active fundraisers!</Text>
                 <Button title={"New Fundraiser"} 
                 buttonStyle={styles.createFundraiserButton} 
                 titleStyle={styles.fundraiserTextStyle} 
@@ -141,6 +141,11 @@ const styles = StyleSheet.create({
     color: '#2E3338',
     fontFamily: 'proximanova_bold',
   },
+  notifHeader: { 
+    fontSize: 20,
+    color: '#2E3338',
+    fontFamily: 'proximanova_bold',
+  },
   headerFollow:{
     marginLeft: 20,
     bottom: 40
@@ -155,8 +160,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   centerLogin: {
-    marginTop: 118,
-    marginBottom: 200,
+    marginTop: 193,
+    marginBottom: 300,
     justifyContent: 'center',
     alignItems: 'center',
   },

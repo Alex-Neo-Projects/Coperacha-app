@@ -25,8 +25,8 @@ function Settings(props) {
           <LogOut handleLogOut={props.handleLogOut}/>
         </View>
       ) : (
-        <View>
-          <LogIn reason={"to view your settings"} handleLogIn={context.handleLogIn}/>
+        <View style={styles.centerLogin}>
+          <LogIn reason={"View your settings!"} handleLogIn={context.handleLogIn}/>
         </View>
       )}
     </View>
@@ -70,6 +70,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#2E3338',
     fontFamily: 'proxima'
+  },
+  centerLogin: {
+    flex: 1, 
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 
