@@ -67,7 +67,8 @@ const styles = StyleSheet.create({
     width: '100%',
     borderColor: '#DDDDDD',
     resizeMode : 'cover', 
-    borderRadius : 10,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
     marginBottom: normalize(5)
   },
   divider:{
