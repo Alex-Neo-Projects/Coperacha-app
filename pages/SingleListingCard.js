@@ -4,6 +4,7 @@ import CachedImage from 'react-native-expo-cached-image';
 import { useNavigation } from '@react-navigation/native';
 import ProgressBar from 'react-native-progress/Bar';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import normalize from 'react-native-normalize';
 
 function SingleListingCard(props) {
   const navigation = useNavigation();
@@ -38,7 +39,7 @@ function SingleListingCard(props) {
           <Text style={styles.titleText}>{projectTitle} </Text>
           <Text style={styles.currentRaisedText}>${currentAmount} raised of ${projectGoalAmount} goal. </Text>
 
-          <ProgressBar progress={currentProgress} color='#35D07F' width={330} height={8} style={styles.progress}/>
+          <ProgressBar progress={currentProgress} color='#35D07F' width={normalize(330)} height={normalize(8)} style={styles.progress}/>
           <Text style={styles.dateText}>Fundraising ends on {dateOutput} </Text>
         </View>
       </View>      
@@ -49,15 +50,13 @@ function SingleListingCard(props) {
 const styles = StyleSheet.create({ 
   cardView: {
     width : Dimensions.get('window').width - 25,
-    height : 110,
-    marginBottom : 20,
+    height : normalize(110),
+    marginBottom : normalize(15),
     borderRadius : 15,
-    elevation: 3,
     backgroundColor : '#FFFFFF',
     borderColor: '#EDEEEF',
     borderWidth: 1,
     overflow : 'hidden',
-    bottom: 20
   }, 
   cardImage : {
       width : '100%',
@@ -67,9 +66,9 @@ const styles = StyleSheet.create({
     flex : 1,
     alignItems : 'flex-start',
     justifyContent : 'flex-start',
-    marginTop: 6,
-    marginLeft: 7,
-    marginRight: 5  
+    marginTop: normalize(6),
+    marginLeft: normalize(7),
+    marginRight: normalize(5)  
 }, 
   titleText: {
     fontFamily: 'proximanova_bold',
@@ -80,7 +79,7 @@ const styles = StyleSheet.create({
     fontFamily: 'proxima',
     fontSize: 15, 
     color: '#2E3338',
-    marginTop: 5, 
+    marginTop: normalize(5), 
   }, 
   creatorText: {
     fontFamily: 'proxima',
@@ -91,25 +90,25 @@ const styles = StyleSheet.create({
     fontFamily: 'proxima',
     fontSize: 16,
     color: '#2E3338',
-    marginTop: 15, 
-    marginRight: 6
+    marginTop: normalize(15), 
+    marginRight: normalize(6)
   },
   currentRaisedText: {
     fontFamily: 'proxima',
     fontSize: 15,
     color: '#2E3338',
-    marginTop: 10,
+    marginTop: normalize(10),
   },
   progress: {
-    marginTop: 7
+    marginTop: normalize(7)
   },
   dateText: {
     fontFamily: 'proxima',
     fontSize: 15,
     color: '#2E3338',
     position: 'absolute', 
-    bottom: 2, 
-    right: 4
+    bottom: normalize(2), 
+    right: normalize(4)
   },
 });
 

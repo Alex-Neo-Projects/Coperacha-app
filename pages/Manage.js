@@ -130,7 +130,10 @@ const styles = StyleSheet.create({
   },
   itemsContainer:{
     marginLeft: normalize(10),
-    marginRight: normalize(10)
+    marginRight: normalize(10),
+    backgroundColor: '#ffffff',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height
   },
   headerInitial:{
     flexDirection: "row",
