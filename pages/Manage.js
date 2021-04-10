@@ -6,6 +6,7 @@ import AppContext from '../components/AppContext';
 import SingleListingCard from './SingleListingCard';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Button } from 'react-native-elements';
+import normalize from 'react-native-normalize';
 
 function Manage(props) {
   const refresh = (timeout) => {
@@ -69,7 +70,7 @@ function Manage(props) {
 
               <View style={styles.centerLoginTop}>
                 <Image style={styles.Image} source={require("../assets/nurture.png")}></Image>
-                <Text style={styles.notifHeader}>You have no active fundraisers!</Text>
+                <Text style={styles.notifHeader}>No active fundraisers!</Text>
                 <Button title={"New Fundraiser"} 
                 buttonStyle={styles.createFundraiserButton} 
                 titleStyle={styles.fundraiserTextStyle} 
@@ -124,28 +125,40 @@ function Manage(props) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#ffffff',
-    // flex: 1,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height
   },
   itemsContainer:{
-    marginLeft: 10
+    marginLeft: normalize(10),
+    marginRight: normalize(10),
+    backgroundColor: '#ffffff',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height
   },
   headerInitial:{
     flexDirection: "row",
-    fontSize: 25,
     color: '#2E3338',
     fontFamily: 'proximanova_bold',
-    marginTop: 60,
-    marginLeft: 10,
+    marginTop: Platform.OS === 'ios' ? normalize(60): normalize(20),
+    marginLeft: normalize(10),
+    fontSize: 25,
   },
   titleHeader: { 
     fontSize: 25,
     color: '#2E3338',
     fontFamily: 'proximanova_bold',
   },
+  centerLoginTop: {
+    marginTop: normalize(40),
+    justifyContent: 'center',
+  },
   notifHeader: { 
     fontSize: 20,
     color: '#2E3338',
     fontFamily: 'proximanova_bold',
+    paddingLeft: 40,
+    marginLeft: normalize(40),
+    marginRight: normalize(40),
   },
   headerFollow:{
     marginLeft: 20,
@@ -156,24 +169,17 @@ const styles = StyleSheet.create({
     color: '#35D07F',
     fontFamily: 'proximanova_bold',
   },
-  title: {
-    fontSize: 20, 
-    fontWeight: 'bold'
-  },
   centerLogin: {
-    marginTop: 193,
-    marginBottom: 300,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  centerLoginTop: {
-    marginBottom: 200,
+    marginTop: normalize(193),
+    marginBottom: normalize(300),
     justifyContent: 'center',
     alignItems: 'center',
   },
   Image: {
-    width: 300,
-    height: 300,
+    width: normalize(250),
+    height: normalize(250),
+    marginRight: normalize(50),
+    marginLeft: normalize(50),
     resizeMode: 'contain'
   },
   createSettingsButton: {

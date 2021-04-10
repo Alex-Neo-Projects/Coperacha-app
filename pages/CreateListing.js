@@ -16,7 +16,7 @@ import * as ImagePicker from 'expo-image-picker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AppContext from '../components/AppContext';
 import { Button } from 'react-native-elements';
-import BigNumber from "bignumber.js";
+import normalize from 'react-native-normalize';
 
 function CreateListing(props) {
   const navigation = useNavigation();
@@ -52,22 +52,24 @@ function CreateListing(props) {
     setDatePickerVisibility(false);
   };
 
-  const handleChange = (date) => {
+  const handleConfirm = (date) => {   
     //date is a Date object, convert to unix timestamp
     var currentDate = new Date();
+    console.log(currentDate);
+
     currentDate = Math.floor(currentDate.getTime()/1000);
     var userDefinedDate = Math.floor(date.getTime()/1000);
     
     var differenceDateTime = Math.ceil((userDefinedDate-currentDate)/3600)/24;
+
+    console.log(differenceDateTime);
 
     if(differenceDateTime < 0){
       onChangeDeadline(0);
     }else{
       onChangeDeadline(differenceDateTime);
     }
-  }
 
-  const handleConfirm = (_) => {   
     hideDatePicker();
   };
 
@@ -178,11 +180,9 @@ function CreateListing(props) {
     */    
 
     const stableToken = await kit.contracts.getStableToken();
-    
-    const amountBigNum = new BigNumber(amount * 1e+18);
 
     // Create a transaction object to update the contract
-    const txObject = await props.celoCrowdfundContract.methods.startProject(stableToken.address, name, title, description, imageDownloadUrl, deadline, amountBigNum);
+    const txObject = await props.celoCrowdfundContract.methods.startProject(stableToken.address, name, title, description, imageDownloadUrl, deadline, amount);
     // Send a request to the Celo wallet to send an update transaction to the HelloWorld contract
     requestTxSig(
       kit,
@@ -261,12 +261,11 @@ function CreateListing(props) {
                     type="solid"  
                     onPress={showDatePicker}/>
 
-                    <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirm} onCancel={hideDatePicker} onChange={handleChange}/>  
+                    <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={(date) => {handleConfirm(date)}} onCancel={hideDatePicker}/>  
                     <Text style={styles.deadlineText}> Fundraiser ends in {deadline.toString()} days from now.</Text>
 
                     {loading && 
                       <>
-                        <Text  style={styles.title}>Transaction pending...{"\n"}</Text>
                         <ActivityIndicator size="large" />
                       </>
                     }
@@ -295,6 +294,7 @@ function CreateListing(props) {
 
 const styles = StyleSheet.create({
   entireThing: {
+    width: Dimensions.get('window').width,
     height: '100%',
     backgroundColor: '#ffffff'
   },
@@ -302,9 +302,8 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: '#2E3338',
     fontFamily: 'proximanova_bold',
-
-    marginTop: 60,
-    marginLeft: 10,
+    marginTop: Platform.OS === 'ios' ? normalize(60): normalize(20),
+    marginLeft: normalize(10),
   },
   header:{
     fontSize: 25,
@@ -313,52 +312,53 @@ const styles = StyleSheet.create({
 
   },
   headers:{
-    fontSize: 22,
+    fontSize: 20,
     color: '#2E3338',
     fontFamily: 'proximanova_bold',
-    marginLeft: 15,
-    marginRight: 10,
-    marginBottom: 6
+    marginLeft: normalize(15),
+    marginRight: normalize(10),
+    marginBottom: normalize(6)
   },
   imageIcon:{
     backgroundColor: '#ABADAF'
   },
   imagePickerView: {
     flexDirection: "row",
-    marginTop: 10, 
-    marginLeft: 6,
-    marginBottom: 10,
+    marginTop: normalize(10), 
+    marginLeft: normalize(6),
+    marginBottom: normalize(10),
   },
   imageStateText: {
     fontSize: 15,
+    marginTop: normalize(18),
     color: '#2E3338',
     fontFamily: 'proxima',
-    marginTop: 18
   }, 
   imagePreview: {
-    marginLeft: 135, 
-    width: 50, 
-    height: 50,
+    marginLeft: normalize(135), 
+    width: normalize(50), 
+    height: normalize(50),
     borderRadius: 10
   },
   textbox: {
-    minHeight: 40,
+    minHeight: normalize(40),
     width: Dimensions.get('window').width - 30,
-    marginLeft: 15,
+    marginLeft: normalize(15),
+    marginBottom: normalize(15),
     paddingLeft: 10,
     paddingRight: 10,
-    marginBottom: 30,
     borderWidth: 1,
     borderRadius: 5,
     borderColor: '#ABADAF'
   }, 
   textboxDescription: {
-    minHeight: 100,
+    minHeight: normalize(100),
     width: Dimensions.get('window').width - 30,
-    marginLeft: 15,
+    marginRight: normalize(15),
+    marginLeft: normalize(15),
+    marginBottom: normalize(15),
     paddingLeft: 10,
     paddingRight: 10,
-    marginBottom: 30,
     borderWidth: 1,
     borderRadius: 5,
     borderColor: '#ABADAF'
@@ -367,9 +367,9 @@ const styles = StyleSheet.create({
     fontFamily: 'proxima',
     color: '#2E3338',
     fontSize: 18,
-    marginTop: 20,
-    marginLeft: 38,
-    marginBottom: 30,
+    marginTop: normalize(10),
+    marginRight: normalize(30),
+    marginLeft: normalize(30),
   },
   deadlineButton: {
     borderColor: '#DDDDDD'
@@ -380,14 +380,16 @@ const styles = StyleSheet.create({
     color: '#2E3338'
   },
   centerLogin: {
-    flex: 1, 
+    marginTop: normalize(193),
+    marginBottom: normalize(300),
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   createFundraiserButton: {
-    marginLeft: 10,
-    marginTop: 20,
-    height: 40,
+    marginLeft: normalize(10),
+    marginTop: normalize(20),
+    marginBottom: normalize(10),
+    height: normalize(40),
     width: Dimensions.get('window').width - 20,
     backgroundColor: "#35D07F"
   }, 
@@ -397,8 +399,8 @@ const styles = StyleSheet.create({
     color: '#FFFFFF'
   },
   Image: {
-    width: 300,
-    height: 300,
+    width: normalize(250),
+    height: normalize(250),
     marginBottom: 20,
     resizeMode: 'contain',
   },

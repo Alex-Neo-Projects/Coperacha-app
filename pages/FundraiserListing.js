@@ -3,6 +3,7 @@ import { View, Text, ScrollView, StyleSheet, Dimensions} from 'react-native';
 import ProgressBar from 'react-native-progress/Bar';
 import CachedImage from 'react-native-expo-cached-image';
 import { Button } from 'react-native-elements';
+import normalize from 'react-native-normalize';
 
 function FundraiserListing(props) {
   var navigation = props.route.params.nav;
@@ -21,13 +22,11 @@ function FundraiserListing(props) {
   var fundRaisingDeadline = data['fundRaisingDeadline'];
   
   var progress = currentAmount / goal;
-  let imageURL ={ uri: image};
+  let imageURL = {uri: image};
   
   return (
-    <ScrollView style={styles.sview}>
-      <View style={styles.fill}>
-        <CachedImage source={imageURL} style={styles.image} />
-      </View>
+    <ScrollView style={styles.scrollViewContainer}>
+      <CachedImage source={imageURL} style={styles.image} />
 
       <View style={styles.viewStyle}>
         <Text style={styles.title}>{title}</Text>
@@ -40,8 +39,7 @@ function FundraiserListing(props) {
 
 
         <Text style={styles.amountRaisedText}>${currentAmount.toString()} raised of ${goal} goal.</Text>
-        <ProgressBar progress={progress} color='#35D07F' width={350} height={8} style={styles.progress}/>
-        
+        <ProgressBar progress={progress} color='#35D07F' width={350} height={8} style={styles.progress}/>        
         
         <Button title={"Donate Now"} 
           buttonStyle={styles.createFundraiserButton} 
@@ -55,15 +53,23 @@ function FundraiserListing(props) {
 }
 
 const styles = StyleSheet.create({
-  sview:{
+  scrollViewContainer:{
     backgroundColor: '#FFFFFF',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height
+  },
+  viewStyle: {
+    marginLeft: normalize(10),
+    marginTop: normalize(5),
   },
   image:{
-    height: 250, 
-    // borderRadius : 15,
+    height: normalize(250), 
+    width: '100%',
     borderColor: '#DDDDDD',
     resizeMode : 'cover', 
-    marginBottom: 5
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    marginBottom: normalize(5)
   },
   divider:{
     borderBottomColor: '#ABADAF',
@@ -73,16 +79,12 @@ const styles = StyleSheet.create({
     fontFamily: 'proxima',
     fontSize: 16, 
     color: '#2E3338',
-    marginTop: 5
+    marginTop: normalize(5)
   }, 
   creatorText: {
     fontFamily: 'proximanova_bold',
     fontSize: 16,
     color: '#2E3338',
-  },
-  viewStyle: {
-    marginLeft: 10,
-    marginTop: 5,
   },
   title: {
     fontFamily: 'proximanova_bold',
@@ -94,25 +96,25 @@ const styles = StyleSheet.create({
     fontFamily: 'proximanova_bold',
     fontSize: 19,
     color: '#2E3338',
-    marginTop: 30
+    marginTop: normalize(30)
   },
   amountRaisedText:{
     fontFamily: 'proximanova_bold',
     fontSize: 18,
     color: '#2E3338',
-    marginBottom: 5
+    marginBottom: normalize(5)
   },
   description: {
     fontFamily: 'proxima',
     fontSize: 19,
     color: '#2E3338',
-    marginTop: 5,
-    marginRight: 10,
-    marginBottom: 30
+    marginTop: normalize(5),
+    marginRight: normalize(10),
+    marginBottom: normalize(30)
   },
   createFundraiserButton: {
-    marginTop: 40,
-    height: 40,
+    marginTop: normalize(40),
+    height: normalize(40),
     width: Dimensions.get('window').width - 20,
     backgroundColor: "#35D07F"
   }, 

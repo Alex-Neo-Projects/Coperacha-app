@@ -12,7 +12,7 @@
     "icon": "./assets/icon.png",
     "scheme": "celodappkit",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash2.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

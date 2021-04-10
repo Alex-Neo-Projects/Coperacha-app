@@ -26,6 +26,7 @@ import * as Linking from 'expo-linking';
 import AppContext from './components/AppContext'; 
 import * as Font from 'expo-font';
 import ManageFundraiserListing from './pages/ManageFundraiserListing';
+import normalize from 'react-native-normalize';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -345,7 +346,6 @@ class App extends React.Component {
                   },
                 })}
                 tabBarOptions={{
-                  style: {height: 80},
                   activeTintColor: '#35D07F',
                   inactiveTintColor: 'gray',
                   keyboardHidesTabBar: true
