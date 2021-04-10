@@ -314,15 +314,15 @@ const styles = StyleSheet.create({
     fontSize: 18, 
     color: '#2E3338'
   },
-  createFundraiserButton: {
-    borderColor: '#DDDDDD',
-    width: Dimensions.get('window').width - 20,
-  }, 
   centerLogin: {
     flex: 1, 
     justifyContent: 'center',
     alignItems: 'center'
   },
+  createFundraiserButton: {
+    borderColor: '#DDDDDD',
+    width: Dimensions.get('window').width - 20,
+  }, 
   fundraiserButtonStyle: {
     borderColor: '#DDDDDD'
   },

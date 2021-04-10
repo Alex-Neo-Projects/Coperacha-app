@@ -28,25 +28,23 @@ function ListingCard(props) {
   
   return (
     <TouchableOpacity 
-      onPress={() => navigation.navigate('FundraiserListing', {projectId: props.projectId, loggedIn: props.loggedIn, address: props.address, projectData: data, nav: navigation})}
-      activeOpacity={0.8}
+      onPress={() => navigation.navigate('FundraiserListing', {projectId: props.projectId, loggedIn: props.loggedIn, address: props.address, projectData: data, projectAddy:projectCreator, nav: navigation})}
+      activeOpacity={1}
       // Tweak so cards don't get opaque on scroll
       delayPressIn={50}>   
 
       <View style={styles.cardView}> 
         <CachedImage style={styles.cardImage} source={{uri: projectImageLink}} /> 
-
         <View style={styles.textView}>
           <Text style={styles.titleText}>{projectTitle} </Text>
           <Text style={styles.creatorInitialText}>Fundraiser created by <Text style={styles.creatorText}>{projectCreator}... </Text> </Text>
           <Text style={styles.projectDescriptionText}>{projectDescription} </Text>
-          <Text style={styles.currentRaisedText}>${currentAmount} raised of ${projectGoalAmount} </Text>
+          <Text style={styles.currentRaisedText}>${currentAmount} raised of ${projectGoalAmount} goal. </Text>
 
-          <ProgressBar progress={currentProgress} color='#35D07F' width={350} style={styles.progress}/>
-          <Text style={styles.dateText}> Fundraising ends on {dateOutput} </Text>
+          <ProgressBar progress={currentProgress} color='#35D07F' width={330} height={8} style={styles.progress}/>
+          <Text style={styles.dateText}>Fundraising ends on {dateOutput} </Text>
         </View>
       </View>      
- 
     </TouchableOpacity>
   );
 }
@@ -54,10 +52,10 @@ function ListingCard(props) {
 const styles = StyleSheet.create({ 
   cardView: {
     width : Dimensions.get('window').width - 25,
-    height : 470,
+    height : 440,
     marginBottom : 30,
     borderRadius : 15,
-    elevation: 1,
+    elevation: 3,
     backgroundColor : '#FFFFFF',
     overflow : 'hidden',
   }, 
@@ -69,22 +67,20 @@ const styles = StyleSheet.create({
     flex : 1,
     alignItems : 'flex-start',
     justifyContent : 'flex-start',
-    marginTop: 5,
+    marginTop: 6,
     marginLeft: 7,
     marginRight: 5  
 }, 
   titleText: {
     fontFamily: 'proximanova_bold',
-    fontSize: 25, 
+    fontSize: 23, 
     color: '#2E3338',    
   },
   creatorInitialText: {
     fontFamily: 'proxima',
-    fontSize: 14, 
+    fontSize: 15, 
     color: '#2E3338',
     marginTop: 5, 
-    marginRight: 3, 
-    marginLeft: 3
   }, 
   creatorText: {
     fontFamily: 'proxima',
@@ -95,27 +91,25 @@ const styles = StyleSheet.create({
     fontFamily: 'proxima',
     fontSize: 16,
     color: '#2E3338',
-    marginTop: 8, 
-    marginLeft: 3,
+    marginTop: 15, 
     marginRight: 6
   },
   currentRaisedText: {
-    fontFamily: 'proxima',
-    fontSize: 16,
+    fontFamily: 'proximanova_bold',
+    fontSize: 15,
     color: '#2E3338',
     marginTop: 20,
-    marginLeft: 3
   },
   progress: {
-    margin: 3
+    marginTop: 7
   },
   dateText: {
     fontFamily: 'proximanova_bold',
     fontSize: 15,
     color: '#2E3338',
     position: 'absolute', 
-    bottom: 4, 
-    right: 2
+    bottom: 10, 
+    right: 4
   },
 });
 
