@@ -1,6 +1,7 @@
 import React from 'react'
-import { View, Text, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, Dimensions, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Button } from 'react-native-elements';
 
 function LogOut(props) {
   const navigation = useNavigation();
@@ -25,9 +26,12 @@ function LogOut(props) {
 
   return(
     <View>
-      <Text style={styles.title}>Log out</Text>
-      <Button title="Log Out" 
-        onPress={()=> logOutAlert()} />
+      <Button title={"Log Out"} 
+      buttonStyle={styles.createFundraiserButton} 
+      titleStyle={styles.fundraiserTextStyle} 
+      type="solid"  
+      onPress={()=> logOutAlert()} />
+
     </View>
   );
 }
@@ -38,7 +42,19 @@ const styles = StyleSheet.create({
     fontSize: 20, 
     fontWeight: 'bold', 
     textAlign: 'center'
-  }
+  },
+  createFundraiserButton: {
+    marginLeft: 10,
+    marginTop: 20,
+    height: 40,
+    width: Dimensions.get('window').width - 20,
+    backgroundColor: "#35D07F"
+  }, 
+  fundraiserTextStyle: {
+    fontFamily: 'proximanova_bold',
+    fontSize: 18, 
+    color: '#FFFFFF'
+  },
 });
 
 export default LogOut;

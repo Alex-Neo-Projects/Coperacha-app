@@ -185,8 +185,6 @@ function CreateListing(props) {
     navigation.replace('CreateReceipt');
   }
 
-
-  
   return (
     <View style={styles.entireThing}>
       {loggedIn ? ( 
@@ -198,10 +196,9 @@ function CreateListing(props) {
                   
                     {/* Image Picker */}
                     <View style={styles.imagePickerView}> 
-                      <Icon style={styles.image} raised name='photo-camera' size={18} onPress={pickImage} />
+                      <Icon style={styles.imageIcon} raised name='photo-camera' size={18} onPress={pickImage} />
                       <Text style={styles.imageStateText}> {imageState} </Text>
                       {image && <Image source={{ uri: image, cache: 'only-if-cached' }} style={styles.imagePreview} />}
-
                     </View> 
                     
                     {/* Title  */}
@@ -217,14 +214,21 @@ function CreateListing(props) {
                     <TextInput style={styles.textbox} keyboardType='numeric' onChangeText={onChangeAmount} placeholder='Amount' value={amount.toString()}/>
           
                     {/* Deadline */}
-                    <Button title="Pick a deadline" buttonStyle={styles.deadlineButton} titleStyle={styles.deadlineTextStyle} onPress={showDatePicker} raised={true}  type="outline"/>
-                    <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirm} onCancel={hideDatePicker} onChange={handleChange}/>
-                    
-                    <Text style={styles.deadlineText}> {deadline.toString()} days from now </Text>
+                    <Button title={"Pick a deadline"} 
+                    buttonStyle={styles.createFundraiserButton} 
+                    titleStyle={styles.fundraiserTextStyle} 
+                    type="solid"  
+                    onPress={showDatePicker}/>
 
-                    <Button style={styles.createFundraiserButton} buttonStyle={styles.fundraiserButtonStyle} titleStyle={styles.fundraiserTextStyle} raised={true}  type="outline" title = "Create Fundraiser" onPress={()=>{
-                      write();
-                    }} />
+                    <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirm} onCancel={hideDatePicker} onChange={handleChange}/>  
+                    <Text style={styles.deadlineText}> Fundraiser ends in {deadline.toString()} days from now.</Text>
+
+                    <Button title={"Create Fundraiser"} 
+                    buttonStyle={styles.createFundraiserButton} 
+                    titleStyle={styles.fundraiserTextStyle} 
+                    type="solid"  
+                    onPress={() => write()}/>
+                   
                   
                   </View>
               </View>
@@ -232,7 +236,8 @@ function CreateListing(props) {
           </ScrollView>
       ) : (
         <View style={styles.centerLogin}>
-          <LogIn reason={"to create a fundraiser"} handleLogIn={context.handleLogIn}/>
+          <Image style={styles.Image} source={require("../assets/login1.png")}></Image>
+          <LogIn reason={"Create your fundraiser now!"} handleLogIn={context.handleLogIn}/>
         </View>
       )}
     </View>
@@ -242,11 +247,7 @@ function CreateListing(props) {
 const styles = StyleSheet.create({
   entireThing: {
     height: '100%',
-  },
-  container: {
-    marginLeft: 10,
-    alignItems : 'flex-start',
-    justifyContent : 'flex-start',
+    backgroundColor: '#ffffff'
   },
   headerInitial: { 
     fontSize: 25,
@@ -256,55 +257,70 @@ const styles = StyleSheet.create({
     marginTop: 60,
     marginLeft: 10,
   },
+  header:{
+    fontSize: 25,
+    color: '#35D07F',
+    fontFamily: 'proximanova_bold',
+
+  },
   headers:{
-    fontSize: 20,
+    fontSize: 22,
     color: '#2E3338',
     fontFamily: 'proximanova_bold',
-    marginLeft: 4,
+    marginLeft: 15,
     marginRight: 10,
     marginBottom: 6
+  },
+  imageIcon:{
+    backgroundColor: '#ABADAF'
   },
   imagePickerView: {
     flexDirection: "row",
     marginTop: 10, 
+    marginLeft: 6,
     marginBottom: 10,
   },
   imageStateText: {
+    fontSize: 15,
+    color: '#2E3338',
+    fontFamily: 'proxima',
     marginTop: 18
   }, 
   imagePreview: {
-    marginLeft: 140, 
+    marginLeft: 135, 
     width: 50, 
-    height: 50
+    height: 50,
+    borderRadius: 10
   },
   textbox: {
     minHeight: 40,
-    width: Dimensions.get('window').width - 20,
-    marginLeft: 3,
+    width: Dimensions.get('window').width - 30,
+    marginLeft: 15,
     paddingLeft: 10,
     paddingRight: 10,
     marginBottom: 30,
-    borderWidth: 1.3,
-    borderRadius: 10,
+    borderWidth: 1,
+    borderRadius: 5,
     borderColor: '#ABADAF'
   }, 
   textboxDescription: {
     minHeight: 100,
-    width: Dimensions.get('window').width - 20,
-    marginLeft: 3,
+    width: Dimensions.get('window').width - 30,
+    marginLeft: 15,
     paddingLeft: 10,
     paddingRight: 10,
     marginBottom: 30,
-    borderWidth: 1.3,
-    borderRadius: 10,
+    borderWidth: 1,
+    borderRadius: 5,
     borderColor: '#ABADAF'
   },
   deadlineText: {
     fontFamily: 'proxima',
     color: '#2E3338',
-    fontSize: 20,
+    fontSize: 18,
     marginTop: 20,
-    marginBottom: 50
+    marginLeft: 38,
+    marginBottom: 30,
   },
   deadlineButton: {
     borderColor: '#DDDDDD'
@@ -320,17 +336,23 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   createFundraiserButton: {
-    borderColor: '#DDDDDD',
+    marginLeft: 10,
+    marginTop: 20,
+    height: 40,
     width: Dimensions.get('window').width - 20,
+    backgroundColor: "#35D07F"
   }, 
-  fundraiserButtonStyle: {
-    borderColor: '#DDDDDD'
-  },
   fundraiserTextStyle: {
-    fontFamily: 'proxima',
+    fontFamily: 'proximanova_bold',
     fontSize: 18, 
-    color: '#2E3338'
-  }
+    color: '#FFFFFF'
+  },
+  Image: {
+    width: 300,
+    height: 300,
+    marginBottom: 20,
+    resizeMode: 'contain',
+  },
 });
 
 export default CreateListing;
