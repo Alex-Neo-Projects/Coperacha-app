@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { View, Text, Alert, StyleSheet, TouchableWithoutFeedback, Keyboard, Dimensions } from 'react-native';
+import { View, Text, Alert, StyleSheet, ScrollView, TouchableWithoutFeedback, Keyboard, Dimensions } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { kit } from '../root';
 import {   
@@ -35,6 +35,58 @@ function DonationForm(props) {
 
   var projectInstanceContract = projectDataContext[projectId].projectInstanceContract;
 
+  const approve = async() => {
+    if(name.length == 0){
+      Alert.alert(
+        "Add a name!"
+      );
+
+      return;
+    }
+
+    if(donationAmount <= 0){
+      Alert.alert(
+        "Add a donation amount!"
+      );
+      
+      return;
+    }
+
+    const requestId = 'approve_donation'
+    const dappName = 'Coperacha'
+    const callback = Linking.makeUrl('/my/path')
+    
+    const value = new BigNumber(donationAmount * 2e+18);
+    
+    const stableToken = await kit.contracts.getStableToken();
+    const txObject = await stableToken.approve(projectInstanceContract._address, value).txo;
+    
+    requestTxSig(
+      kit,
+      [
+        {
+          from: address,
+          to: stableToken.address, // send approve to stabletoken address
+          tx: txObject, 
+          estimatedGas: 300000,
+          feeCurrency: FeeCurrency.cUSD
+        }
+      ],
+      { requestId, dappName, callback }
+    )
+
+    // Get the response from the Celo wallet
+    const dappkitResponse = await waitForSignedTxs(requestId)
+    const tx = dappkitResponse.rawTxs[0]
+    
+    // Get the transaction result, once it has been included in the Celo blockchain
+    let result = await toTxResult(kit.web3.eth.sendSignedTransaction(tx)).waitReceipt()
+
+    console.log(`Approve donation transaction receipt: `, result);
+
+    Alert.alert("Now you can click donate")
+  }
+
   const donate = async () => {
     if(name.length == 0){
       Alert.alert(
@@ -44,7 +96,7 @@ function DonationForm(props) {
       return;
     }
 
-    if(donationAmount == 0){
+    if(donationAmount <= 0){
       Alert.alert(
         "Add a donation amount!"
       );
@@ -56,13 +108,8 @@ function DonationForm(props) {
     const dappName = 'Coperacha'
     const callback = Linking.makeUrl('/my/path')
     
-    const txObject = await projectInstanceContract.methods.contribute();
-    
     const value = new BigNumber(donationAmount * 1e+18);
-
-    // const stableToken = await kit.contracts.getStableToken();
-    // // get access to the data 
-    // let cUSDtx = await stableToken.transfer(projectInstanceContract._address, value).txo;
+    const txObject = await projectInstanceContract.methods.contribute(value);
 
     requestTxSig(
       kit,
@@ -71,7 +118,6 @@ function DonationForm(props) {
           from: address,
           to: projectInstanceContract._address, // interact w/ address of CeloCrowdfund contract
           tx: txObject,
-          value: value, 
           estimatedGas: 300000,
           feeCurrency: FeeCurrency.cUSD
         }
@@ -94,27 +140,39 @@ function DonationForm(props) {
   return (
     <View style={styles.container}>
       {loggedIn ? (
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
-          <View>
-            <Text style={styles.headerInitial}>Your Donation ❤️</Text>
-            <Text style={styles.titleInitial}>This is your donation to</Text>
-            <Text style={styles.titleFollow}>{creatorAddy}...</Text>
-            <Text style={styles.titleMid}>for <Text style={styles.titleMidFollow}>{title}</Text></Text>
+        <ScrollView>
+          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
+            <View>
+              <Text style={styles.headerInitial}>Your Donation ❤️</Text>
+              <Text style={styles.titleInitial}>This is your donation to</Text>
+              <Text style={styles.titleFollow}>{creatorAddy}...</Text>
+              <Text style={styles.titleMid}>for <Text style={styles.titleMidFollow}>{title}</Text></Text>
 
 
-            <Text style={styles.title}>What's your name?</Text>
-            <TextInput onChangeText={onChangeName} value={name} placeholder="Kanye West" style={[styles.input, {borderColor: '#c0cbd3'}]}></TextInput>
-            
-            <Text style={styles.title}>Enter your donation amount </Text>
-            <TextInput keyboardType="numeric" onChangeText={onChangeDonationAmount} value={donationAmount.toString()} placeholder="20" style={[styles.input, { borderColor: '#c0cbd3'}]} ></TextInput>
-            
-            <Button title={"Donate Now"} 
-            buttonStyle={styles.createFundraiserButton} 
-            titleStyle={styles.fundraiserTextStyle} 
-            type="solid"  
-            onPress={() => donate()}/>
-          </View>
-        </TouchableWithoutFeedback>
+              <Text style={styles.title}>What's your name?</Text>
+              <TextInput onChangeText={onChangeName} value={name} placeholder="Kanye West" style={[styles.input, {borderColor: '#c0cbd3'}]}></TextInput>
+              
+              <Text style={styles.title}>Enter your donation amount </Text>
+              <TextInput keyboardType="numeric" onChangeText={onChangeDonationAmount} value={donationAmount.toString()} placeholder="20" style={[styles.input, { borderColor: '#c0cbd3'}]} ></TextInput>
+              
+              <Text>There are two steps:</Text>
+              <Text>1) Approve the donation</Text>
+              <Text>2) Donate! This sends the cUSD</Text>
+              <Button title={"Approve Donation"} 
+              buttonStyle={styles.createFundraiserButton} 
+              titleStyle={styles.fundraiserTextStyle} 
+              type="solid"  
+              onPress={() => approve()}/>
+
+              <Button title={"Donate Now"} 
+              buttonStyle={styles.createFundraiserButton} 
+              titleStyle={styles.fundraiserTextStyle} 
+              type="solid"  
+              onPress={() => donate()}/>
+
+            </View>
+          </TouchableWithoutFeedback>
+        </ScrollView>
       ) : (
         <View style={styles.centerLogin}>
           <LogIn reason="😱 Uh oh, Login to donate!"></LogIn>
@@ -129,7 +187,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    bottom: 50
+    // bottom: 50
   },
   headerInitial:{
     fontSize: 30,

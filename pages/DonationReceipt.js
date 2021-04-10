@@ -21,7 +21,7 @@ function DonationReceipt(props) {
             buttonStyle={styles.createFundraiserButton} 
             titleStyle={styles.fundraiserTextStyle} 
             type="solid"  
-            onPress={() => navigation.pop()}/>
+            onPress={() => navigation.popToTop()}/>
     </View>
   );
 }
