@@ -49,22 +49,24 @@ function CreateListing(props) {
     setDatePickerVisibility(false);
   };
 
-  const handleChange = (date) => {
+  const handleConfirm = (date) => {   
     //date is a Date object, convert to unix timestamp
     var currentDate = new Date();
+    console.log(currentDate);
+
     currentDate = Math.floor(currentDate.getTime()/1000);
     var userDefinedDate = Math.floor(date.getTime()/1000);
     
     var differenceDateTime = Math.ceil((userDefinedDate-currentDate)/3600)/24;
+
+    console.log(differenceDateTime);
 
     if(differenceDateTime < 0){
       onChangeDeadline(0);
     }else{
       onChangeDeadline(differenceDateTime);
     }
-  }
 
-  const handleConfirm = (_) => {   
     hideDatePicker();
   };
 
@@ -237,7 +239,7 @@ function CreateListing(props) {
                     type="solid"  
                     onPress={showDatePicker}/>
 
-                    <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirm} onCancel={hideDatePicker} onChange={handleChange}/>  
+                    <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={(date) => {handleConfirm(date)}} onCancel={hideDatePicker}/>  
                     <Text style={styles.deadlineText}> Fundraiser ends in {deadline.toString()} days from now.</Text>
 
                     <Button title={"Create Fundraiser"} 
@@ -337,8 +339,8 @@ const styles = StyleSheet.create({
     color: '#2E3338',
     fontSize: 18,
     marginTop: normalize(10),
-    marginRight: normalize(38),
-    marginLeft: normalize(38),
+    marginRight: normalize(30),
+    marginLeft: normalize(30),
   },
   deadlineButton: {
     borderColor: '#DDDDDD'
@@ -357,6 +359,7 @@ const styles = StyleSheet.create({
   createFundraiserButton: {
     marginLeft: normalize(10),
     marginTop: normalize(20),
+    marginBottom: normalize(10),
     height: normalize(40),
     width: Dimensions.get('window').width - 20,
     backgroundColor: "#35D07F"

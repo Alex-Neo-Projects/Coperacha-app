@@ -256,7 +256,8 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   createFundraiserButton: {
-    marginTop: normalize(40),
+    marginTop: normalize(20),
+    marginBottom: normalize(10),
     height: normalize(40),
     width: Dimensions.get('window').width - 30,
     backgroundColor: "#35D07F"
