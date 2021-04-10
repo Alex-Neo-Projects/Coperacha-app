@@ -167,8 +167,6 @@ function CreateListing(props) {
 
     const stableToken = await kit.contracts.getStableToken();
 
-    console.log("NAME IS: ", name); 
-
     // Create a transaction object to update the contract
     const txObject = await props.celoCrowdfundContract.methods.startProject(stableToken.address, name, title, description, imageDownloadUrl, deadline, amount);
     // Send a request to the Celo wallet to send an update transaction to the HelloWorld contract
