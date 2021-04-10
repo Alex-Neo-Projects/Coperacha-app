@@ -6,14 +6,14 @@ function DonationReceipt(props) {
   const navigation = props.route.params.nav;
   
   // var title = props.route.params.title;
-  var creatorAddy = props.route.params.creatorAddy;
+  var creatorName = props.route.params.creatorName;
 
   return (
     <View style={styles.container}>
       <Text style={styles.bigText}>Thank you for donating 🙌</Text>
 
-      <Text style={styles.titleInitial}>All proceeds will go directly to </Text>
-      <Text style={styles.titleFollow}>{creatorAddy}...</Text>
+      <Text style={styles.titleInitial}>100% of proceeds go directly to </Text>
+      <Text style={styles.titleFollow}>{creatorName}</Text>
 
       <Image style={styles.Image} source={require("../assets/give.png")}></Image>
 

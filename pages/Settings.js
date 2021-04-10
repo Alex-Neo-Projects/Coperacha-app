@@ -9,7 +9,7 @@ function Settings(props) {
   const context = useContext(AppContext);
   const loggedIn = context.loggedIn; 
   const address = context.address; 
-  const balance = context.balance; 
+  const balance = parseFloat(context.balance).toFixed(2); 
   
   console.log(balance);
   return (
@@ -21,7 +21,7 @@ function Settings(props) {
           <Text style={styles.headerEnd}>{address}</Text> 
 
           <Text style={styles.headerStartBal}> cUSD balance: </Text>
-          <Text style={styles.headerEndBal}>{balance}</Text> 
+          <Text style={styles.headerEndBal}>${balance}</Text> 
 
           <LogOut handleLogOut={props.handleLogOut}/>
         </View>

@@ -251,6 +251,11 @@ class App extends React.Component {
 
     getData()
 
+    const stableToken = await kit.contracts.getStableToken();
+    const cUSDBalanceBig = await stableToken.balanceOf(this.state.address);
+    const balance = cUSDBalanceBig / 1E18
+    this.setState({ balance: balance })
+    
     return "Success";
   }
 
