@@ -1,8 +1,8 @@
 import React from 'react'
-import { View, Text, ScrollView, Image, StyleSheet, Button, Icon } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Dimensions} from 'react-native';
 import ProgressBar from 'react-native-progress/Bar';
-import { useNavigation } from '@react-navigation/native';
 import CachedImage from 'react-native-expo-cached-image';
+import { Button } from 'react-native-elements';
 
 function FundraiserListing(props) {
   var navigation = props.route.params.nav;
@@ -13,6 +13,8 @@ function FundraiserListing(props) {
   
   var data = props.route.params.projectData;
   var title = data['projectTitle'];
+  var creatorAddy = data['projectCreator'];
+  creatorAddy = creatorAddy.toString().substring(0,20);
   var image = data['projectImageLink'];
   var goal = data['projectGoalAmount'];
   var description = data['projectDescription'];
@@ -23,38 +25,102 @@ function FundraiserListing(props) {
   let imageURL ={ uri: image};
   
   return (
-    <ScrollView>
-      <CachedImage source={imageURL} style={{height: 250, resizeMode : 'cover', marginBottom:10}} />
+    <ScrollView style={styles.sview}>
+      <CachedImage source={imageURL} style={styles.image} />
 
-      <Button title="Back" onPress={()=>{navigation.goBack()}} />
-
-      <View style={{margin: 10}}>
+      <View style={styles.viewStyle}>
         <Text style={styles.title}>{title}</Text>
+
+        <Text style={styles.creatorInitialText}>⭐️ Created by <Text style={styles.creatorText}>{creatorAddy}...</Text> </Text>
+
+
+        <Text style={styles.descriptionTitle}>Description</Text>
+        <Text style={styles.description}>{description}</Text>
+
+
+        <Text style={styles.amountRaisedText}>${currentAmount.toString()} raised of ${goal} goal.</Text>
+        <ProgressBar progress={progress} color='#35D07F' width={350} height={8} style={styles.progress}/>
         
-        <Text style={styles.smallText, { fontWeight: 'bold'}}>${currentAmount.toString()} raised of ${goal} goal</Text>
-        <ProgressBar progress={progress} width={400} color={'#35D07F'} style={{marginBottom:10}}/>
         
-        <Text style={styles.regularText}>{description}{"\n"}</Text>
+        <Button title={"Donate Now"} 
+          buttonStyle={styles.createFundraiserButton} 
+          titleStyle={styles.fundraiserTextStyle} 
+          type="solid"  
+          onPress={() => navigation.navigate('DonationForm', {projectId: projectId, loggedIn: loggedIn, address: address, title: title, creatorAddress: creatorAddy, nav: navigation})}/>
         
-        <Button title={"Donate"}
-          onPress={() => navigation.navigate('DonationForm', {projectId: projectId, loggedIn: loggedIn, address: address, title: title, nav: navigation})}></Button>
       </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  sview:{
+    backgroundColor: '#FFFFFF',
+  },
+  image:{
+    height: 250, 
+    borderRadius : 15,
+    borderColor: '#DDDDDD',
+    borderWidth: 1,
+    resizeMode : 'cover', 
+    marginBottom: 5
+  },
+  divider:{
+    borderBottomColor: '#ABADAF',
+    borderBottomWidth: 1,
+  },
+  creatorInitialText: {
+    fontFamily: 'proxima',
+    fontSize: 16, 
+    color: '#2E3338',
+    marginTop: 5
+  }, 
+  creatorText: {
+    fontFamily: 'proximanova_bold',
+    fontSize: 16,
+    color: '#2E3338',
+  },
+  viewStyle: {
+    marginLeft: 10,
+    marginTop: 5,
+  },
   title: {
-    marginVertical: 8, 
+    fontFamily: 'proximanova_bold',
     fontSize: 30, 
-    fontWeight: 'bold'
+    color: '#2E3338', 
+    marginTop: 5
   },
-  regularText: {
+  descriptionTitle:{
+    fontFamily: 'proximanova_bold',
+    fontSize: 19,
+    color: '#2E3338',
+    marginTop: 30
+  },
+  amountRaisedText:{
+    fontFamily: 'proximanova_bold',
+    fontSize: 18,
+    color: '#2E3338',
+    marginBottom: 5
+  },
+  description: {
+    fontFamily: 'proxima',
+    fontSize: 19,
+    color: '#2E3338',
+    marginTop: 5,
+    marginRight: 10,
+    marginBottom: 30
+  },
+  createFundraiserButton: {
+    marginTop: 40,
+    height: 40,
+    width: Dimensions.get('window').width - 20,
+    backgroundColor: "#35D07F"
+  }, 
+  fundraiserTextStyle: {
+    fontFamily: 'proximanova_bold',
     fontSize: 18, 
-  },
-  smallText: {
-    fontSize: 15, 
-  },
+    color: '#FFFFFF'
+  }
 });
 
 export default FundraiserListing;

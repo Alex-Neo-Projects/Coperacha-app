@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { View, Text, Alert, Button, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Text, Alert, StyleSheet, TouchableWithoutFeedback, Keyboard, Dimensions } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { kit } from '../root';
 import {   
@@ -13,6 +13,7 @@ import AppContext from '../components/AppContext';
 import BigNumber from "bignumber.js";
 import LogIn from '../components/LogIn';
 import { useNavigation } from '@react-navigation/core';
+import { Button } from 'react-native-elements';
 
 function DonationForm(props) {
   const navigation = useNavigation();
@@ -29,6 +30,8 @@ function DonationForm(props) {
 
   var projectId = props.route.params.projectId;
   var address = appContext.address; 
+
+  const creatorAddy = props.route.params.creatorAddress;
 
   var projectInstanceContract = projectDataContext[projectId].projectInstanceContract;
 
@@ -93,16 +96,23 @@ function DonationForm(props) {
       {loggedIn ? (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}> 
           <View>
-            <Text style={styles.bigText}>Donation</Text>
-            <Text style={styles.small}>For: "{title}"</Text>
+            <Text style={styles.headerInitial}>Your Donation ❤️</Text>
+            <Text style={styles.titleInitial}>This is your donation to</Text>
+            <Text style={styles.titleFollow}>{creatorAddy}...</Text>
+            <Text style={styles.titleMid}>for <Text style={styles.titleMidFollow}>{title}</Text></Text>
 
-            <Text style={styles.title}>Name:</Text>
-            <TextInput onChangeText={onChangeName} value={name} placeholder="Kanye West" style={[styles.input, { borderColor: '#c0cbd3'}]}></TextInput>
-            <Text style={styles.title}>Donation amount: </Text>
-            <TextInput keyboardType="numeric" onChangeText={onChangeDonationAmount} value={donationAmount} placeholder="20" style={[styles.input, { borderColor: '#c0cbd3'}]} ></TextInput>
-            <Text>{"\n\n\n"}</Text>
 
-            <Button title="Donate" onPress={() => donate()}></Button>
+            <Text style={styles.title}>What's your name?</Text>
+            <TextInput onChangeText={onChangeName} value={name} placeholder="Kanye West" style={[styles.input, {borderColor: '#c0cbd3'}]}></TextInput>
+            
+            <Text style={styles.title}>Enter your donation amount </Text>
+            <TextInput keyboardType="numeric" onChangeText={onChangeDonationAmount} value={donationAmount.toString()} placeholder="20" style={[styles.input, { borderColor: '#c0cbd3'}]} ></TextInput>
+            
+            <Button title={"Donate Now"} 
+            buttonStyle={styles.createFundraiserButton} 
+            titleStyle={styles.fundraiserTextStyle} 
+            type="solid"  
+            onPress={() => donate()}/>
           </View>
         </TouchableWithoutFeedback>
       ) : (
@@ -116,8 +126,40 @@ function DonationForm(props) {
 
 const styles = StyleSheet.create({
   container: {
-    padding:15,
-    height:'100%',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    bottom: 50
+  },
+  headerInitial:{
+    fontSize: 30,
+    color: '#2E3338',
+    fontFamily: 'proximanova_bold',
+    marginTop: 60,
+    marginBottom: 30,
+  },
+  titleInitial:{
+    fontFamily: 'proxima',
+    fontSize: 18, 
+    color: '#2E3338',
+    marginBottom: 5
+  },
+  titleFollow:{
+    fontFamily: 'proximanova_bold',
+    fontSize: 20, 
+    color: '#35D07F',  
+  },
+  titleMid:{
+    fontFamily: 'proxima',
+    fontSize: 17, 
+    color: '#2E3338',
+    marginTop: 6,
+    marginBottom: 5
+  },
+  titleMidFollow:{
+    fontFamily: 'proximanova_bold',
+    fontSize: 17, 
+    color: '#2E3338',
   },
   centerLogin: {
     flex: 1, 
@@ -125,9 +167,11 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   title: {
-    marginVertical: 30, 
+    fontFamily: 'proximanova_bold',
     fontSize: 20, 
-    fontWeight: 'bold'
+    color: '#2E3338',
+    marginTop: 30,
+    marginBottom: 20
   },
   bigText: { 
     paddingTop: 30,
@@ -148,6 +192,17 @@ const styles = StyleSheet.create({
     height: 40,
     color: '#000000',
   },
+  createFundraiserButton: {
+    marginTop: 40,
+    height: 40,
+    width: Dimensions.get('window').width - 20,
+    backgroundColor: "#35D07F"
+  }, 
+  fundraiserTextStyle: {
+    fontFamily: 'proximanova_bold',
+    fontSize: 18, 
+    color: '#FFFFFF'
+  }
 });
 
 export default DonationForm; 
