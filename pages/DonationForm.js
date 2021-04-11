@@ -93,8 +93,6 @@ function DonationForm(props) {
     
     setDonationDisabled(false);
     setLoading(false);
-
-    Alert.alert("Now you can click donate")
   }
 
   const donate = async () => {

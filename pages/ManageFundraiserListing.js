@@ -12,8 +12,11 @@ import {
 import { toTxResult } from "@celo/connect";
 import * as Linking from 'expo-linking';
 import AppContext from '../components/AppContext';
+import { useNavigation } from '@react-navigation/core';
 
 function ManageFundraiserListing(props) {
+  var navigation = useNavigation(); 
+
   var [loading, setLoading] = useState(false);
   
   const appContext = useContext(AppContext);  
@@ -50,7 +53,8 @@ function ManageFundraiserListing(props) {
       ]
     );
   }
-  const payOut = async () => {    
+  const payOut = async () => {  
+    console.log("PAY OUT!");
     const requestId = 'pay_out_projects'
     const dappName = 'Coperacha'
     const callback = Linking.makeUrl('/my/path')
@@ -73,7 +77,7 @@ function ManageFundraiserListing(props) {
       [
         {
           from: address,
-          to: stableToken.address, // interact w/ address of CeloCrowdfund contract
+          to: projectInstanceContract._address, // interact w/ address of CeloCrowdfund contract
           tx: payOut,
           feeCurrency: FeeCurrency.cUSD
         }
@@ -94,7 +98,8 @@ function ManageFundraiserListing(props) {
       // Get the transaction result, once it has been included in the Celo blockchain
       console.log(`Project payOut transaction receipt: `, result);
 
-      Alert.alert("Sent cUSD back to your wallet")
+      Alert.alert("Sent cUSD back to your wallet");
+      navigation.popToTop()
     }
     catch (e) {
       var exception = e.toString(); 
