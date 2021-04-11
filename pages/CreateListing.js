@@ -60,7 +60,7 @@ function CreateListing(props) {
     currentDate = Math.floor(currentDate.getTime()/1000);
     var userDefinedDate = Math.floor(date.getTime()/1000);
     
-    var differenceDateTime = Math.ceil((userDefinedDate-currentDate)/3600)/24;
+    var differenceDateTime = Math.ceil(((userDefinedDate-currentDate)/3600)/24);
 
     console.log(differenceDateTime);
 
