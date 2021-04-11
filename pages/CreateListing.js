@@ -276,7 +276,6 @@ function CreateListing(props) {
                     type="solid"  
                     disabled={loading}
                     onPress={() => write()}/>
-                   
                   
                   </View>
               </View>
