@@ -7,7 +7,7 @@ function LogIn(props) {
   const appContext = useContext(AppContext);
 
   // Passed from App.js since it needs to modify the loggedIn state in App.js    
-  logInToCelo = () => {
+  const logInToCelo = () => {
     console.log("Log in clicked")
   
     appContext.handleLogIn()
@@ -18,7 +18,6 @@ function LogIn(props) {
       <Text style={styles.title}>{props.reason}</Text>
 
       <Button title={"Login"} 
-        TouchableComponent={TouchableWithoutFeedback}
         buttonStyle={styles.createFundraiserButton} 
         titleStyle={styles.fundraiserTextStyle} 
         type="solid"  

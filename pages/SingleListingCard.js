@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Button, Text, StyleSheet, Dimensions, Pressablem} from 'react-native';
-import CachedImage from 'react-native-expo-cached-image';
+import { View, Text, StyleSheet, Dimensions, Pressablem} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ProgressBar from 'react-native-progress/Bar';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -42,7 +41,7 @@ function SingleListingCard(props) {
   return (
     <TouchableOpacity 
       onPress={() => navigation.navigate('ManageFundraiserListing', {projectId: props.projectId, loggedIn: props.loggedIn, address: props.address, projectData: data, projectAddy:projectCreator, nav: navigation})}
-      activeOpacity={1}
+      activeOpacity={0.8}
       // Tweak so cards don't get opaque on scroll
       delayPressIn={50}>   
 

@@ -60,7 +60,6 @@ function Manage(props) {
 
                 <View style={styles.headerFollow}>
                   <Button title={"Settings"} 
-                  TouchableComponent={TouchableWithoutFeedback}
                   buttonStyle={styles.createSettingsButton} 
                   titleStyle={styles.settingsTextStyle} 
                   type="clear"  
@@ -72,8 +71,8 @@ function Manage(props) {
               <View style={styles.centerLoginTop}>
                 <Image style={styles.Image} source={require("../assets/nurture.png")}></Image>
                 <Text style={styles.notifHeader}>No active fundraisers!</Text>
+                
                 <Button title={"New Fundraiser"} 
-                TouchableComponent={TouchableWithoutFeedback}
                 buttonStyle={styles.createFundraiserButton} 
                 titleStyle={styles.fundraiserTextStyle} 
                 type="solid"  
@@ -98,7 +97,6 @@ function Manage(props) {
                 </View>
                 <View style={styles.headerFollow}>
                   <Button title={"Settings"} 
-                      TouchableComponent={TouchableWithoutFeedback}
                       buttonStyle={styles.createSettingsButton} 
                       titleStyle={styles.settingsTextStyle} 
                       type="clear"  
@@ -129,14 +127,13 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#ffffff',
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height
   },
   itemsContainer:{
+    height: '100%',
     marginLeft: normalize(10),
     marginRight: normalize(10),
     backgroundColor: '#ffffff',
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height
   },
   headerInitial:{
     flexDirection: "row",

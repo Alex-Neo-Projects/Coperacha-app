@@ -5,6 +5,7 @@ import { Button } from 'react-native-elements';
 
 function LogOut(props) {
   const navigation = useNavigation();
+
   const logOutAlert = () =>
     Alert.alert(
       "Log out?",
@@ -19,7 +20,7 @@ function LogOut(props) {
       ]
     );
   // Passed from App.js since it needs to modify the loggedIn state in App.js 
-  logOut = () => {
+  const logOut = () => {
     props.handleLogOut();
     navigation.navigate('Manage')
   }
@@ -27,7 +28,6 @@ function LogOut(props) {
   return(
     <View>
       <Button title={"Log Out"} 
-      TouchableComponent={TouchableWithoutFeedback}
       buttonStyle={styles.createFundraiserButton} 
       titleStyle={styles.fundraiserTextStyle} 
       type="solid"  

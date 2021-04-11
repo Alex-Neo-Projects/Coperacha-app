@@ -267,7 +267,6 @@ function CreateListing(props) {
           
                     {/* Deadline */}
                     <Button title={"Pick a deadline"} 
-                    TouchableComponent={TouchableWithoutFeedback}
                     buttonStyle={styles.createFundraiserButton} 
                     titleStyle={styles.fundraiserTextStyle} 
                     type="solid"  
@@ -283,7 +282,6 @@ function CreateListing(props) {
                     }
 
                     <Button title={"Create Fundraiser"} 
-                    TouchableComponent={TouchableWithoutFeedback}
                     buttonStyle={styles.createFundraiserButton} 
                     titleStyle={styles.fundraiserTextStyle} 
                     type="solid"  
