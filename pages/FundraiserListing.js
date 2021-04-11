@@ -4,6 +4,7 @@ import ProgressBar from 'react-native-progress/Bar';
 import CachedImage from 'react-native-expo-cached-image';
 import { Button } from 'react-native-elements';
 import normalize from 'react-native-normalize';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 function FundraiserListing(props) {
   var navigation = props.route.params.nav;
@@ -41,13 +42,11 @@ function FundraiserListing(props) {
         <Text style={styles.amountRaisedText}>${currentAmount.toString()} raised of ${goal} goal.</Text>
         <ProgressBar progress={progress} color='#35D07F' width={350} height={8} style={styles.progress}/>        
         
-        <Button title={"Donate Now"} 
-          TouchableComponent={TouchableWithoutFeedback}
-          buttonStyle={styles.createFundraiserButton} 
-          titleStyle={styles.fundraiserTextStyle} 
-          type="solid"  
-          onPress={() => navigation.navigate('DonationForm', {projectId: projectId, loggedIn: loggedIn, address: address, creatorName: creatorName, title: title, nav: navigation})}/>
-        
+          <Button title={"Donate Now"} 
+            buttonStyle={styles.createFundraiserButton} 
+            titleStyle={styles.fundraiserTextStyle} 
+            type="solid"  
+            onPress={() => navigation.navigate('DonationForm', {projectId: projectId, loggedIn: loggedIn, address: address, creatorName: creatorName, title: title, nav: navigation})}/>        
       </View>
     </ScrollView>
   );
@@ -115,6 +114,8 @@ const styles = StyleSheet.create({
   },
   createFundraiserButton: {
     marginTop: normalize(40),
+    marginBottom: normalize(40),
+    marginRight: normalize(40),
     height: normalize(40),
     width: Dimensions.get('window').width - 20,
     backgroundColor: "#35D07F"
@@ -123,7 +124,8 @@ const styles = StyleSheet.create({
     fontFamily: 'proximanova_bold',
     fontSize: 18, 
     color: '#FFFFFF'
-  }
+  }, 
+  buttonOpacity:{}
 });
 
 export default FundraiserListing;
