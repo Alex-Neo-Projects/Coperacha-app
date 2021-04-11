@@ -13,14 +13,14 @@ Usage: *"Vamos a hacer coperacha para la gasolina"* means "Let's put some money 
 
 Check out the latest [Expo build here](https://expo.io/@alex243/projects/coperacha) (requires the Expo Go app). 
 
-**This app uses testnet cUSD exclusively, and requires a [Celo test wallet](https://celo.org/developers/wallet) in order to work** 
+**Note: This app uses testnet cUSD exclusively, and requires a [Celo test wallet](https://celo.org/developers/wallet) in order to work** 
 
 ## Background info 
 Celo is a mobile-first blockchain. It is a fork of Ethereum and is built to be a global payments infrastructure targeting the developing world. Celo has two native cryptocurrencies, cUSD (a currency that's pegged to the Dollar, 1 cUSD = 1 USD) and Celo gold (a volatile currency used for Celo governance and utility). Coperacha uses cUSD exclusively to transact. 
 
 # About us
 
-Alex is a student at Penn State University and Neo is a student at the University of Central Florida. We met on Discord in a React study group a little over a month ago, and decided to team up to build things together. Coperacha is our second collaborative project so far, and the first one we're launching. We made this app for the ["Make it Mobile Hackathon with Celo" hackathon](https://gitcoin.co/issue/celo-org/gitcoin/8/100024939). 
+Alex is a student at Penn State University and Neo is a student at the University of Central Florida. We met on Discord in a React study group a little over a month ago, and we decided to team up to build things together. Coperacha is our second collaborative project so far, and the first one we're launching. We made this app for the ["Make it Mobile Hackathon with Celo" hackathon](https://gitcoin.co/issue/celo-org/gitcoin/8/100024939). 
 
 ## Why we made Coperacha 
 
