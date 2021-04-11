@@ -18,7 +18,6 @@ function LogIn(props) {
       <Text style={styles.title}>{props.reason}</Text>
 
       <Button title={"Login"} 
-        TouchableComponent={TouchableWithoutFeedback}
         buttonStyle={styles.createFundraiserButton} 
         titleStyle={styles.fundraiserTextStyle} 
         type="solid"  

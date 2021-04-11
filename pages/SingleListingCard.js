@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Button, Text, StyleSheet, Dimensions, Pressablem} from 'react-native';
-import CachedImage from 'react-native-expo-cached-image';
+import { View, Text, StyleSheet, Dimensions, Pressablem} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ProgressBar from 'react-native-progress/Bar';
 import { TouchableOpacity } from 'react-native-gesture-handler';

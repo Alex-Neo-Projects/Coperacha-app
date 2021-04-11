@@ -27,7 +27,6 @@ function LogOut(props) {
   return(
     <View>
       <Button title={"Log Out"} 
-      TouchableComponent={TouchableWithoutFeedback}
       buttonStyle={styles.createFundraiserButton} 
       titleStyle={styles.fundraiserTextStyle} 
       type="solid"  
