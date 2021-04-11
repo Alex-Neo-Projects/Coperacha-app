@@ -40,6 +40,7 @@ function DonationForm(props) {
   var projectInstanceContract = projectDataContext[projectId].projectInstanceContract;
 
   const approve = async() => {
+    console.log("Approve clicked");
     if(name.length == 0){
       Alert.alert(
         "Add a name!"
@@ -55,16 +56,16 @@ function DonationForm(props) {
       
       return;
     }
-    
-    const requestId = 'approve_donation'
-    const dappName = 'Coperacha'
-    const callback = Linking.makeUrl('/my/path')
-    
+    console.log("Before approve donation");
+    const requestId = 'approve_donation';
+    const dappName = 'Coperacha';
+    const callback = Linking.makeUrl('/my/path');
+    console.log("After approve donation");
     const value = new BigNumber(donationAmount * 2e+18);
     
     const stableToken = await kit.contracts.getStableToken();
     const txObject = await stableToken.approve(projectInstanceContract._address, value).txo;
-    
+    console.log("TxObject: ", txObject);
     requestTxSig(
       kit,
       [
@@ -77,22 +78,39 @@ function DonationForm(props) {
         }
       ],
       { requestId, dappName, callback }
-    )
-    
+    );
+
+    console.log("After requesttxsig");
     // Get the response from the Celo wallet
-    const dappkitResponse = await waitForSignedTxs(requestId)
-    const tx = dappkitResponse.rawTxs[0]
-    
+    const dappkitResponse = await waitForSignedTxs(requestId);
+    const tx = dappkitResponse.rawTxs[0];
+    console.log("After dappkitresponse");
+
     setLoading(true);
     setApproveDisabled(true);
     
-    // Get the transaction result, once it has been included in the Celo blockchain
-    let result = await toTxResult(kit.web3.eth.sendSignedTransaction(tx)).waitReceipt()
+    try {
+      let result = await toTxResult(kit.web3.eth.sendSignedTransaction(tx)).waitReceipt();
 
-    console.log(`Approve donation transaction receipt: `, result);
-    
-    setDonationDisabled(false);
-    setLoading(false);
+      // Get the transaction result, once it has been included in the Celo blockchain
+      console.log(`Approve donation transaction receipt: `, result);
+      setApproveDisabled(false);
+      setLoading(false);
+    }
+    catch (e) {
+      var exception = e.toString(); 
+
+      if (exception.startsWith("Error: Transaction has been reverted by the EVM:")) { 
+        Alert.alert("Error: Make sure you have enough cUSD to donate"); 
+      }
+      else {
+        Alert.alert("A transaction error occurred. Please try again");
+      }
+      console.log("Error caught:", exception);
+
+      setLoading(false); 
+      setDonationDisabled(false);
+    }    
   }
 
   const donate = async () => {
