@@ -137,7 +137,6 @@ function ManageFundraiserListing(props) {
         }
 
         <Button title={"Pay Out"}
-          TouchableComponent={TouchableWithoutFeedback}
           buttonStyle={styles.createFundraiserButton} 
           titleStyle={styles.fundraiserTextStyle} 
           type="solid"  

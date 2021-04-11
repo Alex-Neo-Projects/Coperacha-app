@@ -18,7 +18,6 @@ function DonationReceipt(props) {
       <Image style={styles.Image} source={require("../assets/give.png")}></Image>
 
       <Button title={"Done"}
-          TouchableComponent={TouchableWithoutFeedback}
           buttonStyle={styles.createFundraiserButton} 
           titleStyle={styles.fundraiserTextStyle} 
           type="solid"  

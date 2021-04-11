@@ -14,7 +14,6 @@ function CreateReceipt() {
       <Text style={styles.title}>Your fundraiser is now live on Coperacha! ✨</Text>
       
       <Button title={"Done"} 
-        TouchableComponent={TouchableWithoutFeedback}
         buttonStyle={styles.createFundraiserButton} 
         titleStyle={styles.fundraiserTextStyle} 
         type="solid"  

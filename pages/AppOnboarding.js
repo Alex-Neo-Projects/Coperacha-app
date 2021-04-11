@@ -30,7 +30,6 @@ class AppOnboarding extends React.Component {
           subtitle: 
             <Button
               title={'Get Started with Coperacha'}
-              TouchableComponent={TouchableWithoutFeedback}
               buttonStyle={styles.createFundraiserButton} 
               titleStyle={styles.fundraiserTextStyle} 
               onPress={() => {
