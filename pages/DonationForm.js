@@ -185,6 +185,7 @@ function DonationForm(props) {
               <TextInput keyboardType="numeric" onChangeText={onChangeDonationAmount} value={donationAmount.toString()} placeholder="20" style={[styles.input, { borderColor: '#c0cbd3'}]} ></TextInput>
               
               <Button title={"Approve Donation"} 
+              TouchableComponent={TouchableWithoutFeedback}
               buttonStyle={styles.createFundraiserButton} 
               titleStyle={styles.fundraiserTextStyle} 
               type="solid"  
@@ -198,6 +199,7 @@ function DonationForm(props) {
               }
 
               <Button title={"Donate"} 
+              TouchableComponent={TouchableWithoutFeedback}
               buttonStyle={styles.createFundraiserButton} 
               titleStyle={styles.fundraiserTextStyle} 
               type="solid"  

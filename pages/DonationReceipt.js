@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import { Button } from 'react-native-elements';
 
 function DonationReceipt(props) {
@@ -17,11 +17,12 @@ function DonationReceipt(props) {
 
       <Image style={styles.Image} source={require("../assets/give.png")}></Image>
 
-      <Button title={"Done"} 
-            buttonStyle={styles.createFundraiserButton} 
-            titleStyle={styles.fundraiserTextStyle} 
-            type="solid"  
-            onPress={() => navigation.popToTop()}/>
+      <Button title={"Done"}
+          TouchableComponent={TouchableWithoutFeedback}
+          buttonStyle={styles.createFundraiserButton} 
+          titleStyle={styles.fundraiserTextStyle} 
+          type="solid"  
+          onPress={() => navigation.popToTop()}/>
     </View>
   );
 }
