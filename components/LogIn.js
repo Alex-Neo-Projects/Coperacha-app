@@ -7,7 +7,7 @@ function LogIn(props) {
   const appContext = useContext(AppContext);
 
   // Passed from App.js since it needs to modify the loggedIn state in App.js    
-  logInToCelo = () => {
+  const logInToCelo = () => {
     console.log("Log in clicked")
   
     appContext.handleLogIn()

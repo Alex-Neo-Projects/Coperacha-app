@@ -127,9 +127,10 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#ffffff',
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height
+    height: '100%'
   },
   itemsContainer:{
+    height: '100%',
     marginLeft: normalize(10),
     marginRight: normalize(10),
     backgroundColor: '#ffffff',
