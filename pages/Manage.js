@@ -127,7 +127,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#ffffff',
     width: Dimensions.get('window').width,
-    height: '100%'
   },
   itemsContainer:{
     height: '100%',
@@ -135,7 +134,6 @@ const styles = StyleSheet.create({
     marginRight: normalize(10),
     backgroundColor: '#ffffff',
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height
   },
   headerInitial:{
     flexDirection: "row",
