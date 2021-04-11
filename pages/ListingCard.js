@@ -14,6 +14,7 @@ function ListingCard(props) {
   //Data 
   var currentAmount = data.currentAmount / 1E18; // Gotta convert from bigNumber to regular integer; 
   var currentState = data.currentState;
+  console.log('currentState: ' + typeof currentState);
   var creatorName = data.projectCreatorName; 
   var fundraisingDeadline = data.fundRaisingDeadline; 
   var projectCreator = data.projectCreator.toString().substring(0, 16);
@@ -27,9 +28,27 @@ function ListingCard(props) {
   const dateObject = new Date(milliseconds)
 
   var dateOutput = new Date(dateObject).toLocaleDateString();
+
+  // check if cashed out or deadline 
   
   return (
-    <TouchableOpacity 
+    <View>
+      {
+        (currentState === '2' || currentState === '1') ? (
+          <View style={styles.cardView}> 
+            <CachedImage style={styles.cardImage} source={{uri: projectImageLink}} /> 
+            <View style={styles.textView}>
+              <Text style={styles.titleText}>{projectTitle} </Text>
+              <Text style={styles.creatorInitialText}>Fundraiser created by <Text style={styles.creatorText}>{creatorName}</Text> </Text>
+              <Text style={styles.projectDescriptionText}>{projectDescription} </Text>
+
+              <Text style={styles.footerText}>Fundraising has been completed. </Text>
+              <Text style={styles.footerTextFollow}>Thank you for your kind donations!</Text>
+              <Text style={styles.footer}>⭐️⭐</Text>
+            </View>
+          </View> 
+      ) : ( 
+      <TouchableOpacity 
       onPress={() => navigation.navigate('FundraiserListing', {projectId: props.projectId, loggedIn: props.loggedIn, address: props.address, projectData: data, projectAddy:projectCreator, nav: navigation})}
       activeOpacity={0.9}
       // Tweak so cards don't get opaque on scroll
@@ -47,7 +66,10 @@ function ListingCard(props) {
           <Text style={styles.dateText}>Fundraising ends on {dateOutput} </Text>
         </View>
       </View>      
-    </TouchableOpacity>
+    </TouchableOpacity>)
+      }
+    </View>
+   
   );
 }
 
@@ -100,7 +122,7 @@ const styles = StyleSheet.create({
   },
   currentRaisedText: {
     fontFamily: 'proximanova_bold',
-    fontSize: 15,
+    fontSize: 16,
     color: '#2E3338',
     marginTop: normalize(20),
   },
@@ -115,6 +137,21 @@ const styles = StyleSheet.create({
     bottom: normalize(10), 
     right: normalize(4)
   },
+  footerText:{
+    marginTop: normalize(25),
+    fontFamily: 'proximanova_bold',
+    fontSize: 20,
+    color: '#2E3338',
+  },
+  footerTextFollow:{
+    marginTop: normalize(5),
+    fontFamily: 'proximanova_bold',
+    fontSize: 18,
+    color: '#2E3338'
+  },
+  footer:{
+    marginTop: normalize(10)
+  }
 });
 
 export default ListingCard;

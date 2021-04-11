@@ -1,9 +1,10 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import '../global'
 import { StyleSheet, RefreshControl, ActivityIndicator, ScrollView, View, Text, Dimensions, Platform } from 'react-native';
 import ListingCard from './ListingCard';
 import AppContext from '../components/AppContext';
 import normalize from 'react-native-normalize';
+import { Button } from 'react-native-elements';
 
 function Home(props) {
 
@@ -27,10 +28,20 @@ function Home(props) {
     return promise; 
   }
 
+  //
+
   // Current sort: Most recently created first
   const appContext = useContext(AppContext);
-  const projectData = appContext.projectData; 
+  const projectData = appContext.projectData;
+  console.log("Meep");
+
+  const activeData = projectData.filter(project => project.result.currentState.includes('0'));
+  const expiredData = projectData.filter(project => {return project.result.currentState.includes('1') || project.result.currentState.includes('2')});
   
+  var [currentActiveSelected, setActiveSelected] = React.useState(true);
+  var [currentActiveTitle, setActiveTitle] = React.useState('Ongoing');
+  var [currentButtonTitle, setButtonTitle] = React.useState('Ongoing');
+
   const [refreshing, setRefreshing] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
@@ -57,16 +68,44 @@ function Home(props) {
           />
         }
       > 
-          <View >
-            <Text style={styles.headerInitial}> Ongoing <Text style={styles.header}>Fundraisers </Text> </Text>
+          <View>
+            <View style={styles.headerInitial}>
+              <View>
+                <Text style={styles.titleHeader}> {currentActiveTitle} <Text style={styles.header}>Fundraisers</Text> </Text>
+              </View>
+
+              <View style={styles.headerFollow}>
+                  <Button title={currentButtonTitle} 
+                  buttonStyle={styles.createSettingsButton} 
+                  titleStyle={styles.settingsTextStyle} 
+                  type="clear"  
+                  onPress={() => {
+
+                    if(currentActiveSelected === true){
+                      setActiveTitle('Expired');
+                      setButtonTitle('Ongoing');
+                      setActiveSelected(false);
+                    }else{
+                      setActiveTitle('Ongoing');
+                      setButtonTitle('Expired');
+                      setActiveSelected(true);
+                    }
+                 
+                  }}/>
+              </View>
+
+            </View>
             
             {loading ? (
               <ActivityIndicator style={styles.container} color="#999999" size="large" />
             ) : (
               <View style={styles.container}>
-                {projectData.map((project, index) => {
+                {currentActiveSelected === true ? activeData.map((project, index) => {
                   return <ListingCard key={index} projectId={index} projectData={project.result}/>
-                })}
+                }) : (expiredData.map((project, index) => {
+                  return <ListingCard key={index} projectId={index} projectData={project.result}/>
+                }))
+                }
               </View>
             )}
         </View>
@@ -89,12 +128,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff'
   },
   headerInitial: { 
+    flexDirection: "row",
     fontSize: 25,
     color: '#2E3338',
     fontFamily: 'proximanova_bold',
+    height: normalize(60),
     marginTop: Platform.OS === 'ios' ? normalize(60): normalize(20),
     marginLeft: normalize(10),
-    marginBottom: normalize(30),
+  },
+  titleHeader: { 
+    fontSize: 25,
+    color: '#2E3338',
+    fontFamily: 'proximanova_bold',
   },
   header: {
     fontSize: 25,
@@ -104,7 +149,21 @@ const styles = StyleSheet.create({
   centerLoading: {
     flex: 1,
     justifyContent: 'center',
-  }
+  },
+  headerFollow:{
+    bottom: normalize(40)
+  },
+  createSettingsButton: {
+    marginLeft: normalize(20),
+    marginTop: normalize(34),
+    height: normalize(40),
+    width: normalize(100),
+  }, 
+  settingsTextStyle: {
+    fontFamily: 'proximanova_bold',
+    fontSize: 16, 
+    color: '#2E3338'
+  },
 });
 
 export default Home; 
