@@ -2,8 +2,8 @@ import React from 'react'
 import Home from './pages/Home';
 import { web3, kit } from './root'
 import 'react-native-gesture-handler';
-import { StatusBar } from 'react-native';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { StatusBar, Alert } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FundraiserListing from './pages/FundraiserListing';
@@ -26,7 +26,6 @@ import * as Linking from 'expo-linking';
 import AppContext from './components/AppContext'; 
 import * as Font from 'expo-font';
 import ManageFundraiserListing from './pages/ManageFundraiserListing';
-import normalize from 'react-native-normalize';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -161,48 +160,63 @@ class App extends React.Component {
       callback,
     });
   
-    // Wait for the Celo Wallet response
-    const dappkitResponse = await waitForAccountAuth(requestId);
-
-    // Set the default account to the account returned from the wallet
-    kit.defaultAccount = dappkitResponse.address;
-
-    // Get the stable token contract
-    const stableToken = await kit.contracts.getStableToken();
-
-    // Get the user account balance (cUSD)
-    const cUSDBalanceBig = await stableToken.balanceOf(kit.defaultAccount);
-    
-    const balance = cUSDBalanceBig / 1E18
-
-    // Convert from a big number to a string
-    let cUSDBalance = balance.toString();
-    
-    const storeData = async () => {
-      try {
-        await AsyncStorage.setItem('@userAddress', dappkitResponse.address)
-        await AsyncStorage.setItem('@userBalance', cUSDBalance)
-        
-        console.log("Balance: ", cUSDBalance);
-
-        this.setState({loggedIn: true})
-        console.log("Saved login data to local storage");
-      } catch (e) {
-        // saving error
-        console.log("Error saving login data to local storage in LogIn.js: ", e);
-      }
+    try {
+      // Wait for the Celo Wallet response
+      const dappkitResponse = await waitForAccountAuth(requestId);
+      console.log(dappkitResponse);
+  
+      // Set the default account to the account returned from the wallet
+      kit.defaultAccount = dappkitResponse.address;
+  
+      // Get the stable token contract
+      const stableToken = await kit.contracts.getStableToken();
+  
+      // Get the user account balance (cUSD)
+      const cUSDBalanceBig = await stableToken.balanceOf(kit.defaultAccount);
+      
+      const balance = cUSDBalanceBig / 1E18
+  
+      // Convert from a big number to a string
+      let cUSDBalance = balance.toString();
+      
+      this.storeData(dappkitResponse.address, cUSDBalance);
     }
-    storeData();
+    catch (e) {
+      var exception = e.toString(); 
+
+      Alert.alert("A login error occurred. Please try again");
+      
+      console.log("Error caught:", exception);
+    }
+
   }
   
+  async storeData(address, balance) {
+    try {
+      await AsyncStorage.setItem('@userAddress', address)
+      await AsyncStorage.setItem('@userBalance', balance)
+      
+      console.log("Balance: ", balance);
+
+      this.setState({loggedIn: true})
+      console.log("Saved login data to local storage");
+    } catch (e) {
+      // saving error
+      Alert.alert("A login error occurred. Please try again")
+      console.log("Error saving login data to local storage in LogIn.js: ", e);
+    }
+  }
+
   async loadFromStorage() {
     try {
+      const onboarding = await AsyncStorage.getItem('@onboardingFinished');
       const value = await AsyncStorage.getItem('@userAddress')
       const userBalance = await AsyncStorage.getItem('@userBalance');
 
       if(value !== null) {
-        this.setState({ address: value, balance: userBalance, loggedIn: true })
+        this.setState({ address: value, balance: userBalance, loggedIn: true, onboardingFinished: onboarding})
         console.log("user logged in");
+        console.log("Onboarding finished: ", onboarding);
         console.log("BALANCE in App.js: ", this.state.balance);
       }
       else {
@@ -254,9 +268,12 @@ class App extends React.Component {
     this.setState({ celoCrowdfundContract: celoCrowdfundContract })
 
     const stableToken = await kit.contracts.getStableToken();
-    const cUSDBalanceBig = await stableToken.balanceOf(this.state.address);
-    const balance = cUSDBalanceBig / 1E18
-    this.setState({ balance: balance })
+
+    if (this.state.loggedIn) {
+      const cUSDBalanceBig = await stableToken.balanceOf(this.state.address);
+      const balance = cUSDBalanceBig / 1E18
+      this.setState({ balance: balance })
+    }
 
     return "Success";
   }
@@ -271,22 +288,7 @@ class App extends React.Component {
       console.log(error);
     }
     
-    //checking onboarding finished or not 
-    try {
-      //get onboarding finished
-      var onboarding = await AsyncStorage.getItem('@onboardingFinished');
-      
-      //if true -> setonboarding state to true 
-      if(onboarding){
-        this.setState({onboardingFinished: true});
-      }
-      
-    }catch (error){
-      console.log(error);
-    }
-    
     this.loadFromStorage();
-    // this.getFeedData();
   }
 
   completeOnboarding = async () => {

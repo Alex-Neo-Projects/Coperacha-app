@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: '#2E3338',
     fontFamily: 'proximanova_bold',
-    marginTop: normalize(60),
+    marginTop: Platform.OS === 'ios' ? normalize(60): normalize(20),
     marginLeft: normalize(10),
     marginRight: normalize(10),
     marginBottom: normalize(30),

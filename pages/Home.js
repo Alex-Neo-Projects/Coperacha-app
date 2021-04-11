@@ -52,6 +52,8 @@ function Home(props) {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
+            // Only want pull to refresh when home screen not already loading
+            enabled={!loading} 
           />
         }
       > 
