@@ -116,10 +116,11 @@ class App extends React.Component {
     projectData: [],
     celoCrowdfundContract: '', 
     projectInstanceContract: '', 
-    address: 'Not logged in', 
+    address: '', 
     balance: 'Not logged in', 
     loggedIn: false, 
     onboardingFinished: false, 
+    loading: false, 
   }
 
   logOut() {
@@ -193,8 +194,27 @@ class App extends React.Component {
     }
     storeData();
   }
-   
   
+  async loadFromStorage() {
+    try {
+      const value = await AsyncStorage.getItem('@userAddress')
+      const userBalance = await AsyncStorage.getItem('@userBalance');
+
+      if(value !== null) {
+        this.setState({ address: value, balance: userBalance, loggedIn: true })
+        console.log("user logged in");
+        console.log("BALANCE in App.js: ", this.state.balance);
+      }
+      else {
+        console.log('User not logged in');
+      }
+    } catch(e) {
+      // error reading value
+      console.log("Error: ", e);
+      return "Error";
+    }
+  }    
+
   async getFeedData() {
     // Check the Celo network ID
     const networkId = await web3.eth.net.getId();
@@ -233,28 +253,6 @@ class App extends React.Component {
     this.setState({ projectData : projectData.reverse() })
     this.setState({ celoCrowdfundContract: celoCrowdfundContract })
 
-    const getData = async () => {
-      try {
-        const value = await AsyncStorage.getItem('@userAddress')
-        const userBalance = await AsyncStorage.getItem('@userBalance');
-  
-        if(value !== null) {
-          this.setState({ address: value, balance: userBalance, loggedIn: true })
-          console.log("user logged in");
-          console.log("BALANCE in App.js: ", this.state.balance);
-        }
-        else {
-          console.log('User not logged in');
-        }
-      } catch(e) {
-        // error reading value
-        console.log("Error: ", e);
-        return "Error";
-      }
-    }    
-
-    getData()
-
     const stableToken = await kit.contracts.getStableToken();
     const cUSDBalanceBig = await stableToken.balanceOf(this.state.address);
     const balance = cUSDBalanceBig / 1E18
@@ -286,8 +284,9 @@ class App extends React.Component {
     }catch (error){
       console.log(error);
     }
-
-    this.getFeedData();
+    
+    this.loadFromStorage();
+    // this.getFeedData();
   }
 
   completeOnboarding = async () => {

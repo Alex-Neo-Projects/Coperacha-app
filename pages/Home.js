@@ -1,13 +1,17 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import '../global'
-import { StyleSheet, RefreshControl, ScrollView, View, Text, Dimensions, Platform } from 'react-native';
+import { StyleSheet, RefreshControl, ActivityIndicator, ScrollView, View, Text, Dimensions, Platform } from 'react-native';
 import ListingCard from './ListingCard';
 import AppContext from '../components/AppContext';
 import normalize from 'react-native-normalize';
 
 function Home(props) {
 
-  const refresh = (timeout) => {
+  useEffect(() => {
+    onLoad();
+  }, []);
+
+  const refresh = () => {
     let promise = new Promise(async function(resolve, reject) {
       var result = await props.getFeedData(); 
 
@@ -28,10 +32,16 @@ function Home(props) {
   const projectData = appContext.projectData; 
   
   const [refreshing, setRefreshing] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    refresh(2000).then(() => setRefreshing(false));
+    refresh().then(() => setRefreshing(false));
+  }, []);
+
+  const onLoad = React.useCallback(() => {
+    setLoading(true);
+    refresh().then(() => setLoading(false));
   }, []);
 
 
@@ -45,11 +55,18 @@ function Home(props) {
           />
         }
       > 
-        <Text style={styles.headerInitial}> Ongoing <Text style={styles.header}>Fundraisers </Text> </Text>
-        <View style={styles.container}>
-          {projectData.map((project, index) => {
-            return <ListingCard key={index} projectId={index} projectData={project.result}/>
-          })}
+          <View >
+            <Text style={styles.headerInitial}> Ongoing <Text style={styles.header}>Fundraisers </Text> </Text>
+            
+            {loading ? (
+              <ActivityIndicator style={styles.container} color="#999999" size="large" />
+            ) : (
+              <View style={styles.container}>
+                {projectData.map((project, index) => {
+                  return <ListingCard key={index} projectId={index} projectData={project.result}/>
+                })}
+              </View>
+            )}
         </View>
       </ScrollView>
     </View>
@@ -81,6 +98,10 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: '#35D07F',
     fontFamily: 'proximanova_bold'
+  }, 
+  centerLoading: {
+    flex: 1,
+    justifyContent: 'center',
   }
 });
 
