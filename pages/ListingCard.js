@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Button, Text, StyleSheet, Dimensions, Pressablem} from 'react-native';
+import { View, Text, StyleSheet, Dimensions} from 'react-native';
 import CachedImage from 'react-native-expo-cached-image';
 import { useNavigation } from '@react-navigation/native';
 import ProgressBar from 'react-native-progress/Bar';
@@ -11,17 +11,29 @@ function ListingCard(props) {
   
   var data = props.projectData; 
 
+  var currentState = '';
+  
+  if (data.currentState === '0') {
+    currentState = "Fundraising"; 
+  }
+  else if (data.currentState === '1') {
+    currentState = "Expired"; 
+  }
+  else {
+    currentState = "Successful"; 
+  }
+
   //Data 
   var currentAmount = data.currentAmount / 1E18; // Gotta convert from bigNumber to regular integer; 
-  var currentState = data.currentState;
+  var totalRaised = data.projectTotalRaised / 1E18;
   var creatorName = data.projectCreatorName; 
   var fundraisingDeadline = data.fundRaisingDeadline; 
   var projectCreator = data.projectCreator.toString().substring(0, 16);
-  var projectDescription = data.projectDescription.length > 115 ? data.projectDescription.substring(0, 115) : data.projectDescription;
+  var projectDescription = data.projectDescription.length > 115 ? data.projectDescription.substring(0, 115) + '...' : data.projectDescription;
   var projectGoalAmount = data.projectGoalAmount;
   var projectImageLink = data.projectImageLink;
   var projectTitle = data.projectTitle; 
-  var currentProgress = currentAmount / projectGoalAmount; 
+  var currentProgress = totalRaised / projectGoalAmount; 
 
   const milliseconds = fundraisingDeadline * 1000; 
   const dateObject = new Date(milliseconds)
@@ -40,11 +52,18 @@ function ListingCard(props) {
         <View style={styles.textView}>
           <Text style={styles.titleText}>{projectTitle} </Text>
           <Text style={styles.creatorInitialText}>Fundraiser created by <Text style={styles.creatorText}>{creatorName}</Text> </Text>
+          <Text style={styles.creatorInitialText}>Status: <Text style={styles.creatorText}>{currentState}</Text> </Text>
           <Text style={styles.projectDescriptionText}>{projectDescription} </Text>
-          <Text style={styles.currentRaisedText}>${currentAmount} raised of ${projectGoalAmount} goal. </Text>
+          <Text style={styles.currentRaisedText}>${totalRaised} raised of ${projectGoalAmount} goal. </Text>
 
           <ProgressBar progress={currentProgress} color='#35D07F' width={normalize(330)} height={normalize(8)} style={styles.progress}/>
-          <Text style={styles.dateText}>Fundraising ends on {dateOutput} </Text>
+          
+          {currentState === "Fundraising" ? (
+            <Text style={styles.dateText}>Fundraising ends on {dateOutput} </Text>
+          ) : (
+            <Text style={styles.dateText}>Fundraising ended</Text>
+          )}
+          
         </View>
       </View>      
     </TouchableOpacity>

@@ -36,6 +36,8 @@ function CreateListing(props) {
   const [imageState, setImageState] = useState('No Image Selected'); 
   const [imageDownloadUrl, setImageDownloadUrl] = useState('');
 
+  const [imageSelected, setImageSelected] = useState(null);
+
   // loading
   var [loading, setLoading] = useState(false);
 
@@ -84,6 +86,7 @@ function CreateListing(props) {
     if(!selectedImage.cancelled){
       imageResponse(selectedImage.uri);
       firestorePost(selectedImage.uri);
+      setImageSelected(true);
     }
   }
 
@@ -114,6 +117,14 @@ function CreateListing(props) {
     if(imageState == null){
       Alert.alert(
         "Reupload image!"
+      ); 
+
+      return;
+    }
+
+    if(imageSelected == null){
+      Alert.alert(
+        "Upload an image!"
       ); 
 
       return;
