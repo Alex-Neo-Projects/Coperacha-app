@@ -52,6 +52,14 @@ After we had the smart contract ready, we were able to focus on the Coperacha ap
 
 Overall, the biggest piece of feedback I have for the Celo organization is that writing more extensive documentation would make the development process much, much easier for developers building on Celo. There were a couple of times where I ran into incomplete/outdated documentation or documentation that felt unfinished on the Celo developer website. Extensive documentation and more examples would really help out Celo developers everywhere. 
 
+## Features
+
+Coperacha currently supports the following features: 
+
+- Users can create, donate, and manage their own fundraisers 
+- Users can view all listed fundraisers
+- Integration with the Celo Alfajores Wallet to handle payments
+
 # Running Coperacha locally
 
 ```
