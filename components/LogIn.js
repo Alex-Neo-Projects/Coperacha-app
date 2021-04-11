@@ -1,5 +1,5 @@
 import React, {useContext} from 'react'
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import { Button } from 'react-native-elements';
 import AppContext from './AppContext';
 
@@ -18,10 +18,11 @@ function LogIn(props) {
       <Text style={styles.title}>{props.reason}</Text>
 
       <Button title={"Login"} 
-            buttonStyle={styles.createFundraiserButton} 
-            titleStyle={styles.fundraiserTextStyle} 
-            type="solid"  
-            onPress={()=> logInToCelo()}/>
+        TouchableComponent={TouchableWithoutFeedback}
+        buttonStyle={styles.createFundraiserButton} 
+        titleStyle={styles.fundraiserTextStyle} 
+        type="solid"  
+        onPress={()=> logInToCelo()}/>
     </View>
   );
 }

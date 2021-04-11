@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Dimensions } from 'react-native';
+import { Image, StyleSheet, Dimensions,TouchableWithoutFeedback } from 'react-native';
 import React from 'react'; 
 import Onboarding from 'react-native-onboarding-swiper';
 import { Button } from 'react-native-elements';
@@ -30,6 +30,7 @@ class AppOnboarding extends React.Component {
           subtitle: 
             <Button
               title={'Get Started with Coperacha'}
+              TouchableComponent={TouchableWithoutFeedback}
               buttonStyle={styles.createFundraiserButton} 
               titleStyle={styles.fundraiserTextStyle} 
               onPress={() => {

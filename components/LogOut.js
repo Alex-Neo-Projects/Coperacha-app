@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Dimensions, StyleSheet, Alert } from 'react-native';
+import { View, Text, Dimensions, StyleSheet, Alert, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Button } from 'react-native-elements';
 
@@ -27,11 +27,11 @@ function LogOut(props) {
   return(
     <View>
       <Button title={"Log Out"} 
+      TouchableComponent={TouchableWithoutFeedback}
       buttonStyle={styles.createFundraiserButton} 
       titleStyle={styles.fundraiserTextStyle} 
       type="solid"  
       onPress={()=> logOutAlert()} />
-
     </View>
   );
 }

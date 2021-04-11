@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { View, ActivityIndicator, Text, ScrollView, StyleSheet, TextInput, Dimensions, Keyboard, TouchableWithoutFeedback, Image, Alert } from 'react-native';
+import { View, ActivityIndicator, Text, ScrollView, StyleSheet, TextInput, Dimensions, Keyboard, TouchableWithoutFeedback, Image, Alert, TouchableWithoutFeedbackComponent } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { kit } from '../root';
 import { useNavigation } from '@react-navigation/native';
@@ -256,6 +256,7 @@ function CreateListing(props) {
           
                     {/* Deadline */}
                     <Button title={"Pick a deadline"} 
+                    TouchableComponent={TouchableWithoutFeedback}
                     buttonStyle={styles.createFundraiserButton} 
                     titleStyle={styles.fundraiserTextStyle} 
                     type="solid"  
@@ -271,6 +272,7 @@ function CreateListing(props) {
                     }
 
                     <Button title={"Create Fundraiser"} 
+                    TouchableComponent={TouchableWithoutFeedback}
                     buttonStyle={styles.createFundraiserButton} 
                     titleStyle={styles.fundraiserTextStyle} 
                     type="solid"  

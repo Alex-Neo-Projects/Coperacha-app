@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, ScrollView, StyleSheet, Dimensions} from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Dimensions, TouchableWithoutFeedback} from 'react-native';
 import ProgressBar from 'react-native-progress/Bar';
 import CachedImage from 'react-native-expo-cached-image';
 import { Button } from 'react-native-elements';
@@ -42,6 +42,7 @@ function FundraiserListing(props) {
         <ProgressBar progress={progress} color='#35D07F' width={350} height={8} style={styles.progress}/>        
         
         <Button title={"Donate Now"} 
+          TouchableComponent={TouchableWithoutFeedback}
           buttonStyle={styles.createFundraiserButton} 
           titleStyle={styles.fundraiserTextStyle} 
           type="solid"  

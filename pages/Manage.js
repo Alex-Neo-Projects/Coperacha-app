@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { View, Text, RefreshControl, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, Text, RefreshControl, StyleSheet, Image, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LogIn from '../components/LogIn';
 import AppContext from '../components/AppContext';
@@ -60,10 +60,11 @@ function Manage(props) {
 
                 <View style={styles.headerFollow}>
                   <Button title={"Settings"} 
-                      buttonStyle={styles.createSettingsButton} 
-                      titleStyle={styles.settingsTextStyle} 
-                      type="clear"  
-                      onPress={() => navigation.navigate('Settings')}/>
+                  TouchableComponent={TouchableWithoutFeedback}
+                  buttonStyle={styles.createSettingsButton} 
+                  titleStyle={styles.settingsTextStyle} 
+                  type="clear"  
+                  onPress={() => navigation.navigate('Settings')}/>
                 </View>
 
               </View>
@@ -72,6 +73,7 @@ function Manage(props) {
                 <Image style={styles.Image} source={require("../assets/nurture.png")}></Image>
                 <Text style={styles.notifHeader}>No active fundraisers!</Text>
                 <Button title={"New Fundraiser"} 
+                TouchableComponent={TouchableWithoutFeedback}
                 buttonStyle={styles.createFundraiserButton} 
                 titleStyle={styles.fundraiserTextStyle} 
                 type="solid"  
@@ -96,6 +98,7 @@ function Manage(props) {
                 </View>
                 <View style={styles.headerFollow}>
                   <Button title={"Settings"} 
+                      TouchableComponent={TouchableWithoutFeedback}
                       buttonStyle={styles.createSettingsButton} 
                       titleStyle={styles.settingsTextStyle} 
                       type="clear"  

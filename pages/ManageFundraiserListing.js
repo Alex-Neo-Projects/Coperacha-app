@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, Dimensions, Alert} from 'react-native';
+import { View, Text, ScrollView, StyleSheet, ActivityIndicator, Dimensions, Alert, TouchableWithoutFeedback} from 'react-native';
 import ProgressBar from 'react-native-progress/Bar';
 import CachedImage from 'react-native-expo-cached-image';
 import { Button } from 'react-native-elements';
@@ -136,7 +136,8 @@ function ManageFundraiserListing(props) {
           </>
         }
 
-        <Button title={"Pay Out"} 
+        <Button title={"Pay Out"}
+          TouchableComponent={TouchableWithoutFeedback}
           buttonStyle={styles.createFundraiserButton} 
           titleStyle={styles.fundraiserTextStyle} 
           type="solid"  

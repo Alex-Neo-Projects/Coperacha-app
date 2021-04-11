@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import { Button } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 
@@ -14,10 +14,11 @@ function CreateReceipt() {
       <Text style={styles.title}>Your fundraiser is now live on Coperacha! ✨</Text>
       
       <Button title={"Done"} 
-            buttonStyle={styles.createFundraiserButton} 
-            titleStyle={styles.fundraiserTextStyle} 
-            type="solid"  
-            onPress={() => navigation.replace('Create')}/>
+        TouchableComponent={TouchableWithoutFeedback}
+        buttonStyle={styles.createFundraiserButton} 
+        titleStyle={styles.fundraiserTextStyle} 
+        type="solid"  
+        onPress={() => navigation.replace('Create')}/>
     </View>
   );
 }
