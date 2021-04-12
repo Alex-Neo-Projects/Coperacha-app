@@ -77,16 +77,16 @@ function Home(props) {
                   <Button title={currentButtonTitle} 
                   buttonStyle={styles.createSettingsButton} 
                   titleStyle={styles.settingsTextStyle} 
-                  type="clear"  
+                  type="outline"  
                   onPress={() => {
 
                     if(currentActiveSelected === true){
                       setActiveTitle('Expired');
-                      setButtonTitle('Ongoing');
+                      setButtonTitle('View Ongoing Fundraisers');
                       setActiveSelected(false);
                     }else{
                       setActiveTitle('Ongoing');
-                      setButtonTitle('Expired');
+                      setButtonTitle('View Expired Fundraisers');
                       setActiveSelected(true);
                     }
                  
@@ -127,11 +127,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff'
   },
   headerInitial: { 
-    flexDirection: "row",
+    // flexDirection: "row",
     fontSize: 25,
     color: '#2E3338',
     fontFamily: 'proximanova_bold',
-    height: normalize(60),
+    height: normalize(90),
     marginTop: Platform.OS === 'ios' ? normalize(60): normalize(20),
     marginLeft: normalize(10),
   },
@@ -153,10 +153,13 @@ const styles = StyleSheet.create({
     bottom: normalize(40)
   },
   createSettingsButton: {
-    marginLeft: normalize(20),
-    marginTop: normalize(34),
-    height: normalize(40),
-    width: normalize(100),
+    marginLeft: normalize(3),
+    marginTop: normalize(50),
+    height: normalize(35),
+    width: normalize(210),
+    borderWidth: 1,
+    borderColor: '#DDDDDD',
+    borderRadius: 15
   }, 
   settingsTextStyle: {
     fontFamily: 'proximanova_bold',
