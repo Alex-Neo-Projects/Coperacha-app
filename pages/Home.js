@@ -33,7 +33,6 @@ function Home(props) {
   // Current sort: Most recently created first
   const appContext = useContext(AppContext);
   const projectData = appContext.projectData;
-  console.log("Meep");
 
   const activeData = projectData.filter(project => project.result.currentState.includes('0'));
   const expiredData = projectData.filter(project => {return project.result.currentState.includes('1') || project.result.currentState.includes('2')});

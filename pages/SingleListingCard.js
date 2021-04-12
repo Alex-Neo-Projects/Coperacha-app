@@ -41,7 +41,7 @@ function SingleListingCard(props) {
   
   return (
    <View>
-     {(currentState === '0' || currentState === '1') ? (
+     {/* {(currentState === '0' || currentState === '1') ? (
         <TouchableOpacity 
         onPress={() => navigation.navigate('ManageFundraiserListing', {projectId: props.projectId, loggedIn: props.loggedIn, address: props.address, projectData: data, projectAddy:projectCreator, nav: navigation})}
         activeOpacity={0.8}
@@ -65,8 +65,7 @@ function SingleListingCard(props) {
         <Text style={styles.currentRaisedTextDone}>🎈 You have claimed your payout!</Text>
       </View>
     </View>      
-     )}
-   </View>
+     )} */}
     <TouchableOpacity 
       onPress={() => navigation.navigate('ManageFundraiserListing', {projectId: props.projectId, loggedIn: props.loggedIn, address: props.address, projectData: data, projectAddy:projectCreator, nav: navigation})}
       activeOpacity={0.8}
@@ -85,11 +84,15 @@ function SingleListingCard(props) {
           {currentState === "Fundraising" ? (
             <Text style={styles.dateText}>Fundraising ends on {dateOutput} </Text>
           ) : (
-            <Text style={styles.dateText}>Fundraising ended</Text>
+            <>
+              <Text style={styles.currentRaisedTextDone}>🎈 You have claimed your payout!</Text>
+              <Text style={styles.dateText}>Fundraising ended</Text>
+            </>
           )}
         </View>
-      </View>      
-    </TouchableOpacity>
+      </View>
+      </TouchableOpacity>
+    </View>
   );
 }
 
