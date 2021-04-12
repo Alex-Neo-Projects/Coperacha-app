@@ -150,13 +150,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerFollow:{
-    bottom: normalize(40)
+    bottom: normalize(40),
   },
   createSettingsButton: {
     marginLeft: normalize(3),
     marginTop: normalize(50),
     height: normalize(35),
-    width: normalize(210),
+    width: Platform.OS === 'ios' ? normalize(220): normalize(240),
     borderWidth: 1,
     borderColor: '#DDDDDD',
     borderRadius: 15
