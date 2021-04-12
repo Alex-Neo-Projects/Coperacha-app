@@ -36,7 +36,7 @@ Some ideas for fundraisers on Coperacha include:
 
 ## Coperacha's potential for impact
 
-We are building Coperacha to be global from day one. Since we can't support all the regions we'd like to right away, we're focusing on making it work for English & Spanish speakers. More specifically, we're focused on North America and Latin America to start out, as we know there are many Celo users in Latin America. 
+We are building Coperacha to be global from day one. Since we can't support all the regions we'd like to right away, we're focusing on making it work for English & Spanish speakers. More specifically, we're focused on North America and Latin America to start out, as we know there are many Celo users in Latin America. We wanted to have the app translated to Spanish for the hackathon (Alex is a native speaker), but due to time constraints we weren't able to do it before the hackathon deadline. 
 
 Our target audience is Celo users and communities who rely on the Celo network for banking and need a way to fundraise in their community. 
 
