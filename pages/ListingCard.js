@@ -11,18 +11,6 @@ function ListingCard(props) {
   
   var data = props.projectData; 
 
-  var currentState = '';
-  
-  if (data.currentState === '0') {
-    currentState = "Fundraising"; 
-  }
-  else if (data.currentState === '1') {
-    currentState = "Expired"; 
-  }
-  else {
-    currentState = "Successful"; 
-  }
-
   //Data 
   var currentAmount = data.currentAmount / 1E18; // Gotta convert from bigNumber to regular integer; 
   var currentState = data.currentState;
@@ -41,7 +29,19 @@ function ListingCard(props) {
 
   var dateOutput = new Date(dateObject).toLocaleDateString();
 
-  // check if cashed out or deadline 
+
+  var status = '';
+  
+  if (currentState === '0') {
+    status = "Fundraising"; 
+  }
+  else if (currentState === '1') {
+    status = "Expired"; 
+  }
+  else {
+    status = "Successful"; 
+  }
+
   
   return (
     <View>
@@ -71,7 +71,7 @@ function ListingCard(props) {
         <View style={styles.textView}>
           <Text style={styles.titleText}>{projectTitle} </Text>
           <Text style={styles.creatorInitialText}>Fundraiser created by <Text style={styles.creatorText}>{creatorName}</Text> </Text>
-          <Text style={styles.creatorInitialText}>Status: <Text style={styles.creatorText}>{currentState}</Text> </Text>
+          <Text style={styles.creatorInitialText}>Status: <Text style={styles.creatorText}>{status}</Text> </Text>
           <Text style={styles.projectDescriptionText}>{projectDescription} </Text>
           <Text style={styles.currentRaisedText}>${totalRaised} raised of ${projectGoalAmount} goal. </Text>
 
