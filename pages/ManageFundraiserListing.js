@@ -13,6 +13,7 @@ import { toTxResult } from "@celo/connect";
 import * as Linking from 'expo-linking';
 import AppContext from '../components/AppContext';
 import { useNavigation } from '@react-navigation/core';
+import normalize from 'react-native-normalize';
 
 function ManageFundraiserListing(props) {
   var navigation = useNavigation(); 
@@ -29,15 +30,29 @@ function ManageFundraiserListing(props) {
   var address = appContext.address; 
   
   var data = props.route.params.projectData;
+
+  var currentState = '';
+  
+  if (data['currentState'] === '0') {
+    currentState = "Fundraising"; 
+  }
+  else if (data['currentState'] === '1') {
+    currentState = "Expired"; 
+  }
+  else {
+    currentState = "Successful"; 
+  }
+
   var title = data['projectTitle'];
   var creatorName = data['projectCreatorName'];
   var image = data['projectImageLink'];
   var goal = data['projectGoalAmount'];
   var description = data['projectDescription'];
+  var totalRaised = data['projectTotalRaised'] / 1E18;
   var currentAmount = data['currentAmount'] / 1E18; // Gotta convert from bigNumber to regular integer
   var fundRaisingDeadline = data['fundRaisingDeadline'];
   
-  var progress = currentAmount / goal;
+  var progress = totalRaised / goal;
   let imageURL ={ uri: image};
   
   const alertUser = () => {
@@ -121,13 +136,14 @@ function ManageFundraiserListing(props) {
         <Text style={styles.title}>{title}</Text>
 
         <Text style={styles.creatorInitialText}>⭐️ Created by <Text style={styles.creatorText}>{creatorName}</Text> </Text>
+        <Text style={styles.creatorInitialText}>❓ Status: <Text style={styles.creatorText}>{currentState} </Text> </Text>
 
 
         <Text style={styles.descriptionTitle}>Description</Text>
         <Text style={styles.description}>{description}</Text>
 
 
-        <Text style={styles.amountRaisedText}>${currentAmount.toString()} raised of ${goal} goal.</Text>
+        <Text style={styles.amountRaisedText}>${totalRaised.toString()} raised of ${goal} goal</Text>
         <ProgressBar progress={progress} color='#35D07F' width={350} height={8} style={styles.progress}/>
         
         {loading && 
@@ -136,12 +152,17 @@ function ManageFundraiserListing(props) {
           </>
         }
 
-        <Button title={"Pay Out"}
-          buttonStyle={styles.createFundraiserButton} 
-          titleStyle={styles.fundraiserTextStyle} 
-          type="solid"  
-          disabled={loading}
-          onPress={() => alertUser()}/>
+        {currentState === "Fundraising" ? (
+          <Button title={"Pay Out"}
+            TouchableComponent={TouchableWithoutFeedback}
+            buttonStyle={styles.createFundraiserButton} 
+            titleStyle={styles.fundraiserTextStyle} 
+            type="solid"  
+            disabled={loading}
+            onPress={() => alertUser()}/>
+        ) : (
+          <Text style={styles.fundraisingEnded}>This fundraiser has ended. The funds been sent to your wallet.</Text>
+        )}
         
       </View>
     </ScrollView>
@@ -151,62 +172,62 @@ function ManageFundraiserListing(props) {
 const styles = StyleSheet.create({
   sview:{
     backgroundColor: '#FFFFFF',
-  },
+   },
   image:{
-    height: 250, 
+    height: normalize(250), 
     // borderRadius : 15,
     borderColor: '#DDDDDD',
     resizeMode : 'cover', 
-    marginBottom: 5
+    marginBottom: normalize(5)
   },
   divider:{
     borderBottomColor: '#ABADAF',
-    borderBottomWidth: 1,
+    borderBottomWidth: normalize(1),
   },
   creatorInitialText: {
     fontFamily: 'proxima',
     fontSize: 16, 
     color: '#2E3338',
-    marginTop: 5
+    marginTop: normalize(5)
   }, 
   creatorText: {
     fontFamily: 'proximanova_bold',
-    fontSize: 16,
+    fontSize: normalize(16),
     color: '#2E3338',
   },
   viewStyle: {
-    marginLeft: 10,
-    marginTop: 5,
+    marginLeft: normalize(10),
+    marginTop: normalize(5),
   },
   title: {
     fontFamily: 'proximanova_bold',
     fontSize: 30, 
     color: '#2E3338', 
-    marginTop: 5
+    marginTop: normalize(5)
   },
   descriptionTitle:{
     fontFamily: 'proximanova_bold',
     fontSize: 19,
     color: '#2E3338',
-    marginTop: 30
+    marginTop: normalize(30)
   },
   amountRaisedText:{
     fontFamily: 'proximanova_bold',
     fontSize: 18,
     color: '#2E3338',
-    marginBottom: 5
+    marginBottom: normalize(5)
   },
   description: {
     fontFamily: 'proxima',
     fontSize: 19,
     color: '#2E3338',
-    marginTop: 5,
-    marginRight: 10,
-    marginBottom: 30
+    marginTop: normalize(5),
+    marginRight: normalize(10),
+    marginBottom: normalize(30)
   },
   createFundraiserButton: {
-    marginTop: 40,
-    height: 40,
+    marginTop: normalize(40),
+    height: normalize(40),
     width: Dimensions.get('window').width - 20,
     backgroundColor: "#35D07F"
   }, 
@@ -214,6 +235,12 @@ const styles = StyleSheet.create({
     fontFamily: 'proximanova_bold',
     fontSize: 18, 
     color: '#FFFFFF'
+  }, 
+  fundraisingEnded: {
+    marginTop: normalize(30),
+    fontFamily: 'proxima',
+    fontSize: 18, 
+    marginRight: normalize(10)
   }
 });
 

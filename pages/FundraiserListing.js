@@ -14,15 +14,29 @@ function FundraiserListing(props) {
   var address = props.route.params.address; 
   
   var data = props.route.params.projectData;
+
+  var currentState = '';
+  
+  if (data['currentState'] === '0') {
+    currentState = "Fundraising"; 
+  }
+  else if (data['currentState'] === '1') {
+    currentState = "Expired"; 
+  }
+  else {
+    currentState = "Successful"; 
+  }
+
   var title = data['projectTitle'];
   var creatorName = data['projectCreatorName'];
   var image = data['projectImageLink'];
+  var totalRaised = data['projectTotalRaised'] / 1E18;
   var goal = data['projectGoalAmount'];
   var description = data['projectDescription'];
   var currentAmount = data['currentAmount'] / 1E18; // Gotta convert from bigNumber to regular integer
   var fundRaisingDeadline = data['fundRaisingDeadline'];
   
-  var progress = currentAmount / goal;
+  var progress = totalRaised / goal;
   let imageURL = {uri: image};
   
   return (
@@ -34,19 +48,25 @@ function FundraiserListing(props) {
 
         <Text style={styles.creatorInitialText}>⭐️ Created by <Text style={styles.creatorText}>{creatorName}</Text> </Text>
 
-
+        <Text style={styles.creatorInitialText}>❓ Status: <Text style={styles.creatorText}>{currentState} </Text> </Text>
+        
         <Text style={styles.descriptionTitle}>Description</Text>
         <Text style={styles.description}>{description}</Text>
 
 
-        <Text style={styles.amountRaisedText}>${currentAmount.toString()} raised of ${goal} goal.</Text>
+        <Text style={styles.amountRaisedText}>${totalRaised.toString()} raised of ${goal} goal.</Text>
         <ProgressBar progress={progress} color='#35D07F' width={350} height={8} style={styles.progress}/>        
         
+        {currentState === "Fundraising" ? ( 
           <Button title={"Donate Now"} 
             buttonStyle={styles.createFundraiserButton} 
             titleStyle={styles.fundraiserTextStyle} 
             type="solid"  
             onPress={() => navigation.navigate('DonationForm', {projectId: projectId, loggedIn: loggedIn, address: address, creatorName: creatorName, title: title, nav: navigation})}/>        
+        ) : (
+          <Text style={styles.fundraisingEnded}>This fundraiser has ended</Text>
+        )}
+
       </View>
     </ScrollView>
   );
@@ -125,7 +145,20 @@ const styles = StyleSheet.create({
     fontSize: 18, 
     color: '#FFFFFF'
   }, 
-  buttonOpacity:{}
+  fundraiserTextStyle: {
+    fontFamily: 'proximanova_bold',
+    fontSize: 18, 
+    color: '#FFFFFF'
+  }, 
+  status: {
+    marginTop: normalize(10)
+  },
+  buttonOpacity:{}, 
+  fundraisingEnded: {
+    marginTop: normalize(30),
+    fontFamily: 'proxima',
+    fontSize: 18, 
+  }
 });
 
 export default FundraiserListing;

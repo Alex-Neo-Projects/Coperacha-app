@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { View, ActivityIndicator, Text, Alert, StyleSheet, ScrollView, TouchableWithoutFeedback, Keyboard, Dimensions } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { kit } from '../root';
+import { web3, kit } from '../root';
 import {   
   requestTxSig,
   waitForSignedTxs,
@@ -10,11 +10,11 @@ import {
 import { toTxResult } from "@celo/connect";
 import * as Linking from 'expo-linking';
 import AppContext from '../components/AppContext';
-import BigNumber from "bignumber.js";
 import LogIn from '../components/LogIn';
 import { useNavigation } from '@react-navigation/core';
 import { Button } from 'react-native-elements';
 import normalize from 'react-native-normalize';
+import Big from 'big.js';
 
 function DonationForm(props) {
   const navigation = useNavigation();
@@ -40,6 +40,7 @@ function DonationForm(props) {
   var projectInstanceContract = projectDataContext[projectId].projectInstanceContract;
 
   const approve = async() => {
+    console.log("Approve clicked");
     if(name.length == 0){
       Alert.alert(
         "Add a name!"
@@ -55,16 +56,17 @@ function DonationForm(props) {
       
       return;
     }
+
+    const requestId = 'approve_donation';
+    const dappName = 'Coperacha';
+    const callback = Linking.makeUrl('/my/path');
     
-    const requestId = 'approve_donation'
-    const dappName = 'Coperacha'
-    const callback = Linking.makeUrl('/my/path')
-    
-    const value = new BigNumber(donationAmount * 2e+18);
-    
+    var value = new Big(donationAmount).mul(2e+18).toString();
+    console.log(value);
+
     const stableToken = await kit.contracts.getStableToken();
     const txObject = await stableToken.approve(projectInstanceContract._address, value).txo;
-    
+
     requestTxSig(
       kit,
       [
@@ -77,22 +79,39 @@ function DonationForm(props) {
         }
       ],
       { requestId, dappName, callback }
-    )
-    
+    );
+
+    console.log("After requesttxsig");
     // Get the response from the Celo wallet
-    const dappkitResponse = await waitForSignedTxs(requestId)
-    const tx = dappkitResponse.rawTxs[0]
-    
+    const dappkitResponse = await waitForSignedTxs(requestId);
+    const tx = dappkitResponse.rawTxs[0];
+
     setLoading(true);
     setApproveDisabled(true);
     
-    // Get the transaction result, once it has been included in the Celo blockchain
-    let result = await toTxResult(kit.web3.eth.sendSignedTransaction(tx)).waitReceipt()
+    try {
+      let result = await toTxResult(kit.web3.eth.sendSignedTransaction(tx)).waitReceipt();
 
-    console.log(`Approve donation transaction receipt: `, result);
-    
-    setDonationDisabled(false);
-    setLoading(false);
+      // Get the transaction result, once it has been included in the Celo blockchain
+      console.log(`Approve donation transaction receipt: `, result);
+      setApproveDisabled(true);
+      setLoading(false);
+      setDonationDisabled(false);
+    }
+    catch (e) {
+      var exception = e.toString(); 
+
+      if (exception.startsWith("Error: Transaction has been reverted by the EVM:")) { 
+        Alert.alert("Error: Make sure you have enough cUSD to donate"); 
+      }
+      else {
+        Alert.alert("A transaction error occurred. Please try again");
+      }
+      console.log("Error caught:", exception);
+
+      setLoading(false); 
+      setDonationDisabled(false);
+    }    
   }
 
   const donate = async () => {
@@ -116,7 +135,8 @@ function DonationForm(props) {
     const dappName = 'Coperacha'
     const callback = Linking.makeUrl('/my/path')
     
-    const value = new BigNumber(donationAmount * 1e+18);
+    var value = new Big(donationAmount).mul(1e+18).toString();
+
     const txObject = await projectInstanceContract.methods.contribute(value);
 
     requestTxSig(

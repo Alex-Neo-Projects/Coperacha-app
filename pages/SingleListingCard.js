@@ -9,18 +9,30 @@ function SingleListingCard(props) {
   const navigation = useNavigation();
   
   var data = props.projectData; 
-  console.log(data);
+
+  var currentState = '';
+  
+  if (data.currentState === '0') {
+    currentState = "Fundraising"; 
+  }
+  else if (data.currentState === '1') {
+    currentState = "Expired"; 
+  }
+  else {
+    currentState = "Successful"; 
+  }
+
   //Data 
   var currentAmount = data.currentAmount / 1E18; // Gotta convert from bigNumber to regular integer; 
-  var currentState = data.currentState;
   var fundraisingDeadline = data.fundRaisingDeadline; 
   var projectCreator = data.projectCreator.toString().substring(0, 16);
   var creatorName = data.projectCreatorName; 
   var projectDescription = data.projectDescription.length > 115 ? data.projectDescription.substring(0, 115) : data.projectDescription;
   var projectGoalAmount = data.projectGoalAmount;
   var projectImageLink = data.projectImageLink;
+  var totalRaised = data.projectTotalRaised / 1E18; 
   var projectTitle = data.projectTitle; 
-  var currentProgress = currentAmount / projectGoalAmount; 
+  var currentProgress = totalRaised / projectGoalAmount; 
 
   const milliseconds = fundraisingDeadline * 1000; 
   const dateObject = new Date(milliseconds)
@@ -55,6 +67,29 @@ function SingleListingCard(props) {
     </View>      
      )}
    </View>
+    <TouchableOpacity 
+      onPress={() => navigation.navigate('ManageFundraiserListing', {projectId: props.projectId, loggedIn: props.loggedIn, address: props.address, projectData: data, projectAddy:projectCreator, nav: navigation})}
+      activeOpacity={0.8}
+      // Tweak so cards don't get opaque on scroll
+      delayPressIn={50}>   
+
+      <View style={styles.cardView}> 
+        <View style={styles.textView}>
+          <Text style={styles.titleText}>{projectTitle} </Text>
+          <Text style={styles.currentRaisedText}>${totalRaised} raised of ${projectGoalAmount} goal. </Text>
+          
+          <Text style={styles.currentRaisedText}>Status: {currentState} </Text>
+          
+          <ProgressBar progress={currentProgress} color='#35D07F' width={normalize(330)} height={normalize(8)} style={styles.progress}/>
+          
+          {currentState === "Fundraising" ? (
+            <Text style={styles.dateText}>Fundraising ends on {dateOutput} </Text>
+          ) : (
+            <Text style={styles.dateText}>Fundraising ended</Text>
+          )}
+        </View>
+      </View>      
+    </TouchableOpacity>
   );
 }
 
@@ -71,7 +106,7 @@ const styles = StyleSheet.create({
   }, 
   cardView: {
     width : Dimensions.get('window').width - 25,
-    height : normalize(110),
+    height : normalize(150),
     marginBottom : normalize(15),
     borderRadius : 15,
     backgroundColor : '#FFFFFF',
@@ -79,10 +114,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     overflow : 'hidden',
   }, 
-  cardImage : {
-      width : '100%',
-      height : '55%'
-  },
   textView : {
     flex : 1,
     alignItems : 'flex-start',
@@ -119,6 +150,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#2E3338',
     marginTop: normalize(10),
+    marginBottom: normalize(10)
   },
   currentRaisedTextDone: {
     fontFamily: 'proxima',
