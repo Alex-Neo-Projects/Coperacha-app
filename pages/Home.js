@@ -127,8 +127,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff'
   },
   headerInitial: { 
-    // flexDirection: "row",
     fontSize: 25,
+    alignItems: 'center',
     color: '#2E3338',
     fontFamily: 'proximanova_bold',
     height: normalize(90),
