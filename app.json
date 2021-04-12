@@ -24,10 +24,10 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "xyz.coperacha.client",
+      "bundleIdentifier": "app.coperacha.client",
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "Allow Coperacha to save photos",
-        "NSCameraUsageDescription": "Allow Coperacha to access your camera", 
+        "NSCameraUsageDescription": "Allow Coperacha to access your camera",
         "NSMicrophoneUsageDescription": "Allow Coperacha to use your microphone"
       }
     },
@@ -36,10 +36,10 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#35D07F"
-      }
+      },
+      "package": "xyz.coperacha.client"
     },
     "description": "Fundraising for you and your community, on Celo",
     "githubUrl": "https://github.com/Alex-Neo-Projects/Coperacha-app"
   }
 }
-
