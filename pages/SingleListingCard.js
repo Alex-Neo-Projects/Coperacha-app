@@ -26,6 +26,7 @@ function SingleListingCard(props) {
   var currentAmount = data.currentAmount / 1E18; // Gotta convert from bigNumber to regular integer; 
   var fundraisingDeadline = data.fundRaisingDeadline; 
   var projectCreator = data.projectCreator.toString().substring(0, 16);
+  var creatorName = data.projectCreatorName; 
   var projectDescription = data.projectDescription.length > 115 ? data.projectDescription.substring(0, 115) : data.projectDescription;
   var projectGoalAmount = data.projectGoalAmount;
   var projectImageLink = data.projectImageLink;
@@ -39,6 +40,33 @@ function SingleListingCard(props) {
   var dateOutput = new Date(dateObject).toLocaleDateString();
   
   return (
+   <View>
+     {(currentState === '0' || currentState === '1') ? (
+        <TouchableOpacity 
+        onPress={() => navigation.navigate('ManageFundraiserListing', {projectId: props.projectId, loggedIn: props.loggedIn, address: props.address, projectData: data, projectAddy:projectCreator, nav: navigation})}
+        activeOpacity={0.8}
+        // Tweak so cards don't get opaque on scroll
+        delayPressIn={50}>   
+  
+        <View style={styles.cardView}> 
+          <View style={styles.textView}>
+            <Text style={styles.titleText}>{projectTitle} </Text>
+            <Text style={styles.currentRaisedText}>${currentAmount} raised of ${projectGoalAmount} goal. </Text>
+  
+            <ProgressBar progress={currentProgress} color='#35D07F' width={normalize(330)} height={normalize(8)} style={styles.progress}/>
+            <Text style={styles.dateText}>Fundraising ends on {dateOutput} </Text>
+          </View>
+        </View>      
+      </TouchableOpacity>
+     ):(
+      <View style={styles.cardViewDone}> 
+      <View style={styles.textView}>
+        <Text style={styles.titleText}>{projectTitle} </Text>
+        <Text style={styles.currentRaisedTextDone}>🎈 You have claimed your payout!</Text>
+      </View>
+    </View>      
+     )}
+   </View>
     <TouchableOpacity 
       onPress={() => navigation.navigate('ManageFundraiserListing', {projectId: props.projectId, loggedIn: props.loggedIn, address: props.address, projectData: data, projectAddy:projectCreator, nav: navigation})}
       activeOpacity={0.8}
@@ -66,6 +94,16 @@ function SingleListingCard(props) {
 }
 
 const styles = StyleSheet.create({ 
+  cardViewDone: {
+    width : Dimensions.get('window').width - 25,
+    height : normalize(80),
+    marginBottom : normalize(15),
+    borderRadius : 15,
+    backgroundColor : '#FFFFFF',
+    borderColor: '#EDEEEF',
+    borderWidth: 1,
+    overflow : 'hidden',
+  }, 
   cardView: {
     width : Dimensions.get('window').width - 25,
     height : normalize(150),
@@ -113,6 +151,12 @@ const styles = StyleSheet.create({
     color: '#2E3338',
     marginTop: normalize(10),
     marginBottom: normalize(10)
+  },
+  currentRaisedTextDone: {
+    fontFamily: 'proxima',
+    fontSize: 15,
+    color: '#2E3338',
+    marginTop: normalize(10),
   },
   progress: {
     marginTop: normalize(7)

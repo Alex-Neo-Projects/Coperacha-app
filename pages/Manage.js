@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
   },
   headerInitial:{
     flexDirection: "row",
+    height: normalize(60),
     color: '#2E3338',
     fontFamily: 'proximanova_bold',
     marginTop: Platform.OS === 'ios' ? normalize(60): normalize(20),
@@ -161,8 +162,8 @@ const styles = StyleSheet.create({
     marginRight: normalize(40),
   },
   headerFollow:{
-    marginLeft: 20,
-    bottom: 40
+    marginLeft: normalize(20),
+    bottom: normalize(40)
   },
   header: {
     fontSize: 25,
@@ -183,10 +184,10 @@ const styles = StyleSheet.create({
     resizeMode: 'contain'
   },
   createSettingsButton: {
-    marginLeft: 28,
-    marginTop: 34,
-    height: 40,
-    width: 100,
+    marginLeft: normalize(28),
+    marginTop: normalize(34),
+    height: normalize(40),
+    width: normalize(100),
   }, 
   settingsTextStyle: {
     fontFamily: 'proximanova_bold',
@@ -194,9 +195,9 @@ const styles = StyleSheet.create({
     color: '#2E3338'
   },
   createFundraiserButton: {
-    marginTop: 40,
-    height: 40,
-    marginRight: 10,
+    marginTop: normalize(40),
+    height: normalize(40),
+    marginRight: normalize(10),
     width: Dimensions.get('window').width - 20,
     backgroundColor: "#35D07F"
   }, 
