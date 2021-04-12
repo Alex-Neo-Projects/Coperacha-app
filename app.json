@@ -23,7 +23,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "xyz.coperacha.client",
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "Allow Coperacha to save photos",
@@ -31,8 +31,15 @@
         "NSMicrophoneUsageDescription": "Allow Coperacha to use your microphone"
       }
     },
-    "description": "Crowdfunding for you and your community, on Celo",
-    "githubUrl": "https://github.com/Alex-Neo-Projects/celo-crowdfunding"
+    "android": {
+      "icon": "./assets/icon.png",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#35D07F"
+      }
+    },
+    "description": "Fundraising for you and your community, on Celo",
+    "githubUrl": "https://github.com/Alex-Neo-Projects/Coperacha-app"
   }
 }
 

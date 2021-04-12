@@ -39,7 +39,7 @@ function Home(props) {
   
   var [currentActiveSelected, setActiveSelected] = React.useState(true);
   var [currentActiveTitle, setActiveTitle] = React.useState('Ongoing');
-  var [currentButtonTitle, setButtonTitle] = React.useState('Ongoing');
+  var [currentButtonTitle, setButtonTitle] = React.useState('View Ongoing Fundraisers');
 
   const [refreshing, setRefreshing] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
