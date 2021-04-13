@@ -94,8 +94,8 @@ function ListingCard(props) {
 
 const styles = StyleSheet.create({ 
   cardView: {
-    width : Dimensions.get('window').width - 25,
-    height : normalize(440),
+    width : Dimensions.get('window').width - normalize(25),
+    height : normalize(500),
     marginBottom : normalize(30),
     borderRadius : normalize(15),
     borderWidth: 1,
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   }, 
   cardImage : {
       width : '100%',
-      height : '55%',
+      height : '50%',
   },
   textView : {
     flex : 1,

@@ -41,31 +41,6 @@ function SingleListingCard(props) {
   
   return (
    <View>
-     {/* {(currentState === '0' || currentState === '1') ? (
-        <TouchableOpacity 
-        onPress={() => navigation.navigate('ManageFundraiserListing', {projectId: props.projectId, loggedIn: props.loggedIn, address: props.address, projectData: data, projectAddy:projectCreator, nav: navigation})}
-        activeOpacity={0.8}
-        // Tweak so cards don't get opaque on scroll
-        delayPressIn={50}>   
-  
-        <View style={styles.cardView}> 
-          <View style={styles.textView}>
-            <Text style={styles.titleText}>{projectTitle} </Text>
-            <Text style={styles.currentRaisedText}>${currentAmount} raised of ${projectGoalAmount} goal. </Text>
-  
-            <ProgressBar progress={currentProgress} color='#35D07F' width={normalize(330)} height={normalize(8)} style={styles.progress}/>
-            <Text style={styles.dateText}>Fundraising ends on {dateOutput} </Text>
-          </View>
-        </View>      
-      </TouchableOpacity>
-     ):(
-      <View style={styles.cardViewDone}> 
-      <View style={styles.textView}>
-        <Text style={styles.titleText}>{projectTitle} </Text>
-        <Text style={styles.currentRaisedTextDone}>🎈 You have claimed your payout!</Text>
-      </View>
-    </View>      
-     )} */}
     <TouchableOpacity 
       onPress={() => navigation.navigate('ManageFundraiserListing', {projectId: props.projectId, loggedIn: props.loggedIn, address: props.address, projectData: data, projectAddy:projectCreator, nav: navigation})}
       activeOpacity={0.8}
@@ -109,7 +84,7 @@ const styles = StyleSheet.create({
   }, 
   cardView: {
     width : Dimensions.get('window').width - 25,
-    height : normalize(150),
+    height : normalize(165),
     marginBottom : normalize(15),
     borderRadius : 15,
     backgroundColor : '#FFFFFF',
@@ -162,7 +137,7 @@ const styles = StyleSheet.create({
     marginTop: normalize(10),
   },
   progress: {
-    marginTop: normalize(7)
+    marginTop: normalize(7),
   },
   dateText: {
     fontFamily: 'proxima',
