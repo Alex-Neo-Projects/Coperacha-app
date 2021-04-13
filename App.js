@@ -210,6 +210,7 @@ class App extends React.Component {
   async loadFromStorage() {
     try {
       const onboarding = await AsyncStorage.getItem('@onboardingFinished');
+
       const value = await AsyncStorage.getItem('@userAddress')
       const userBalance = await AsyncStorage.getItem('@userBalance');
 

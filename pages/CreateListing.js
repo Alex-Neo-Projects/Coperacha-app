@@ -267,9 +267,9 @@ function CreateListing(props) {
           
                     {/* Deadline */}
                     <Button title={"Pick a deadline"} 
-                    buttonStyle={styles.createFundraiserButton} 
-                    titleStyle={styles.fundraiserTextStyle} 
-                    type="solid"  
+                    buttonStyle={styles.createFundraiserButton}
+                    titleStyle={styles.fundraiserTextStyle}
+                    type="solid"
                     onPress={showDatePicker}/>
 
                     <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={(date) => {handleConfirm(date)}} onCancel={hideDatePicker}/>  
@@ -282,11 +282,11 @@ function CreateListing(props) {
                     }
 
                     <Button title={"Create Fundraiser"} 
-                    buttonStyle={styles.createFundraiserButton} 
-                    titleStyle={styles.fundraiserTextStyle} 
-                    type="solid"  
-                    disabled={loading}
-                    onPress={() => write()}/>
+                      buttonStyle={styles.createFundraiserButton} 
+                      titleStyle={styles.fundraiserTextStyle} 
+                      type="solid"  
+                      disabled={loading}
+                      onPress={() => write()}/>
                   
                   </View>
               </View>

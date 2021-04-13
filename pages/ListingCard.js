@@ -20,6 +20,7 @@ function ListingCard(props) {
   var projectCreator = data.projectCreator.toString().substring(0, 16);
   var projectDescription = data.projectDescription.length > 115 ? data.projectDescription.substring(0, 115) + '...' : data.projectDescription;
   var projectGoalAmount = data.projectGoalAmount;
+
   var projectImageLink = data.projectImageLink;
   var projectTitle = data.projectTitle; 
   var currentProgress = totalRaised / projectGoalAmount; 
