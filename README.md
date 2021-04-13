@@ -1,5 +1,5 @@
 # Coperacha App   
-<img src="https://user-images.githubusercontent.com/7016669/113189335-18a96080-9229-11eb-99a8-db58f03a6f94.png" width="250" height="250">
+![Imgur Image](https://i.imgur.com/uNIKtSj.png)  
 
 Coperacha is a React Native app which make fundraising easy, borderless, and fee-free for you and your community. It is built on the Celo blockchain. 
 
