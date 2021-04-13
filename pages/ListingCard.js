@@ -78,7 +78,7 @@ function ListingCard(props) {
 
           <ProgressBar progress={currentProgress} color='#35D07F' width={normalize(330)} height={normalize(8)} style={styles.progress}/>
           
-          {currentState === "Fundraising" ? (
+          {status === "Fundraising" ? (
             <Text style={styles.dateText}>Fundraising ends on {dateOutput} </Text>
           ) : (
             <Text style={styles.dateText}>Fundraising ended</Text>
