@@ -9,9 +9,21 @@ Coperacha is a React Native app which make fundraising easy, borderless, and fee
 
 Usage: *"Vamos a hacer coperacha para la gasolina"* means "Let's put some money together to pay for gas". 
 
+## Demo 
+
+[![Video](https://i.imgur.com/Ek9OOLX.png)](https://www.youtube.com/watch?v=xLD6wRkHRAU)
+
+
 ## App download
 
-Check out the latest [Expo build here](https://expo.io/@alex243/projects/coperacha) (requires the Expo Go app). 
+If you're on Android, you can scan the QR code on the [Expo Go](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en_US&gl=US) app to run Coperacha instantly:
+
+<img src="https://i.imgur.com/mKo5Bm0.png" width="300" height="250" />
+
+
+Alternatively, you can download the .ipa (ios) or .apk (android) files to directly load it on your device from the [releases page](https://github.com/Alex-Neo-Projects/Coperacha-app/releases). 
+
+The third option is to run the code from the repo on your computer. Instructions can be found below under "running Coperacha locally". We weren't able to get a testflight approved in time for the hackathon. 
 
 **Note: This app uses testnet cUSD exclusively, and requires a [Celo test wallet](https://celo.org/developers/wallet) in order to work** 
 
