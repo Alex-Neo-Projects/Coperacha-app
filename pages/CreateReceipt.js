@@ -17,7 +17,10 @@ function CreateReceipt() {
         buttonStyle={styles.createFundraiserButton} 
         titleStyle={styles.fundraiserTextStyle} 
         type="solid"  
-        onPress={() => navigation.replace('Create')}/>
+        onPress={() => navigation.reset({
+          index: 0,
+          routes: [{name: 'Home'}],
+        })}/>
     </View>
   );
 }
